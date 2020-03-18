@@ -1,0 +1,13 @@
+spring:
+  jpa:
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: ${DDL_AUTO:update}
+    properties:
+      hibernate:
+        type: debug
+        temp:
+          use_jdbc_metadata_defaults: false
+        id:
+          new_generator_mappings: true

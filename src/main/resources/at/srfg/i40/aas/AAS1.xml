@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aas:aasenv xmlns:IEC61360="http://www.admin-shell.io/IEC61360/1/0" xmlns:aas="http://www.admin-shell.io/aas/1/0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.admin-shell.io/aas/1/0 AAS.xsd ">
+  <aas:assetAdministrationShells>
+    <aas:assetAdministrationShell>
+      <aas:derivedFrom xsi:type="aas:reference_t">
+        <aas:keys>
+          <aas:key idType="idShort" local="true" type="GlobalReference">aas:key</aas:key>
+        </aas:keys>
+      </aas:derivedFrom>
+      <aas:assetRef xsi:type="aas:reference_t">
+        <aas:keys>
+          <aas:key idType="idShort" local="true" type="GlobalReference">aas:key</aas:key>
+        </aas:keys>
+      </aas:assetRef>
+      <aas:submodelRefs>
+        <aas:submodelRef xsi:type="aas:reference_t">
+          <aas:keys>
+            <aas:key idType="idShort" local="true" type="GlobalReference">aas:key</aas:key>
+          </aas:keys>
+        </aas:submodelRef>
+      </aas:submodelRefs>
+      <aas:views>
+        <aas:view>
+          <aas:containedElements>
+            <aas:containedElementRef xsi:type="aas:reference_t">
+              <aas:keys>
+                <aas:key idType="idShort" local="true" type="GlobalReference">aas:key</aas:key>
+              </aas:keys>
+            </aas:containedElementRef>
+          </aas:containedElements>
+        </aas:view>
+      </aas:views>
+      <aas:conceptDictionaries>
+        <aas:conceptDictionary>
+          <aas:conceptDescriptionRefs>
+            <aas:conceptDescriptionRef xsi:type="aas:reference_t">
+              <aas:keys>
+                <aas:key idType="idShort" local="true" type="GlobalReference">aas:key</aas:key>
+              </aas:keys>
+            </aas:conceptDescriptionRef>
+          </aas:conceptDescriptionRefs>
+        </aas:conceptDictionary>
+      </aas:conceptDictionaries>
+    </aas:assetAdministrationShell>
+  </aas:assetAdministrationShells>
+  <aas:assets>
+    <aas:asset>
+      <aas:assetIdentificationModelRef xsi:type="aas:reference_t">
+        <aas:keys>
+          <aas:key idType="idShort" local="true" type="GlobalReference">aas:key</aas:key>
+        </aas:keys>
+      </aas:assetIdentificationModelRef>
+    </aas:asset>
+  </aas:assets>
+  <aas:submodels>
+    <aas:submodel>
+      <aas:submodelElements>
+        <aas:submodelElement>
+          <aas:property>
+            <aas:valueType>aas:valueType</aas:valueType>
+            <aas:value>aas:value</aas:value>
+            <aas:valueId xsi:type="aas:reference_t">
+              <aas:keys>
+                <aas:key idType="idShort" local="true" type="GlobalReference">aas:key</aas:key>
+              </aas:keys>
+            </aas:valueId>
+          </aas:property>
+        </aas:submodelElement>
+      </aas:submodelElements>
+    </aas:submodel>
+  </aas:submodels>
+  <aas:conceptDescriptions>
+    <aas:conceptDescription>
+      <aas:isCaseOf xsi:type="aas:reference_t">
+        <aas:keys>
+          <aas:key idType="idShort" local="true" type="GlobalReference">aas:key</aas:key>
+        </aas:keys>
+      </aas:isCaseOf>
+    </aas:conceptDescription>
+  </aas:conceptDescriptions>
+</aas:aasenv>
