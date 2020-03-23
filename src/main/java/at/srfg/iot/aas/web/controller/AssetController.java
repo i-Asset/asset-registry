@@ -4,6 +4,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,8 @@ import at.srfg.iot.aas.service.BoschRexRoth;
 import at.srfg.iot.aas.service.SubmodelService;
 
 @RestController
+@Api(value = "Asset Controller",
+		description = "API to perform Asset registry operations")
 public class AssetController {
 	@Autowired
 	BoschRexRoth rexRoth;

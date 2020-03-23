@@ -2,7 +2,7 @@ package at.srfg.iot.assetregistry;
 
 import java.util.UUID;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import at.srfg.iot.aas.model.IdPart;
 import at.srfg.iot.aas.model.IdType;
