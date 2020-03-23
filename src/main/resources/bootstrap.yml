@@ -1,4 +1,17 @@
+server:
+  port: ${PORT:8085}
 spring:
+  application:
+    name: assetregistry-service
+  cloud:
+    config:
+      enabled: ${CONFIG_SERVER_ENABLED:true}
+      uri: ${CONFIG_SERVER_URI:http://localhost:8888}
+      failFast: ${CONFIG_SERVER_FAILFAST:false}
+    service-registry:
+      auto-registration:
+        enabled: ${DISCOVERY_ENABLED:false}
+        fail-fast: ${DISCOVERY_FAILFAST:true}
   jpa:
     show-sql: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -11,3 +24,34 @@ spring:
           use_jdbc_metadata_defaults: false
         id:
           new_generator_mappings: true
+  datasource:
+    name: assetdb
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://${REGISTRY_HOST:localhost}:${REGISTRY_PORT:5432}/${REGISTRY_DB:assetdb}?ApplicationName=assetregistry-service
+    username: ${REGISTRY_USER:root}
+    password: ${REGISTRY_PASSWORD:changeme}
+    test-on-borrow: true
+    test-while-idle: true
+    remove-abandoned: true
+    log-abandoned: true
+    initial-size: 3
+    max-active: 3
+    max-idle: 3
+    min-idle: 3
+    max-wait: 90000
+    time-between-eviction-runs-millis: 60000
+    min-evictable-idle-time-millis: 3600000
+    validation-query: "SELECT 1;" # Validation query must be set in order to test connections
+    dbcp:
+      default-auto-commit: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+
+iAsset:
+  corsEnabled: true
+  platformHost: ${ :http://localhost:8085}
