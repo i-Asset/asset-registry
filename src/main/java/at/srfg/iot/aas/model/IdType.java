@@ -16,9 +16,9 @@ import java.util.regex.Pattern;
  *
  */
 public enum IdType {
-	// Unquoted: ^(([a-z]+):\/\/(\w+(\.\w+)+)(([\/\#](\w+(\(\w+\))?(\/)?)+)+)?)(\?\S+)?$
-	// matches against URI - must start with the protocol! 
-	URI("(([a-z]+):\\/\\/(\\w+(\\.\\w+)+)(([\\/\\#](\\w+(\\(\\w+\\))?(\\/)?)+)+)?)(\\?\\S+)?$"),	
+	// Unquoted: ^([a-z]+):(\/\/)?((((\w+):?)+)|((((\w+)\.?)+)((:(\d+))?)))((\/\w+)+)?(([\/#])(\w+)?(\S+)?)?$
+	// matches against URI or an URN - must start with the protocol! 
+	URI("^([a-z]+):(\\/\\/)?((((\\w+):?)+)|((((\\w+)\\.?)+)((:(\\d+))?)))((\\/\\w+)+)?(([\\/#])(\\w+)?(\\S+)?)?$"),	
 	// Unquoted: ^(((\d+)[-\/](\w+))(([-\/](\w+)?)+)?)#(((\w{2})-)?(\w+))(#(\d+))?$
 	// matches against a IRDI (eClass, IEC CDD)
 	IRDI("^(((\\d+)[-\\/](\\w+))(([-\\/](\\w+)?)+)?)#(((\\w{2})-)?(\\w+))(#(\\d+))?$"),

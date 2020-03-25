@@ -24,7 +24,6 @@ import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -43,7 +42,6 @@ import at.srfg.iot.aas.api.Referable;
 @Table(name="referable_element")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="model_type")
-@PrimaryKeyJoinColumn(name="model_element_id")
 public abstract class ReferableElement implements Referable, Serializable {
 	private static final long serialVersionUID = 1L;
 	/**
@@ -89,7 +87,7 @@ public abstract class ReferableElement implements Referable, Serializable {
 	 */
 	@JsonIgnore
 	@XmlTransient
-	@OneToMany(mappedBy = "parentElement")
+	@OneToMany(mappedBy = "parentElement", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
 	private List<ReferableElement> childElements;
 	/**
 	 * Readonly attribute, stores the {@link KeyElementsEnum}
@@ -171,12 +169,14 @@ public abstract class ReferableElement implements Referable, Serializable {
 	 * @param description
 	 */
 	public void setDescription(String language, String description) {
-		Description desc = descriptionMap.get(language);
-		if ( desc != null ) {
-			desc.setDescription(description);
-		}
-		else {
-			this.descriptionMap.put(language, new Description(this, language, description));
+		if ( language != null) {
+			Description desc = descriptionMap.get(language);
+			if ( desc != null ) {
+				desc.setDescription(description);
+			}
+			else {
+				this.descriptionMap.put(language, new Description(this, language, description));
+			}
 		}
 	}
 	/**
@@ -192,6 +192,9 @@ public abstract class ReferableElement implements Referable, Serializable {
 	 * @return
 	 */
 	public Collection<Description> getDescription() {
+		if (this.descriptionMap == null) {
+			return null;
+		}
 		return this.descriptionMap.values();
 	}
 	/**
@@ -233,4 +236,47 @@ public abstract class ReferableElement implements Referable, Serializable {
 //		setCreated(LocalDateTime.now());
 		setModified(LocalDateTime.now());
 	}
+	
+	public String toString() {
+		if (this instanceof IdentifiableElement) {
+			return getModelType().name() + ": " + ((IdentifiableElement)this).getId();
+		}
+		return getModelType().name() + ": " + idShort; 
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((elementId == null) ? 0 : elementId.hashCode());
+		result = prime * result + ((idShort == null) ? 0 : idShort.hashCode());
+		result = prime * result + ((modelType == null) ? 0 : modelType.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ReferableElement other = (ReferableElement) obj;
+		if (elementId == null) {
+			if (other.elementId != null)
+				return false;
+		} else if (!elementId.equals(other.elementId))
+			return false;
+		if (idShort == null) {
+			if (other.idShort != null)
+				return false;
+		} else if (!idShort.equals(other.idShort))
+			return false;
+		if (modelType == null) {
+			if (other.modelType != null)
+				return false;
+		} else if (!modelType.equals(other.modelType))
+			return false;
+		return true;
+	}
+
 }

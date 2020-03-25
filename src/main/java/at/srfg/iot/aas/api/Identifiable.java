@@ -33,4 +33,17 @@ public interface Identifiable extends Referable {
 			getIdentification().setId(id);
 		}
 	}
+	default void setVersion(String version) {
+		if ( getAdministration() == null) {
+			setAdministration(new AdministrativeInformation());
+		}
+		getAdministration().setVersion(version);
+	}
+	default void setRevision(String revision) {
+		if ( getAdministration() == null) {
+			setAdministration(new AdministrativeInformation());
+		}
+		getAdministration().setRevision(revision);
+	}
+
 }

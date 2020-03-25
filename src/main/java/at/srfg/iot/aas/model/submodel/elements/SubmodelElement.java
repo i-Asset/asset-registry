@@ -37,7 +37,7 @@ public abstract class SubmodelElement extends ReferableElement implements Refera
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	public static final long serialVersionUID = 1L;
 
 	@Column(name="kind")
 	private Kind kind;
@@ -69,11 +69,6 @@ public abstract class SubmodelElement extends ReferableElement implements Refera
 	@JoinColumn(name = "submodel_element_id", referencedColumnName = "model_element_id")
 	private Submodel submodel;
 	
-//	@JsonIgnore
-//	@ManyToOne(optional = true)
-//	@JoinColumn(name = "collection_element_id", referencedColumnName = "model_element_id")
-//	private SubmodelElementCollection submodelElementCollection;
-//	
 	public SubmodelElement() {
 		// default constructor
 	}
@@ -98,7 +93,7 @@ public abstract class SubmodelElement extends ReferableElement implements Refera
 		setSubmodel(submodelCollection.getSubmodel());
 		// add the element to the collection's child list
 		setParentElement(submodelCollection);
-//		submodelCollection.addChildElement(this);
+		submodelCollection.addChildElement(this);
 	}
 
 
@@ -180,6 +175,9 @@ public abstract class SubmodelElement extends ReferableElement implements Refera
 	@Override
 	public Identifier getSemanticIdentifier() {
 		return semanticIdentification;
+	}
+	public void setSemanticIdentifier(Identifier identifier) {
+		this.semanticIdentification = identifier;
 	}
 	
 }

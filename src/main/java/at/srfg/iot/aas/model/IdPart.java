@@ -18,9 +18,9 @@ import java.util.regex.Matcher;
 public enum IdPart {
 	
 	// URI Related REGEX Groups
-	LocalName(IdType.URI, 7),
-	Namespace(IdType.URI, 1, IdPart.LocalName),
-	Protocol(IdType.URI, 2),
+	LocalName(IdType.URI, 18),
+	Namespace(IdType.URI, 0, IdPart.LocalName),
+	Protocol(IdType.URI, 1),
 	Domain(IdType.URI, 3),
 	// IRDI related REGEX groups
 	/**
@@ -107,10 +107,11 @@ public enum IdPart {
 	private String extractFrom(Matcher matcher) {
 		String part = matcher.group(getNo());
 		if ( subtract != null) {
-			String toSubtract = subtract.extractFrom(matcher);
-			if ( part.endsWith(toSubtract)) {
-				return part.substring(0, part.length()-toSubtract.length());
-			}
+			return matcher.group().substring(0, matcher.start(subtract.getNo()));
+//			String toSubtract = subtract.extractFrom(matcher);
+//			if ( part.endsWith(toSubtract)) {
+//				return part.substring(0, part.length()-toSubtract.length());
+//			}
 		}
 		return part;
 	}

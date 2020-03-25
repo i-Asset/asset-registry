@@ -9,9 +9,15 @@ import at.srfg.iot.aas.model.Kind;
  */
 public interface HasKind {
 	/**
-	 * 
+	 * Get the {@link Kind} of the element
 	 * @return
 	 */
 	Kind getKind();
+	/**
+	 * Set the {@link Kind} of the element, either {@link Kind#Type}
+	 * or {@link Kind#Instance}
+	 * 
+	 * @param kind The kind
+	 */
 	void setKind(Kind kind);
 }

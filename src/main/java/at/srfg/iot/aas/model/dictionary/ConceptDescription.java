@@ -16,6 +16,7 @@ import at.srfg.iot.aas.api.HasDataSpecification;
 import at.srfg.iot.aas.api.Identifiable;
 import at.srfg.iot.aas.model.GlobalReference;
 import at.srfg.iot.aas.model.IdentifiableElement;
+import at.srfg.iot.aas.model.Identifier;
 import at.srfg.iot.aas.model.ReferableElement;
 
 @Entity
@@ -28,6 +29,12 @@ public class ConceptDescription extends IdentifiableElement implements Identifia
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public ConceptDescription() {
+		// default
+	}
+	public ConceptDescription(Identifier identifier) {
+		this.setIdentification(identifier);
+	}
 	/**
 	 * Data Specification refers to a collection of {@link ReferableElement}s
 	 */
@@ -48,7 +55,7 @@ public class ConceptDescription extends IdentifiableElement implements Identifia
 
 	/**
 	 * getter for the data specification
-	 * @see HasDataSpecification
+	 * @see GetHasDataSpecification
 	 */
 	@Override
 	public List<ReferableElement> getDataSpecification() {

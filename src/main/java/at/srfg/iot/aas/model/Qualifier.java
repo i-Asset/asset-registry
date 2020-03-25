@@ -42,5 +42,10 @@ public class Qualifier extends Constraint implements HasSemantics {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public void setSemanticIdentifier(Identifier identifier) {
+//		this.semanticIdentification = identifier;
+		
+	}
 
 }

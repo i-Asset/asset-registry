@@ -7,8 +7,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import at.srfg.iot.aas.api.Identifiable;
 import at.srfg.iot.aas.model.dictionary.ConceptDescription;
 import at.srfg.iot.aas.model.submodel.Submodel;
@@ -71,5 +69,35 @@ public abstract class IdentifiableElement extends ReferableElement implements Id
 	public void setIdentification(Identifier identification) {
 		this.identification = identification;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((administration == null) ? 0 : administration.hashCode());
+		result = prime * result + ((identification == null) ? 0 : identification.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IdentifiableElement other = (IdentifiableElement) obj;
+		if (administration == null) {
+			if (other.administration != null)
+				return false;
+		} else if (!administration.equals(other.administration))
+			return false;
+		if (identification == null) {
+			if (other.identification != null)
+				return false;
+		} else if (!identification.equals(other.identification))
+			return false;
+		return super.equals(obj);
+	}
+
 
 }

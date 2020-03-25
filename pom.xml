@@ -151,14 +151,13 @@
 			<artifactId>javax.ws.rs-api</artifactId>
 			<version>2.1</version>
 		</dependency>
+			<dependency>
+			<groupId>org.eclipse.basyx</groupId>
+			<artifactId>basyx.sdk</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
-
-	<!--<dependency>-->
-	<!--<groupId>org.eclipse.basyx</groupId>-->
-	<!--<artifactId>basyx.sdk</artifactId>-->
-	<!--<version>0.0.1-SNAPSHOT</version>-->
-	<!--</dependency>-->
 
 	<build>
 		<finalName>app</finalName>

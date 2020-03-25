@@ -2,6 +2,7 @@ package at.srfg.iot.aas.model.submodel.elements;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -14,13 +15,14 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import at.srfg.iot.aas.model.ReferableElement;
+import at.srfg.iot.aas.model.submodel.ElementContainer;
 import at.srfg.iot.aas.model.submodel.Submodel;
 
 @Entity
 @Table(name="submodel_element_collection")
 @Inheritance(strategy = InheritanceType.JOINED)
 @PrimaryKeyJoinColumn(name="model_element_id")
-public class SubmodelElementCollection extends SubmodelElement {
+public class SubmodelElementCollection extends SubmodelElement implements ElementContainer {
 	/**
 	 * 
 	 */
@@ -78,6 +80,29 @@ public class SubmodelElementCollection extends SubmodelElement {
 					.collect(Collectors.toList());
 		}
 		return new ArrayList<SubmodelElement>();
+	}
+	/** 
+	 * Direct access to a direct submodel element
+	 * @param path
+	 * @return
+	 */
+	public Optional<SubmodelElement> getSubmodelElement(String idShort) {
+		return getSubmodelElements().stream()
+					.filter(new Predicate<SubmodelElement>() {
+
+						@Override
+						public boolean test(SubmodelElement t) {
+							return t.getIdShort().equals(idShort);
+						}})
+					.findFirst();
+	}
+	public void addChildElement(SubmodelElement element) {
+		// the submodel is the parent element
+		element.setParentElement(this);
+		// the submodel element belongs to this submodel
+		element.setSubmodel(getSubmodel());
+		// keep the element in the map
+		this.addChild(element);
 	}
 
 }

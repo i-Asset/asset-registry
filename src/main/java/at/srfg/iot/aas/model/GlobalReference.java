@@ -15,5 +15,10 @@ public class GlobalReference extends IdentifiableElement {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	public GlobalReference() {
+		// default
+	}
+	public GlobalReference(Identifier identifier) {
+		setIdentification(identifier);
+	}
 }

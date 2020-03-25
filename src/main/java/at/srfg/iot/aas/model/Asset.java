@@ -17,12 +17,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import at.srfg.iot.aas.api.HasDataSpecification;
 import at.srfg.iot.aas.api.HasKind;
+import at.srfg.iot.aas.api.Identifiable;
+import at.srfg.iot.aas.api.Referable;
 import at.srfg.iot.aas.model.submodel.Submodel;
 @Entity
 @Table(name="asset")
 @Inheritance(strategy = InheritanceType.JOINED)
 @PrimaryKeyJoinColumn(name="model_element_id")
-public class Asset extends IdentifiableElement implements HasDataSpecification, HasKind {
+public class Asset extends IdentifiableElement implements Referable, Identifiable, HasDataSpecification, HasKind {
 
 	/**
 	 * 
@@ -37,7 +39,7 @@ public class Asset extends IdentifiableElement implements HasDataSpecification, 
 	 * or {@link Kind#Instance}
 	 */
 	@Column(name = "kind", nullable = false)
-	private Kind kind;
+	private Kind kind = Kind.Type;
 	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name="aas_element_id")

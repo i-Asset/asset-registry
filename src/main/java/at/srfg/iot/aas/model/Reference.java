@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import at.srfg.iot.aas.api.Identifiable;
 import at.srfg.iot.aas.api.Referable;
 
 
@@ -26,7 +27,7 @@ public class Reference implements Serializable {
 			keys.add(0, Key.of(to));
 			// 
 			to = to.getParentElement();
-		} while (to != null);
+		} while (to != null || to instanceof Identifiable);
 	}
 
 	/**

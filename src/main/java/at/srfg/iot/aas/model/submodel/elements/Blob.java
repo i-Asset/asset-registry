@@ -7,6 +7,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import at.srfg.iot.aas.model.submodel.Submodel;
+
 @Entity
 @Table(name="blob_element")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -20,6 +22,28 @@ public class Blob extends DataElement<byte[]> {
 	private byte[] byteValue;
 	@Column(name="mime_type")
 	private String mimeType;
+	
+	public Blob() {
+		// default
+	}
+	/**
+	 * Convenience constructor. Creates and assigns the {@link Blob} as
+	 * a direct child element to the provided {@link Submodel}.
+	 * @param idShort
+	 * @param submodel
+	 */
+	public Blob(String idShort, Submodel submodel) {
+		super(idShort, submodel);
+	}
+	/**
+	 * Convenience constructor. Creates and assigns the {@link Blob} as
+	 * a direct child element to the provided {@link SubmodelElementCollection}.
+	 * @param idShort
+	 * @param collection
+	 */
+	public Blob(String idShort, SubmodelElementCollection collection) {
+		super(idShort, collection);
+	}
 
 	/**
 	 * @return the value

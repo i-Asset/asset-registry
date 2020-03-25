@@ -9,6 +9,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import at.srfg.iot.aas.model.submodel.Submodel;
+
 @Entity
 @Table(name="operation")
 @Inheritance(strategy = InheritanceType.JOINED) 
@@ -24,6 +26,28 @@ public class Operation extends SubmodelElement {
 	private List<OperationVariable> in;
 	@OneToMany(mappedBy = "operationOut")
 	private List<OperationVariable> out;
+	
+	public Operation() {
+		// default
+	}
+	/**
+	 * Convenience constructor. Creates and assigns the {@link Operation} as
+	 * a direct child element to the provided {@link Submodel}.
+	 * @param idShort
+	 * @param submodel
+	 */
+	public Operation(String idShort, Submodel submodel) {
+		super(idShort, submodel);
+	}
+	/**
+	 * Convenience constructor. Creates and assigns the {@link Operation} as
+	 * a direct child element to the provided {@link SubmodelElementCollection}.
+	 * @param idShort
+	 * @param collection
+	 */
+	public Operation(String idShort, SubmodelElementCollection collection) {
+		super(idShort, collection);
+	}
 
 	/**
 	 * @return the in

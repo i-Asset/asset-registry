@@ -39,9 +39,9 @@ public class BoschRexRoth {
 	
 	public Optional<AssetAdministrationShell> createAsset() {
 		
-		Asset theAsset = assetRepo.findByIdentification(new Identifier(IdType.URI, "http://pk.festo.com/3s7plfdrs35"));
-		if ( theAsset == null) {
-			theAsset = new Asset();
+		Optional<Asset> theOptAsset = assetRepo.findByIdentification(new Identifier(IdType.URI, "http://pk.festo.com/3s7plfdrs35"));
+		Asset theAsset = theOptAsset.orElse(new Asset()); 
+		if ( theAsset.getElementId() == null) {
 			theAsset.setDescription("en", "Festo Controller");
 			theAsset.setIdentification(new Identifier(IdType.URI, "http://pk.festo.com/3s7plfdrs35"));
 			theAsset.setKind(Kind.Instance);
@@ -49,25 +49,26 @@ public class BoschRexRoth {
 			assetRepo.save(theAsset);
 		}
 
-		AssetAdministrationShell shell = aasRepo.findByIdShort("123456");
-		if (shell == null) {
+		Optional<AssetAdministrationShell> opt = aasRepo.findByIdShort("123456");
+		AssetAdministrationShell shell = null;
+		if (!opt.isPresent()) {
 			shell = new AssetAdministrationShell(theAsset);
 			shell.setIdentification(new Identifier(IdType.URI, "www.admin-shell.io/aas-sample/1/0"));
 			shell.setIdShort("123456");
 		}
-		if ( shell.getConceptDictionary() == null ) {
-			shell.setConceptDictionary(new ConceptDictionary());
-			shell.getConceptDictionary().setIdShort("SampleDictionary");
+		else {
+			shell = opt.get();
 		}
+
 		aasRepo.save(shell);
 
 		Identifier cdId = new Identifier(IdType.URI, "www.festo.com/dic/08111234");
 		
 		Identifier subId = new Identifier(IdType.URI, "http://www.zvei.de/demo/submodel/12345679");
 		Identifier typeId = new Identifier(IdType.URI, "http://www.zvei.de/demo/submodelDefinitions/87654346");
-		ConceptDescription cd = conceptDescRepo.findByIdentification(cdId);
-		if ( cd == null) {
-			cd = new ConceptDescription();
+		Optional<ConceptDescription> cdOpt = conceptDescRepo.findByIdentification(cdId);
+		ConceptDescription cd = cdOpt.orElse(new ConceptDescription());
+		if ( cd.getElementId() == null) {
 			cd.setIdentification(cdId);
 			conceptDescRepo.save(cd);
 		}
@@ -76,7 +77,7 @@ public class BoschRexRoth {
 		 */
 		Submodel type = subModelRepo.findByIdentification(typeId);
 		if ( type == null) {
-			type = new Submodel(shell);
+			type = new Submodel(typeId,shell);
 			type.setIdentification(typeId);
 		}
 		type.setKind(Kind.Type);
@@ -84,7 +85,7 @@ public class BoschRexRoth {
 		subModelRepo.save(type);
 		Submodel sub = subModelRepo.findByIdentification(subId);
 		if ( sub == null) {
-			sub = new Submodel(shell);
+			sub = new Submodel(subId, shell);
 			sub.setIdentification(subId);
 			
 			

@@ -1,5 +1,6 @@
 package at.srfg.iot.aas.model.dictionary;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.DiscriminatorValue;
@@ -30,6 +31,14 @@ public class ConceptDictionary extends ReferableElement implements Referable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	public ConceptDictionary() {
+		// default
+	}
+	public ConceptDictionary(String idShort, AssetAdministrationShell shell) {
+		this.setIdShort(idShort);
+		shell.addConceptDictionary(this);
+	}
 	/** 
 	 * Hods the list of assigned {@link ConceptDescription} 
 	 * organized in this {@link ConceptDictionary}
@@ -50,6 +59,12 @@ public class ConceptDictionary extends ReferableElement implements Referable {
 	 */
 	public List<ConceptDescription> getConceptDictionary() {
 		return conceptDictionary;
+	}
+	public void addConceptDescription(ConceptDescription conceptDesc) {
+		if (this.conceptDictionary == null) {
+			this.conceptDictionary = new ArrayList<ConceptDescription>();
+		}
+		this.conceptDictionary.add(conceptDesc);
 	}
 
 	/**

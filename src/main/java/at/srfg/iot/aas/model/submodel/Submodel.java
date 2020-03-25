@@ -3,6 +3,7 @@ package at.srfg.iot.aas.model.submodel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -38,7 +39,7 @@ import at.srfg.iot.aas.model.submodel.elements.SubmodelElement;
 @Table(name = "submodel")
 @Inheritance(strategy = InheritanceType.JOINED)
 @PrimaryKeyJoinColumn(name="model_element_id")
-public class Submodel extends IdentifiableElement implements Identifiable, HasSemantics, HasKind, HasDataSpecification, Qualifiable {
+public class Submodel extends IdentifiableElement implements Identifiable, HasSemantics, HasKind, HasDataSpecification, Qualifiable, ElementContainer {
 	/**
 	 * 
 	 */
@@ -48,7 +49,7 @@ public class Submodel extends IdentifiableElement implements Identifiable, HasSe
 	 * or {@link Kind#Instance}
 	 */
 	@Column(name = "kind")
-	private Kind kind;
+	private Kind kind = Kind.Type;
 	/**
 	 * the link to the {@link ReferableElement} specifying 
 	 * the semantic description of the current element 
@@ -63,7 +64,7 @@ public class Submodel extends IdentifiableElement implements Identifiable, HasSe
 
 	/**
 	 * List of {@link ReferableElement}s constituting 
-	 * the {@link HasDataSpecification} of the current submodel
+	 * the {@link GetHasDataSpecification} of the current submodel
 	 */
 	@ManyToMany
 	@JoinTable(name = "submodel_data_spec", joinColumns = {
@@ -92,11 +93,11 @@ public class Submodel extends IdentifiableElement implements Identifiable, HasSe
 	 * the provided {@link AssetAdministrationShell}
 	 * @param shell
 	 */
-	public Submodel(AssetAdministrationShell shell) {
+	public Submodel(Identifier identifier, AssetAdministrationShell shell) {
 		setParent(shell);
 		shell.addSubmodel(this);
+		setIdentification(identifier);
 	}
-//	private List<SubmodelElement> submodelElements;
 	@JsonIgnore
 	@Override
 	public ReferableElement getSemanticElement() {
@@ -175,18 +176,46 @@ public class Submodel extends IdentifiableElement implements Identifiable, HasSe
 		}
 		return new ArrayList<SubmodelElement>();
 	}
+	/** 
+	 * Direct access to a direct submodel element
+	 * @param path
+	 * @return
+	 */
+	public Optional<SubmodelElement> getSubmodelElement(String idShort) {
+		return getSubmodelElements().stream()
+					.filter(new Predicate<SubmodelElement>() {
+
+						@Override
+						public boolean test(SubmodelElement t) {
+							return t.getIdShort().equals(idShort);
+						}})
+					.findFirst();
+	}
 	public void addChildElement(SubmodelElement element) {
 		// the submodel is the parent element
 		element.setParentElement(this);
 		// the submodel element belongs to this submodel
 		element.setSubmodel(this);
 		// keep the element in the map
+		this.addChild(element);
 	}
 
 	@Override
 	public Identifier getSemanticIdentifier() {
-		// TODO Auto-generated method stub
 		return semanticIdentification;
+	}
+	@Override
+	public void setSemanticIdentifier(Identifier identifier) {
+		this.semanticIdentification = identifier;
+		
+	}
+	
+	public boolean equals(Object other) {
+		if (!(other instanceof Submodel)) {
+			return false;
+		}
+		return super.equals(other);
+		
 	}
 
 }

@@ -36,6 +36,36 @@ public class DescriptionPK implements Serializable {
 	public void setLanguage(String language) {
 		this.language = language;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((language == null) ? 0 : language.hashCode());
+		result = prime * result + ((modelElement == null) ? 0 : modelElement.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DescriptionPK other = (DescriptionPK) obj;
+		if (language == null) {
+			if (other.language != null)
+				return false;
+		} else if (!language.equals(other.language))
+			return false;
+		if (modelElement == null) {
+			if (other.modelElement != null)
+				return false;
+		} else if (!modelElement.equals(other.modelElement))
+			return false;
+		return true;
+	}
 
+	
 
 }

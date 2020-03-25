@@ -9,6 +9,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import at.srfg.iot.aas.model.Kind;
+import at.srfg.iot.aas.model.submodel.Submodel;
 
 @Entity
 @Table(name="operation_variable")
@@ -32,6 +33,28 @@ public class OperationVariable extends SubmodelElement {
 	@JoinColumn(name="operation_value")
 	private SubmodelElement value;
 
+	public OperationVariable() {
+		// default
+	}
+	/**
+	 * Convenience constructor. Creates and assigns the {@link OperationVariable} as
+	 * a direct child element to the provided {@link Submodel}.
+	 * @param idShort
+	 * @param submodel
+	 */
+	public OperationVariable(String idShort, Submodel submodel) {
+		super(idShort, submodel);
+	}
+	/**
+	 * Convenience constructor. Creates and assigns the {@link OperationVariable} as
+	 * a direct child element to the provided {@link SubmodelElementCollection}.
+	 * @param idShort
+	 * @param collection
+	 */
+	public OperationVariable(String idShort, SubmodelElementCollection collection) {
+		super(idShort, collection);
+	}
+	
 
 	/**
 	 * @return the operationIn

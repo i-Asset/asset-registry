@@ -26,8 +26,8 @@ public class SubmodelService {
 	private IdentifiableRepository<Submodel> submodelRepo;
 	
 	public Optional<Submodel> getSubmodel(Identifier identification) {
-		Submodel sub = submodelRepo.findByIdentification(identification);
-		return Optional.ofNullable(sub);
+		return submodelRepo.findByIdentification(identification);
+//		return Optional.ofNullable(sub);
 	}
 	/**
 	 * Retrieve the (direct) child elements from a {@link SubmodelElementCollection} based 

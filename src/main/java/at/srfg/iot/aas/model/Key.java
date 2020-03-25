@@ -32,6 +32,25 @@ public class Key {
 			return key;
 		}
 	}
+	public static Key of(String elementType, String id, IdType idType) {
+		Key key = new Key();
+		Identifier identifier = new Identifier(id);
+		key.setValue(identifier.getId());
+		key.setIdType(identifier.getIdType());
+		
+		try {
+			key.setType(KeyElementsEnum.valueOf(elementType));
+		} catch (Exception e) {
+			key.setType(KeyElementsEnum.GlobalReference);
+		}
+		if ( key.getIdType() == IdType.URI && key.getType() == KeyElementsEnum.GlobalReference) {
+			key.setLocal(false);
+		}
+		else {
+			key.setLocal(true);
+		}
+		return key;
+	}
 	/**
 	 * @return the value
 	 */
@@ -80,5 +99,7 @@ public class Key {
 	public void setType(KeyElementsEnum type) {
 		this.type = type;
 	}
-	
+	public Identifier asIdentifier() {
+		return new Identifier(value);
+	}
 }

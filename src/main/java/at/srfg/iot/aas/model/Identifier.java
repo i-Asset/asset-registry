@@ -56,4 +56,13 @@ public class Identifier {
 	public void setIdType(IdType idType) {
 		this.idType = idType;
 	}
+	public boolean equals(Object other) {
+		if (! (other instanceof Identifier)) {
+			return false;
+		}
+		Identifier otherId = (Identifier)other;
+		if ( otherId.id == null ) return false;
+		if ( this.id == null) return false;
+		return this.id.equalsIgnoreCase(otherId.id);
+	}
 }
