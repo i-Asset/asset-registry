@@ -19,6 +19,7 @@ import at.srfg.iot.aas.basys.event.GetHasSemantics;
 import at.srfg.iot.aas.basys.event.SetHasSemantics;
 import at.srfg.iot.aas.basys.event.handler.util.MappingHelper;
 import at.srfg.iot.aas.basys.event.handler.util.ReferenceHelper;
+import at.srfg.iot.aas.dependency.SemanticLookup;
 import at.srfg.iot.aas.model.GlobalReference;
 import at.srfg.iot.aas.model.IdType;
 import at.srfg.iot.aas.model.Key;
@@ -29,6 +30,7 @@ import at.srfg.iot.aas.model.submodel.ElementContainer;
 import at.srfg.iot.aas.model.submodel.Submodel;
 import at.srfg.iot.aas.model.submodel.elements.SubmodelElement;
 import at.srfg.iot.aas.repository.IdentifiableRepository;
+import at.srfg.iot.eclass.model.ClassificationClass;
 
 @Component
 public class HasSemanticsHandler {
@@ -43,6 +45,9 @@ public class HasSemanticsHandler {
 	private IdentifiableRepository<ConceptDescription> conceptDescriptionRepo;
 	@Autowired
 	private IdentifiableRepository<Submodel> submodelRepo;
+	
+	@Autowired
+	private SemanticLookup eclass;
 	
 	@EventListener
 	public void onHasSemanticsGet(GetHasSemantics event) {
@@ -102,6 +107,7 @@ public class HasSemanticsHandler {
 				// when not found create it
 				ConceptDescription conceptDescription = desc.orElse(new ConceptDescription(theKey.asIdentifier()));
 				// 
+				Optional<ClassificationClass> classificationClass = eclass.getClass(theKey.getValue());
 				
 				conceptDescriptionRepo.save(conceptDescription);
 				// relate local element with concept descripton

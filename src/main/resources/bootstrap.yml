@@ -2,7 +2,7 @@ server:
   port: ${PORT:8085}
 spring:
   application:
-    name: assetregistry-service
+    name: asset-registry
   cloud:
     config:
       enabled: ${CONFIG_SERVER_ENABLED:true}
@@ -27,9 +27,9 @@ spring:
   datasource:
     name: assetdb
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${REGISTRY_HOST:localhost}:${REGISTRY_PORT:5432}/${REGISTRY_DB:assetdb}?ApplicationName=assetregistry-service
-    username: ${REGISTRY_USER:root}
-    password: ${REGISTRY_PASSWORD:changeme}
+    url: jdbc:postgresql://${REGISTRY_HOST:localhost}:${REGISTRY_PORT:5432}/${REGISTRY_DB:asset}?ApplicationName=assetregistry-service
+    username: ${REGISTRY_USER:postgres}
+    password: ${REGISTRY_PASSWORD:postgres}
     test-on-borrow: true
     test-while-idle: true
     remove-abandoned: true

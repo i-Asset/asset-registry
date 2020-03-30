@@ -11,7 +11,6 @@ import at.srfg.iot.aas.model.IdType;
 import at.srfg.iot.aas.model.Identifier;
 import at.srfg.iot.aas.model.Kind;
 import at.srfg.iot.aas.model.dictionary.ConceptDescription;
-import at.srfg.iot.aas.model.dictionary.ConceptDictionary;
 import at.srfg.iot.aas.model.submodel.Submodel;
 import at.srfg.iot.aas.model.submodel.elements.Property;
 import at.srfg.iot.aas.model.submodel.elements.SubmodelElementCollection;
