@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import at.srfg.iot.aas.basys.event.GetReferable;
 import at.srfg.iot.aas.basys.event.SetReferable;
-import at.srfg.iot.aas.model.Description;
+import at.srfg.iot.aas.common.referencing.Description;
 
 @Component
 public class ReferableHandler {

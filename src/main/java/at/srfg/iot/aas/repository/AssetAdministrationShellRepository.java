@@ -3,8 +3,8 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
-import at.srfg.iot.aas.model.AssetAdministrationShell;
-import at.srfg.iot.aas.model.Identifier;
+import at.srfg.iot.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.aas.basic.Identifier;
 
 public interface AssetAdministrationShellRepository extends CrudRepository<AssetAdministrationShell, Long> {
 

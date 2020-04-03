@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.repository.CrudRepository;
 
-import at.srfg.iot.aas.model.ReferableElement;
+import at.srfg.iot.aas.common.referencing.ReferableElement;
 @Primary
 public interface ReferableRepository<T extends ReferableElement> extends CrudRepository<T, Long> {
 	

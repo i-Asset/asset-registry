@@ -2,7 +2,7 @@ package at.srfg.iot.aas.basys.event;
 
 import java.util.Map;
 
-import at.srfg.iot.aas.model.Asset;
+import at.srfg.iot.aas.basic.Asset;
 
 /**
  * Event for mapping {@link Asset}

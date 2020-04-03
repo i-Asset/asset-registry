@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import at.srfg.iot.aas.model.AssetAdministrationShell;
-import at.srfg.iot.aas.model.Identifier;
-import at.srfg.iot.aas.model.submodel.Submodel;
+import at.srfg.iot.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.aas.basic.Identifier;
+import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.service.AssetService;
 import at.srfg.iot.aas.service.BoschRexRoth;
 import at.srfg.iot.aas.service.SubmodelService;

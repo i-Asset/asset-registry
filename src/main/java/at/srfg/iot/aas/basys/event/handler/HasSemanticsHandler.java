@@ -14,21 +14,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import at.srfg.iot.aas.api.HasSemantics;
+import at.srfg.iot.aas.basic.GlobalReference;
+import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.basys.event.GetHasSemantics;
 import at.srfg.iot.aas.basys.event.SetHasSemantics;
 import at.srfg.iot.aas.basys.event.handler.util.MappingHelper;
 import at.srfg.iot.aas.basys.event.handler.util.ReferenceHelper;
+import at.srfg.iot.aas.common.HasSemantics;
+import at.srfg.iot.aas.common.SubmodelElementContainer;
+import at.srfg.iot.aas.common.referencing.IdType;
+import at.srfg.iot.aas.common.referencing.Key;
+import at.srfg.iot.aas.common.referencing.KeyElementsEnum;
+import at.srfg.iot.aas.common.referencing.ReferableElement;
 import at.srfg.iot.aas.dependency.SemanticLookup;
-import at.srfg.iot.aas.model.GlobalReference;
-import at.srfg.iot.aas.model.IdType;
-import at.srfg.iot.aas.model.Key;
-import at.srfg.iot.aas.model.KeyElementsEnum;
-import at.srfg.iot.aas.model.ReferableElement;
-import at.srfg.iot.aas.model.dictionary.ConceptDescription;
-import at.srfg.iot.aas.model.submodel.ElementContainer;
-import at.srfg.iot.aas.model.submodel.Submodel;
-import at.srfg.iot.aas.model.submodel.elements.SubmodelElement;
+import at.srfg.iot.aas.dictionary.ConceptDescription;
+import at.srfg.iot.aas.modeling.SubmodelElement;
 import at.srfg.iot.aas.repository.IdentifiableRepository;
 import at.srfg.iot.eclass.model.ClassificationClass;
 
@@ -136,7 +136,7 @@ public class HasSemanticsHandler {
 			}
 		}
 	}
-	private ReferableElement resolvePath(ElementContainer container, List<Key>keys) {
+	private ReferableElement resolvePath(SubmodelElementContainer container, List<Key>keys) {
 		if ( keys == null ) {
 			throw new IllegalArgumentException("Key must be provided");
 		}
@@ -149,8 +149,8 @@ public class HasSemanticsHandler {
 					Optional<SubmodelElement> coll = container.getSubmodelElement(current.getValue());
 					if (coll.isPresent()) {
 						SubmodelElement collection = coll.get();
-						if ( collection instanceof ElementContainer ) {
-							return resolvePath((ElementContainer)collection, keys);
+						if ( collection instanceof SubmodelElementContainer ) {
+							return resolvePath((SubmodelElementContainer)collection, keys);
 							
 						}
 						else {

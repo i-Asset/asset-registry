@@ -2,7 +2,7 @@ package at.srfg.iot.aas.basys.event;
 
 import org.eclipse.basyx.submodel.metamodel.map.SubModel;
 
-import at.srfg.iot.aas.model.submodel.Submodel;
+import at.srfg.iot.aas.basic.Submodel;
 
 /**
  * Event for mapping {@link SubModel} with the asset registry

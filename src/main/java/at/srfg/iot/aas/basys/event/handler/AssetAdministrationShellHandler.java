@@ -21,15 +21,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import at.srfg.iot.aas.basic.Asset;
+import at.srfg.iot.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.aas.basic.Identifier;
+import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.basys.event.GetAssetAdministrationShellEvent;
 import at.srfg.iot.aas.basys.event.SetAssetAdministrationShellEvent;
 import at.srfg.iot.aas.basys.event.handler.util.MappingHelper;
 import at.srfg.iot.aas.basys.event.publisher.MappingEventPublisher;
-import at.srfg.iot.aas.model.Asset;
-import at.srfg.iot.aas.model.AssetAdministrationShell;
-import at.srfg.iot.aas.model.Identifier;
-import at.srfg.iot.aas.model.dictionary.ConceptDictionary;
-import at.srfg.iot.aas.model.submodel.Submodel;
+import at.srfg.iot.aas.dictionary.ConceptDictionary;
 import at.srfg.iot.aas.repository.IdentifiableRepository;
 
 @Component

@@ -6,11 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import at.srfg.iot.aas.api.HasKind;
 import at.srfg.iot.aas.basys.event.GetHasKind;
 import at.srfg.iot.aas.basys.event.SetHasKind;
 import at.srfg.iot.aas.basys.event.handler.util.MappingHelper;
-import at.srfg.iot.aas.model.Kind;
+import at.srfg.iot.aas.common.HasKind;
+import at.srfg.iot.aas.common.referencing.Kind;
 /**
  * Mapping Event handler processing the {@link HasKind} stereotype.
  * @author dglachs

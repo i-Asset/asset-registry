@@ -1,6 +1,6 @@
 package at.srfg.iot.aas.basys.event;
 
-import at.srfg.iot.aas.api.HasDataSpecification;
+import at.srfg.iot.aas.common.HasDataSpecification;
 /**
  * Event for setting {@link HasDataSpecification} 
  * 

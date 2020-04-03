@@ -17,16 +17,16 @@ import at.srfg.iot.aas.basys.event.GetSubmodelElementEvent;
 import at.srfg.iot.aas.basys.event.SetSubmodelElementEvent;
 import at.srfg.iot.aas.basys.event.handler.util.MappingHelper;
 import at.srfg.iot.aas.basys.event.publisher.MappingEventPublisher;
-import at.srfg.iot.aas.model.KeyElementsEnum;
-import at.srfg.iot.aas.model.submodel.elements.Blob;
-import at.srfg.iot.aas.model.submodel.elements.File;
-import at.srfg.iot.aas.model.submodel.elements.Operation;
-import at.srfg.iot.aas.model.submodel.elements.OperationVariable;
-import at.srfg.iot.aas.model.submodel.elements.Property;
-import at.srfg.iot.aas.model.submodel.elements.ReferenceElement;
-import at.srfg.iot.aas.model.submodel.elements.RelationshipElement;
-import at.srfg.iot.aas.model.submodel.elements.SubmodelElement;
-import at.srfg.iot.aas.model.submodel.elements.SubmodelElementCollection;
+import at.srfg.iot.aas.common.referencing.KeyElementsEnum;
+import at.srfg.iot.aas.modeling.SubmodelElement;
+import at.srfg.iot.aas.modeling.submodelelement.Blob;
+import at.srfg.iot.aas.modeling.submodelelement.File;
+import at.srfg.iot.aas.modeling.submodelelement.Operation;
+import at.srfg.iot.aas.modeling.submodelelement.OperationVariable;
+import at.srfg.iot.aas.modeling.submodelelement.Property;
+import at.srfg.iot.aas.modeling.submodelelement.ReferenceElement;
+import at.srfg.iot.aas.modeling.submodelelement.RelationshipElement;
+import at.srfg.iot.aas.modeling.submodelelement.SubmodelElementCollection;
 
 @Component
 public class SubmodelElementHandler {

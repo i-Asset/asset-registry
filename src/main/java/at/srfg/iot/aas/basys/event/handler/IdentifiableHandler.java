@@ -4,12 +4,12 @@ import org.eclipse.basyx.submodel.metamodel.map.qualifier.Identifiable;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import at.srfg.iot.aas.basic.AdministrativeInformation;
+import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basys.event.GetIdentifiable;
 import at.srfg.iot.aas.basys.event.SetIdentifiable;
 import at.srfg.iot.aas.basys.event.handler.util.IdTypeHelper;
 import at.srfg.iot.aas.basys.event.handler.util.MappingHelper;
-import at.srfg.iot.aas.model.AdministrativeInformation;
-import at.srfg.iot.aas.model.Identifier;
 
 @Component
 public class IdentifiableHandler {

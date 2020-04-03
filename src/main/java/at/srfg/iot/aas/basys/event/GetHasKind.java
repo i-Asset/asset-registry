@@ -1,6 +1,6 @@
 package at.srfg.iot.aas.basys.event;
 
-import at.srfg.iot.aas.api.HasKind;
+import at.srfg.iot.aas.common.HasKind;
 
 /**
  * Event for processing the HasKind stereotype

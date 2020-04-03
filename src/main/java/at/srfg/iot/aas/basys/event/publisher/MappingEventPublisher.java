@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
+import at.srfg.iot.aas.basic.Asset;
+import at.srfg.iot.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.basys.event.GetAssetAdministrationShellEvent;
 import at.srfg.iot.aas.basys.event.GetAssetEvent;
 import at.srfg.iot.aas.basys.event.GetConceptDescriptionEvent;
@@ -25,13 +28,10 @@ import at.srfg.iot.aas.basys.event.SetConceptDictionaryEvent;
 import at.srfg.iot.aas.basys.event.SetSubmodelElementEvent;
 import at.srfg.iot.aas.basys.event.SetSubmodelEvent;
 import at.srfg.iot.aas.basys.event.handler.util.MappingHelper;
-import at.srfg.iot.aas.model.Asset;
-import at.srfg.iot.aas.model.AssetAdministrationShell;
-import at.srfg.iot.aas.model.IdType;
-import at.srfg.iot.aas.model.dictionary.ConceptDescription;
-import at.srfg.iot.aas.model.dictionary.ConceptDictionary;
-import at.srfg.iot.aas.model.submodel.Submodel;
-import at.srfg.iot.aas.model.submodel.elements.SubmodelElement;
+import at.srfg.iot.aas.common.referencing.IdType;
+import at.srfg.iot.aas.dictionary.ConceptDescription;
+import at.srfg.iot.aas.dictionary.ConceptDictionary;
+import at.srfg.iot.aas.modeling.SubmodelElement;
 
 @Component
 public class MappingEventPublisher {

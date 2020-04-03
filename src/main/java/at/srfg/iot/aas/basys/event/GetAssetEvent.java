@@ -1,6 +1,6 @@
 package at.srfg.iot.aas.basys.event;
 
-import at.srfg.iot.aas.model.Asset;
+import at.srfg.iot.aas.basic.Asset;
 
 public class GetAssetEvent extends GetIdentifiableElementEvent<Asset, org.eclipse.basyx.aas.metamodel.map.parts.Asset>
 	implements GetReferable, GetIdentifiable, GetHasKind, GetHasDataSpecification {

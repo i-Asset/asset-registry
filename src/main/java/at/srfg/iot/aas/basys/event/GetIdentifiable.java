@@ -1,6 +1,6 @@
 package at.srfg.iot.aas.basys.event;
 
-import at.srfg.iot.aas.api.Identifiable;
+import at.srfg.iot.aas.common.Identifiable;
 
 /**
  * Event for processing the Identifiable stereotype

@@ -2,7 +2,7 @@ package at.srfg.iot.aas.basys.event;
 
 import java.util.Map;
 
-import at.srfg.iot.aas.model.IdentifiableElement;
+import at.srfg.iot.aas.common.referencing.IdentifiableElement;
 
 public abstract class SetIdentifiableElement<T extends IdentifiableElement> extends SetElementEvent<T> {
 

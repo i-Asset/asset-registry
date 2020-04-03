@@ -5,9 +5,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import at.srfg.iot.aas.model.Asset;
-import at.srfg.iot.aas.model.AssetAdministrationShell;
-import at.srfg.iot.aas.model.Identifier;
+import at.srfg.iot.aas.basic.Asset;
+import at.srfg.iot.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.repository.IdentifiableRepository;
 
 @Service

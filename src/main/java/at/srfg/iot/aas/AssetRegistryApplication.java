@@ -16,7 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 		ManagementWebSecurityAutoConfiguration.class
 		})
 // 
-@EntityScan("at.srfg.iot.aas.model")
+@EntityScan("at.srfg.iot.aas")
 @ComponentScan({
 	// feign clients
 	"at.srfg.iot.feign",

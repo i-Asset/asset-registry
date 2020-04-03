@@ -19,9 +19,9 @@ import org.eclipse.basyx.submodel.metamodel.map.qualifier.Identifiable;
 import org.eclipse.basyx.submodel.metamodel.map.qualifier.Referable;
 import org.eclipse.basyx.submodel.metamodel.map.qualifier.haskind.HasKind;
 
-import at.srfg.iot.aas.model.Identifier;
-import at.srfg.iot.aas.model.KeyElementsEnum;
-import at.srfg.iot.aas.model.Kind;
+import at.srfg.iot.aas.basic.Identifier;
+import at.srfg.iot.aas.common.referencing.KeyElementsEnum;
+import at.srfg.iot.aas.common.referencing.Kind;
 
 public abstract class MappingHelper {
 	// make the constants available

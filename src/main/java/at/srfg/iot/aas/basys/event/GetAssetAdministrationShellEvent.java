@@ -1,6 +1,6 @@
 package at.srfg.iot.aas.basys.event;
 
-import at.srfg.iot.aas.model.AssetAdministrationShell;
+import at.srfg.iot.aas.basic.AssetAdministrationShell;
 
 /**
  * Event for mapping {@link AssetAdministrationShell}

@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import at.srfg.iot.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.aas.basic.Identifier;
+import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.basys.event.handler.util.MappingHelper;
 import at.srfg.iot.aas.basys.event.publisher.MappingEventPublisher;
-import at.srfg.iot.aas.model.AssetAdministrationShell;
-import at.srfg.iot.aas.model.Identifier;
-import at.srfg.iot.aas.model.submodel.Submodel;
 import at.srfg.iot.aas.repository.AssetAdministrationShellRepository;
 import at.srfg.iot.aas.repository.IdentifiableRepository;
 

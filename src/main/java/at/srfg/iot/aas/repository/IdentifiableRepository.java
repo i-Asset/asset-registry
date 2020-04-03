@@ -1,8 +1,8 @@
 package at.srfg.iot.aas.repository;
 import java.util.Optional;
 
-import at.srfg.iot.aas.model.IdentifiableElement;
-import at.srfg.iot.aas.model.Identifier;
+import at.srfg.iot.aas.basic.Identifier;
+import at.srfg.iot.aas.common.referencing.IdentifiableElement;
 
 public interface IdentifiableRepository<T extends IdentifiableElement> extends ReferableRepository<T> {
 

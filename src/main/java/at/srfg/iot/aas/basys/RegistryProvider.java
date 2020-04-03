@@ -10,11 +10,11 @@ import org.eclipse.basyx.vab.modelprovider.api.IModelProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import at.srfg.iot.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.aas.basic.Identifier;
+import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.basys.event.handler.util.MappingHelper;
 import at.srfg.iot.aas.basys.event.publisher.MappingEventPublisher;
-import at.srfg.iot.aas.model.AssetAdministrationShell;
-import at.srfg.iot.aas.model.Identifier;
-import at.srfg.iot.aas.model.submodel.Submodel;
 import at.srfg.iot.aas.repository.AssetAdministrationShellRepository;
 import at.srfg.iot.aas.repository.IdentifiableRepository;
 
@@ -30,7 +30,7 @@ public class RegistryProvider implements IModelProvider {
 	@Override
 	public Object getModelPropertyValue(String path) throws Exception {
 		// 
-		at.srfg.iot.aas.model.Identifier id = new at.srfg.iot.aas.model.Identifier(path);
+		at.srfg.iot.aas.basic.Identifier id = new at.srfg.iot.aas.basic.Identifier(path);
 		Optional<AssetAdministrationShell> reg = aasRepo.findByIdentification(id);
 		if ( reg.isPresent()) {
 			AssetAdministrationShell theShell = reg.get();

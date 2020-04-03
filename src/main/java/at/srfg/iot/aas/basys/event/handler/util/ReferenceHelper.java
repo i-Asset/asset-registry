@@ -8,9 +8,9 @@ import org.eclipse.basyx.submodel.metamodel.api.reference.IKey;
 import org.eclipse.basyx.submodel.metamodel.api.reference.IReference;
 import org.eclipse.basyx.submodel.metamodel.api.reference.enums.KeyElements;
 
-import at.srfg.iot.aas.model.Key;
-import at.srfg.iot.aas.model.ReferableElement;
-import at.srfg.iot.aas.model.Reference;
+import at.srfg.iot.aas.common.referencing.Key;
+import at.srfg.iot.aas.common.referencing.ReferableElement;
+import at.srfg.iot.aas.common.referencing.Reference;
 
 public class ReferenceHelper {
 	

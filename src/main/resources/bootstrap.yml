@@ -1,8 +1,9 @@
 server:
   port: ${PORT:8085}
+
 spring:
   application:
-    name: asset-registry
+    name: registry-service
   cloud:
     config:
       enabled: ${CONFIG_SERVER_ENABLED:true}
@@ -10,8 +11,13 @@ spring:
       failFast: ${CONFIG_SERVER_FAILFAST:false}
     service-registry:
       auto-registration:
-        enabled: ${DISCOVERY_ENABLED:false}
+        enabled: ${DISCOVERY_ENABLED:true}
         fail-fast: ${DISCOVERY_FAILFAST:true}
+    discovery:
+      # by disabling the service discovery the application/service can be started in "standalone mode".
+      # service discovery is disabled by default and should be enabled (set to true) for the "cloud mode".
+      # it can be set via an environment variable or the config server
+      enabled: ${discovery.enabled:${DISCOVERY_ENABLED:true}}
   jpa:
     show-sql: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -27,9 +33,9 @@ spring:
   datasource:
     name: assetdb
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${REGISTRY_HOST:localhost}:${REGISTRY_PORT:5432}/${REGISTRY_DB:asset}?ApplicationName=assetregistry-service
-    username: ${REGISTRY_USER:postgres}
-    password: ${REGISTRY_PASSWORD:postgres}
+    url: jdbc:postgresql://${REGISTRY_HOST:localhost}:${REGISTRY_PORT:5432}/${REGISTRY_DB:assetdb}?ApplicationName=assetregistry-service
+    username: ${REGISTRY_USER:root}
+    password: ${REGISTRY_PASSWORD:changeme}
     test-on-borrow: true
     test-while-idle: true
     remove-abandoned: true
@@ -54,4 +60,4 @@ management:
 
 iAsset:
   corsEnabled: true
-  platformHost: ${ :http://localhost:8085}
+  platformHost: ${REGISTRY_SERVICE_URL:http://localhost:8084}

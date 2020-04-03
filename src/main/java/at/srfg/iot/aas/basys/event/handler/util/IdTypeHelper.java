@@ -2,7 +2,7 @@ package at.srfg.iot.aas.basys.event.handler.util;
 
 import org.eclipse.basyx.submodel.metamodel.api.identifier.IdentifierType;
 
-import at.srfg.iot.aas.model.IdType;
+import at.srfg.iot.aas.common.referencing.IdType;
 
 public class IdTypeHelper {
 	public static IdentifierType asIdentifierType(IdType idType) {

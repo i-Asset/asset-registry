@@ -7,7 +7,7 @@ import org.eclipse.basyx.aas.metamodel.map.parts.Asset;
 import org.eclipse.basyx.submodel.metamodel.map.SubModel;
 import org.eclipse.basyx.submodel.metamodel.map.parts.ConceptDescription;
 
-import at.srfg.iot.aas.model.IdentifiableElement;
+import at.srfg.iot.aas.common.referencing.IdentifiableElement;
 
 public abstract class GetIdentifiableElementEvent<T extends IdentifiableElement, M extends Map<String,Object>> extends GetElementEvent<T,M> {
 

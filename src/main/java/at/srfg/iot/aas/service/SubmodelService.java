@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import at.srfg.iot.aas.model.Identifier;
-import at.srfg.iot.aas.model.submodel.Submodel;
-import at.srfg.iot.aas.model.submodel.elements.SubmodelElement;
-import at.srfg.iot.aas.model.submodel.elements.SubmodelElementCollection;
+import at.srfg.iot.aas.basic.Identifier;
+import at.srfg.iot.aas.basic.Submodel;
+import at.srfg.iot.aas.modeling.SubmodelElement;
+import at.srfg.iot.aas.modeling.submodelelement.SubmodelElementCollection;
 import at.srfg.iot.aas.repository.IdentifiableRepository;
 import at.srfg.iot.aas.repository.SubmodelElementRepository;
 

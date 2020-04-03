@@ -1,17 +1,27 @@
-package at.srfg.iot.assetregistry;
+package at.srfg.iot.aas;
+
+import static org.junit.Assert.assertTrue;
 
 import java.util.UUID;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import at.srfg.iot.aas.model.IdPart;
-import at.srfg.iot.aas.model.IdType;
-import junit.framework.TestCase;
+import at.srfg.iot.aas.common.referencing.IdPart;
+import at.srfg.iot.aas.common.referencing.IdType;
 
-class AssetRegistryApplicationTests extends TestCase {
-
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class AssetRegistryApplicationTests {
+	
 	@Test
-	void testIdTypeDetection() {
+	public void contextLoads() {
+	}
+	
+	@Test
+	public void testIdTypeDetection() {
 		
 		IdType uri = IdType.getType("http://www.salzburgresearch.at/asset#registry");
 		IdType eclassIrdi = IdType.getType("0173-1#01-AFW236#002");

@@ -1,6 +1,6 @@
 package at.srfg.iot.aas.basys.event;
 
-import at.srfg.iot.aas.api.Referable;
+import at.srfg.iot.aas.common.Referable;
 
 /**
  * Event for reading the data of

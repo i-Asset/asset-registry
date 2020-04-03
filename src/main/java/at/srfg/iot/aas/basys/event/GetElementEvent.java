@@ -11,9 +11,9 @@ import org.eclipse.basyx.submodel.metamodel.map.submodelelement.operation.Operat
 import org.eclipse.basyx.submodel.metamodel.map.submodelelement.operation.OperationVariable;
 import org.eclipse.basyx.submodel.metamodel.map.submodelelement.relationship.RelationshipElement;
 
-import at.srfg.iot.aas.model.KeyElementsEnum;
-import at.srfg.iot.aas.model.submodel.elements.Blob;
-import at.srfg.iot.aas.model.submodel.elements.File;
+import at.srfg.iot.aas.common.referencing.KeyElementsEnum;
+import at.srfg.iot.aas.modeling.submodelelement.Blob;
+import at.srfg.iot.aas.modeling.submodelelement.File;
 
 public abstract class GetElementEvent<T, M extends Map<String,Object>>  implements GetElement {
 	
@@ -49,7 +49,7 @@ public abstract class GetElementEvent<T, M extends Map<String,Object>>  implemen
 	protected static SubmodelElementCollection newSubmodelElementCollection() {
 		return new SubmodelElementCollection();
 	}
-	protected static SubmodelElement newSubmodelElement(at.srfg.iot.aas.model.submodel.elements.SubmodelElement entity) {
+	protected static SubmodelElement newSubmodelElement(at.srfg.iot.aas.modeling.SubmodelElement entity) {
 		if ( entity instanceof File) {
 			return new org.eclipse.basyx.submodel.metamodel.map.submodelelement.dataelement.File(((File) entity).getValue(), ((File) entity).getMimeType());
 		}
