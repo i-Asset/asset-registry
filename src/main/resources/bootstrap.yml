@@ -57,7 +57,7 @@ management:
       exposure:
         include: '*'
 
-
+# take care of the port - must be the same as above
 iAsset:
   corsEnabled: true
-  platformHost: ${REGISTRY_SERVICE_URL:http://localhost:8084}
+  platformHost: ${REGISTRY_SERVICE_URL:http://localhost:8085}
