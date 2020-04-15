@@ -45,10 +45,10 @@ public class HasSemanticsHandler {
 	private IdentifiableRepository<ConceptDescription> conceptDescriptionRepo;
 	@Autowired
 	private IdentifiableRepository<Submodel> submodelRepo;
-	
-	@Autowired
-	private SemanticLookup eclass;
-	
+//	
+//	@Autowired
+//	private SemanticLookup eclass;
+//	
 	@EventListener
 	public void onHasSemanticsGet(GetHasSemantics event) {
 		logger.info("Get HasSemantics Handling for {} ", event.getLocal());
@@ -107,8 +107,8 @@ public class HasSemanticsHandler {
 				// when not found create it
 				ConceptDescription conceptDescription = desc.orElse(new ConceptDescription(theKey.asIdentifier()));
 				// 
-				Optional<ClassificationClass> classificationClass = eclass.getClass(theKey.getValue());
-				
+//				Optional<ClassificationClass> classificationClass = eclass.getClass(theKey.getValue());
+//				
 				conceptDescriptionRepo.save(conceptDescription);
 				// relate local element with concept descripton
 				local.setSemanticElement(conceptDescription);

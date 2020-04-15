@@ -2,22 +2,57 @@ package at.srfg.iot.aas;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringRunner;import com.sun.jersey.api.client.async.ITypeListener;
 
 import at.srfg.iot.aas.common.referencing.IdPart;
 import at.srfg.iot.aas.common.referencing.IdType;
+import at.srfg.iot.aas.dependency.SemanticLookup;
+import at.srfg.iot.eclass.model.ClassificationClass;
+import at.srfg.iot.eclass.model.PropertyDefinition;
+import feign.FeignException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class AssetRegistryApplicationTests {
+	@Autowired
+	private SemanticLookup rexRoth;
 	
 	@Test
 	public void contextLoads() {
+	}
+	@Test
+	public void testFeign() {
+		// 
+		try {
+			Optional<ClassificationClass> cc = rexRoth.getClass("0173-1#01-AFW236#002");
+			assertTrue(cc.isPresent());
+			assertTrue(cc.get().getIdentifier().contentEquals("AFW236"));
+			List<PropertyDefinition> values = rexRoth.getPropertiesForClass("0173-1#01-AFY428#003");//, "0173-1#02-AAP794#001");
+			assertTrue(values.size()>0);
+			
+			
+		} catch (FeignException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	@Test
+	public void testNamspaceDetection() {
+		String full = "urn:indexing:"+ClassificationClass.class.getSimpleName()+"#localName";
+		IdType uri = IdType.getType(full);
+		assertTrue(uri.equals(IdType.URI));
+		String nameSpace = IdPart.Namespace.getFrom(full);
+		String localName = IdPart.LocalName.getFrom(full);
+		assertTrue(nameSpace.equals("urn:indexing:"+ClassificationClass.class.getSimpleName()+"#"));
+		assertTrue(localName.equals("localName"));
 	}
 	
 	@Test

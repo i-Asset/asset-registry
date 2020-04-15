@@ -1,10 +1,11 @@
 package at.srfg.iot.aas.web.controller;
 
+import java.util.Optional;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,8 @@ import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.service.AssetService;
 import at.srfg.iot.aas.service.BoschRexRoth;
 import at.srfg.iot.aas.service.SubmodelService;
+import at.srfg.iot.eclass.model.ClassificationClass;
+import io.swagger.annotations.Api;
 
 @RestController
 @Api(value = "Asset Controller",
@@ -55,11 +58,18 @@ public class AssetController {
 	@GetMapping("/aas/submodel")
 	public ResponseEntity<?> getSubmodel(@RequestParam String id) {
 		return ResponseEntity.of(submodelService.getSubmodel(new Identifier(id)));
-		
 	}
+	
 	@Consumes(MediaType.APPLICATION_JSON)
 	@PostMapping("/aas/submodel")
 	public ResponseEntity<?> postSubmodel(@RequestBody Submodel submodel) {
 		return null;
+	}
+	
+	@Produces(MediaType.APPLICATION_JSON)
+	@GetMapping("/cc")
+	public ResponseEntity<?> findCC(@RequestParam String id) {
+		Optional<ClassificationClass> cc = rexRoth.getClassType(id);
+		return ResponseEntity.of(cc);
 	}
 }

@@ -4,8 +4,8 @@ import java.util.Map;
 
 import org.eclipse.basyx.aas.metamodel.map.AssetAdministrationShell;
 import org.eclipse.basyx.aas.metamodel.map.parts.Asset;
-import org.eclipse.basyx.submodel.metamodel.map.SubModel;
 import org.eclipse.basyx.submodel.metamodel.map.parts.ConceptDescription;
+import org.eclipse.basyx.submodel.metamodel.map.SubModel;
 
 import at.srfg.iot.aas.common.referencing.IdentifiableElement;
 

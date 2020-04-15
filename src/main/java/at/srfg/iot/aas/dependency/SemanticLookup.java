@@ -2,9 +2,8 @@ package at.srfg.iot.aas.dependency;
 
 import org.springframework.cloud.openfeign.FeignClient;
 
-import at.srfg.iot.eclass.api.EClassService;
+import at.srfg.iot.eclass.api.SemanticLookupService;
 
-@FeignClient(name = "eclass-service")
-public interface SemanticLookup extends EClassService {
-
+@FeignClient(name = "semantic-lookup-service")
+public interface SemanticLookup extends SemanticLookupService {
 }

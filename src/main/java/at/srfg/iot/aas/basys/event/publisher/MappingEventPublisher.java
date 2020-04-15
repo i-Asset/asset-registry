@@ -4,8 +4,6 @@ import java.util.Map;
 
 import org.eclipse.basyx.aas.metamodel.map.descriptor.AASDescriptor;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
-import org.eclipse.basyx.submodel.metamodel.api.identifier.IIdentifier;
-import org.eclipse.basyx.submodel.metamodel.api.identifier.IdentifierType;
 import org.eclipse.basyx.submodel.metamodel.map.SubModel;
 import org.eclipse.basyx.submodel.metamodel.map.identifier.Identifier;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +25,6 @@ import at.srfg.iot.aas.basys.event.SetConceptDescriptionEvent;
 import at.srfg.iot.aas.basys.event.SetConceptDictionaryEvent;
 import at.srfg.iot.aas.basys.event.SetSubmodelElementEvent;
 import at.srfg.iot.aas.basys.event.SetSubmodelEvent;
-import at.srfg.iot.aas.basys.event.handler.util.MappingHelper;
-import at.srfg.iot.aas.common.referencing.IdType;
 import at.srfg.iot.aas.dictionary.ConceptDescription;
 import at.srfg.iot.aas.dictionary.ConceptDictionary;
 import at.srfg.iot.aas.modeling.SubmodelElement;

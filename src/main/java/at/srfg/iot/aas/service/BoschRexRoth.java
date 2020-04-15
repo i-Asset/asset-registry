@@ -11,12 +11,14 @@ import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.common.referencing.IdType;
 import at.srfg.iot.aas.common.referencing.Kind;
+import at.srfg.iot.aas.dependency.SemanticLookup;
 import at.srfg.iot.aas.dictionary.ConceptDescription;
 import at.srfg.iot.aas.modeling.submodelelement.Property;
 import at.srfg.iot.aas.modeling.submodelelement.SubmodelElementCollection;
 import at.srfg.iot.aas.repository.AssetAdministrationShellRepository;
 import at.srfg.iot.aas.repository.IdentifiableRepository;
 import at.srfg.iot.aas.repository.SubmodelRepository;
+import at.srfg.iot.eclass.model.ClassificationClass;
 
 @Service
 public class BoschRexRoth {
@@ -31,8 +33,8 @@ public class BoschRexRoth {
 	@Autowired
 	private SubmodelService subModelService;
 	
-
-	
+	@Autowired
+	private SemanticLookup eclass;
 	
 	
 	
@@ -130,6 +132,17 @@ public class BoschRexRoth {
 		
 		return Optional.of(shell);
 		
+	}
+
+
+
+
+
+
+	public Optional<ClassificationClass> getClassType(String id) {
+//		return Optional.empty();
+
+		return eclass.getClass(id);
 	}
 
 
