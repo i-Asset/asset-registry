@@ -11,6 +11,21 @@ node('iasset-jenkins-slave') {
             git(url: 'https://github.com/i-Asset/asset-registry.git', branch: env.BRANCH_NAME)
         }
 
+        stage('Build Dependencies') {
+            sh 'rm -rf common'
+            sh 'git clone https://github.com/i-Asset/common.git'
+            dir('common') {
+                sh 'git checkout ' + env.BRANCH_NAME
+                sh 'mvn clean install'
+            }
+        }
+
+        sh 'rm -rf iAsset-Basyx'
+        sh 'git clone https://github.com/i-Asset/iAsset-Basyx.git'
+        dir('iAsset-Basyx/sdks/java/basys.sdk') {
+            sh 'mvn clean install'
+        }
+
         stage('Build Java') {
             sh 'mvn clean install -DskipTests'
         }
