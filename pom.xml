@@ -20,7 +20,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<docker.plugin.version>1.2.0</docker.plugin.version>
-		<docker.image.prefix>iasset</docker.image.prefix>
+		<docker.image.prefix>iassetplatform</docker.image.prefix>
 		<docker.image.tag>${project.version}</docker.image.tag>
 		<ch.qos.logback.version>1.2.3</ch.qos.logback.version>
 		<springfox.version>2.9.2</springfox.version>
