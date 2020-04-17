@@ -18,12 +18,12 @@ node('iasset-jenkins-slave') {
                 sh 'git checkout ' + env.BRANCH_NAME
                 sh 'mvn clean install'
             }
-        }
 
-        sh 'rm -rf iAsset-Basyx'
-        sh 'git clone https://github.com/i-Asset/iAsset-Basyx.git'
-        dir('iAsset-Basyx/sdks/java/basys.sdk') {
-            sh 'mvn clean install'
+            sh 'rm -rf iAsset-Basyx'
+            sh 'git clone https://github.com/i-Asset/iAsset-Basyx.git'
+            dir('iAsset-Basyx/sdks/java/basys.sdk') {
+                sh 'mvn clean install'
+            }
         }
 
         stage('Build Java') {
