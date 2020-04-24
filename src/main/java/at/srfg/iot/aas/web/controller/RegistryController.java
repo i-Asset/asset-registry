@@ -1,6 +1,7 @@
 package at.srfg.iot.aas.web.controller;
 
 import at.srfg.iot.aas.entity.AssetType;
+import at.srfg.iot.aas.entity.AssetInstance;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -68,4 +69,47 @@ public class RegistryController implements RegistryAPI {
         return ResponseEntity.notFound().build();
     }
 
+
+
+
+    //--------------------------------------------------------------------------------------
+    // getRegisteredAssetInstances
+    //--------------------------------------------------------------------------------------
+    public ResponseEntity<?> getRegisteredAssetInstances(
+            @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
+            @ApiParam(name = "Authorization", value = "OpenID Connect token containing identity of requester", required = true)
+            @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
+    {
+        // TODO
+        logger.info("not yet implemented");
+        return ResponseEntity.notFound().build();
+    }
+
+    //--------------------------------------------------------------------------------------
+    // registerAssetInstance
+    //--------------------------------------------------------------------------------------
+    public ResponseEntity<?> registerAssetInstance(
+            @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
+            @ApiParam(value = "AssetInstance to be added", required = true) @RequestBody AssetInstance instance,
+            @ApiParam(name = "Authorization", value = "OpenID Connect token containing identity of requester", required = true)
+            @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
+    {
+        // TODO
+        logger.info("not yet implemented");
+        return ResponseEntity.notFound().build();
+    }
+
+    //--------------------------------------------------------------------------------------
+    // unregisterAssetInstance
+    //--------------------------------------------------------------------------------------
+    public ResponseEntity<?> unregisterAssetInstance(
+            @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
+            @ApiParam(value = "InstanceID to be removed", required = true) @PathVariable Long instanceID,
+            @ApiParam(name = "Authorization", value = "OpenID Connect token containing identity of requester", required = true)
+            @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
+    {
+        // TODO
+        logger.info("not yet implemented");
+        return ResponseEntity.notFound().build();
+    }
 }
