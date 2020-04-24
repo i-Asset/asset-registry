@@ -25,9 +25,9 @@ public class SwaggerConfig {
 	private String platformHost;
 
 	public static final ApiInfo DEFAULT_API_INFO = new ApiInfoBuilder()
-			.title("Assert Registry Service API")
+			.title("Asset Registry Service API")
 			.description(
-					"API documentation for Assert Registry Service's APIs.")
+					"API documentation for Asset Registry Service's APIs.")
 			.version("V1.0.0")
 			.build();
 
