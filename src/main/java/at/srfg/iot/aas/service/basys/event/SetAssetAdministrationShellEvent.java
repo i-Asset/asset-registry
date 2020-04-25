@@ -1,0 +1,19 @@
+package at.srfg.iot.aas.service.basys.event;
+
+import java.util.Map;
+
+import at.srfg.iot.aas.basic.AssetAdministrationShell;
+
+/**
+ * Event for mapping {@link AssetAdministrationShell}
+ * @author dglachs
+ *
+ */
+public class SetAssetAdministrationShellEvent extends SetIdentifiableElement<AssetAdministrationShell> 
+	
+	implements SetReferable, SetHasDataSpecification, SetIdentifiable {
+
+	public SetAssetAdministrationShellEvent(Map<String, Object> map, AssetAdministrationShell referable) {
+		super(map, referable);
+	}
+}
