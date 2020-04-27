@@ -48,7 +48,6 @@ public class RegistryController implements RegistryAPI {
     //--------------------------------------------------------------------------------------
     public ResponseEntity<?> getRegisteredAssetTypes(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
-            @ApiParam(name = "Authorization", value = "OpenID Connect token containing identity of requester", required = true)
             @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
     {
         // check if request is authorized
@@ -72,7 +71,6 @@ public class RegistryController implements RegistryAPI {
     public ResponseEntity<?> registerAssetType(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
             @ApiParam(value = "AssetType to be added", required = true) @RequestBody AssetType type,
-            @ApiParam(name = "Authorization", value = "OpenID Connect token containing identity of requester", required = true)
             @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
     {
         // check if request is authorized
@@ -93,7 +91,6 @@ public class RegistryController implements RegistryAPI {
     public ResponseEntity<?> unregisterAssetType(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
             @ApiParam(value = "TypeID to be removed", required = true) @PathVariable Long typeID,
-            @ApiParam(name = "Authorization", value = "OpenID Connect token containing identity of requester", required = true)
             @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
     {
         // check if request is authorized
@@ -119,7 +116,6 @@ public class RegistryController implements RegistryAPI {
     //--------------------------------------------------------------------------------------
     public ResponseEntity<?> getRegisteredAssetInstances(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
-            @ApiParam(name = "Authorization", value = "OpenID Connect token containing identity of requester", required = true)
             @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
     {
         // check if request is authorized
@@ -143,7 +139,6 @@ public class RegistryController implements RegistryAPI {
     public ResponseEntity<?> registerAssetInstance(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
             @ApiParam(value = "AssetInstance to be added", required = true) @RequestBody AssetInstance instance,
-            @ApiParam(name = "Authorization", value = "OpenID Connect token containing identity of requester", required = true)
             @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
     {
         // check if request is authorized
@@ -164,7 +159,6 @@ public class RegistryController implements RegistryAPI {
     public ResponseEntity<?> unregisterAssetInstance(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
             @ApiParam(value = "InstanceID to be removed", required = true) @PathVariable Long instanceID,
-            @ApiParam(name = "Authorization", value = "OpenID Connect token containing identity of requester", required = true)
             @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
     {
         // check if request is authorized
