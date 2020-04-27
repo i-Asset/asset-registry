@@ -5,11 +5,14 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 
 @Entity
 @ApiModel(value = "AssetInstance")
-public class AssetInstance {
+public class AssetInstance implements Serializable {
+
+    private static final long serialVersionUID = 2L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
