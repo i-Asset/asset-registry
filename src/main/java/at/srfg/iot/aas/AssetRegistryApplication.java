@@ -9,6 +9,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 import at.srfg.iot.aas.dependency.SemanticLookup;
+import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication(exclude = { 
@@ -21,6 +22,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //	// asset-registry components
 //	"at.srfg.iot.aas"})
 @EnableDiscoveryClient
+@RestController
 @EnableSwagger2
 @EnableFeignClients(clients = SemanticLookup.class)
 public class AssetRegistryApplication {
