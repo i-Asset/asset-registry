@@ -49,7 +49,7 @@ public class RegistryController implements RegistryAPI {
     //--------------------------------------------------------------------------------------
     public ResponseEntity<?> getRegisteredAssetTypes(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
-            @RequestHeader(value = "Authorization",required = false) String bearer) throws IOException, AuthenticationException
+            @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
     {
         // check if request is authorized
         //String companyID = identityResolver.resolveCompanyId(bearer);
@@ -92,7 +92,7 @@ public class RegistryController implements RegistryAPI {
     public ResponseEntity<?> unregisterAssetType(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
             @ApiParam(value = "TypeID to be removed", required = true) @PathVariable Long typeID,
-            @RequestHeader(value = "Authorization", required = false) String bearer) throws IOException, AuthenticationException
+            @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
     {
         // check if request is authorized
         //String companyID = identityResolver.resolveCompanyId(bearer);
@@ -117,7 +117,7 @@ public class RegistryController implements RegistryAPI {
     //--------------------------------------------------------------------------------------
     public ResponseEntity<?> getRegisteredAssetInstances(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
-            @RequestHeader(value = "Authorization", required = false) String bearer) throws IOException, AuthenticationException
+            @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
     {
         // check if request is authorized
         //String companyID = identityResolver.resolveCompanyId(bearer);
@@ -140,7 +140,7 @@ public class RegistryController implements RegistryAPI {
     public ResponseEntity<?> registerAssetInstance(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
             @ApiParam(value = "AssetInstance to be added", required = true) @RequestBody AssetInstance instance,
-            @RequestHeader(value = "Authorization", required = false) String bearer) throws IOException, AuthenticationException
+            @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
     {
         // check if request is authorized
         //String companyID = identityResolver.resolveCompanyId(bearer);
@@ -160,7 +160,7 @@ public class RegistryController implements RegistryAPI {
     public ResponseEntity<?> unregisterAssetInstance(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
             @ApiParam(value = "InstanceID to be removed", required = true) @PathVariable Long instanceID,
-            @RequestHeader(value = "Authorization", required = false) String bearer) throws IOException, AuthenticationException
+            @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
     {
         // check if request is authorized
         //String companyID = identityResolver.resolveCompanyId(bearer);

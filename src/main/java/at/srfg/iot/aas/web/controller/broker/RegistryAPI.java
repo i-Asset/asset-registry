@@ -36,7 +36,7 @@ public interface RegistryAPI {
     @RequestMapping(value = "/{registryID}/types", produces = {"application/json"}, method = RequestMethod.GET)
     ResponseEntity<?> getRegisteredAssetTypes(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
-            @RequestHeader(value = "Authorization", required = false) String bearer)
+            @RequestHeader(value = "Authorization") String bearer)
             throws IOException, AuthenticationException;
 
 
@@ -90,7 +90,7 @@ public interface RegistryAPI {
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
             @ApiParam(value = "TypeID to be removed", required = true)
             @PathVariable Long typeID,
-            @RequestHeader(value = "Authorization", required = false) String bearer)
+            @RequestHeader(value = "Authorization") String bearer)
             throws IOException;
 
 
@@ -113,7 +113,7 @@ public interface RegistryAPI {
     @RequestMapping(value = "/{registryID}/instances", produces = {"application/json"}, method = RequestMethod.GET)
     ResponseEntity<?> getRegisteredAssetInstances(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
-            @RequestHeader(value = "Authorization", required = false) String bearer)
+            @RequestHeader(value = "Authorization") String bearer)
             throws IOException, AuthenticationException;
 
 
@@ -141,7 +141,7 @@ public interface RegistryAPI {
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
             @ApiParam(value = "AssetInstance to be added", required = true)
             @RequestBody AssetInstance instance,
-            @RequestHeader(value = "Authorization", required = false) String bearer)
+            @RequestHeader(value = "Authorization") String bearer)
             throws IOException, AuthenticationException;
 
 
@@ -168,6 +168,6 @@ public interface RegistryAPI {
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
             @ApiParam(value = "InstanceID to be removed", required = true)
             @PathVariable Long instanceID,
-            @RequestHeader(value = "Authorization", required = false) String bearer)
+            @RequestHeader(value = "Authorization") String bearer)
             throws IOException, AuthenticationException;
 }
