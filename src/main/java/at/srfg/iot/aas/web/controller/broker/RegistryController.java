@@ -71,7 +71,8 @@ public class RegistryController implements RegistryAPI {
     //--------------------------------------------------------------------------------------
     public ResponseEntity<?> registerAssetType(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
-            @ApiParam(value = "AssetType to be added", required = true) @RequestBody AssetType type) throws IOException
+            @ApiParam(value = "AssetType to be added", required = true) @RequestBody AssetType type,
+            @RequestHeader(value = "Authorization") String bearer) throws IOException
     {
         // check if request is authorized
         //String companyID = identityResolver.resolveCompanyId(bearer);
