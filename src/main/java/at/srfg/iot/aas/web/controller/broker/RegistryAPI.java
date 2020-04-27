@@ -33,7 +33,7 @@ public interface RegistryAPI {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "RegistryID not found") })
-    @GetMapping(value = "/{registryID}/types")
+    @RequestMapping(value = "/{registryID}/types", produces = {"application/json"}, method = RequestMethod.GET)
     ResponseEntity<?> getRegisteredAssetTypes(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
             @RequestHeader(value = "Authorization") String bearer)
@@ -59,7 +59,7 @@ public interface RegistryAPI {
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "RegistryID not found"),
             @ApiResponse(code = 409, message = "AssetType already exists") })
-    @PostMapping(value = "/{registryID}/type")
+    @RequestMapping(value = "/{registryID}/type", produces = {"application/json"}, method = RequestMethod.POST)
     ResponseEntity<?> registerAssetType(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
             @ApiParam(value = "AssetType to be added", required = true) @RequestBody AssetType type,
