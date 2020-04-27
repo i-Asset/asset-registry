@@ -35,6 +35,8 @@ public class SwaggerConfig {
 	public Docket api() {
 		platformHost = platformHost.replace("https://", "");
 		platformHost = platformHost.replace("http://","");
+		platformHost = platformHost.replace("/assetregistry","");
+		platformHost = platformHost.replace("/registry-service","");
 
 		return new Docket(DocumentationType.SWAGGER_2)
 				.host(platformHost)

@@ -63,7 +63,7 @@ public interface RegistryAPI {
     ResponseEntity<?> registerAssetType(
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
             @ApiParam(value = "AssetType to be added", required = true) @RequestBody AssetType type,
-            @RequestHeader(value = "Authorization", required = false) String bearer)
+            @RequestHeader(value = "Authorization") String bearer)
             throws IOException;
 
 
