@@ -32,7 +32,7 @@ public class MvcConfig implements WebMvcConfigurer {
 		if (corsEnabled.equals("true")) {
 			logger.info("Enabling CORS");
 			registry.addMapping("/**").allowedOrigins("*")
-					.allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH","OPTIONS");
+					.allowedHeaders("*").exposedHeaders("Authorization").allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH","OPTIONS");
 		}
 	}
 }
