@@ -91,7 +91,7 @@ public interface RegistryAPI {
             @ApiParam(value = "TypeID to be removed", required = true)
             @PathVariable Long typeID,
             @RequestHeader(value = "Authorization") String bearer)
-            throws IOException, AuthenticationException;
+            throws IOException;
 
 
     /**
