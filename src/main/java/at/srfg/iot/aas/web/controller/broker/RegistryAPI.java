@@ -149,7 +149,7 @@ public interface RegistryAPI {
      * See API documentation
      *
      * @param registryID Identifier of requested registry.
-     * @param InstanceID  ID of AssetInstance to be removed
+     * @param instanceID  ID of AssetInstance to be removed
      * @param bearer    OpenID Connect token storing requesting identity
      * @return See API documentation
      * @throws AuthenticationException Error while communication with the Identity Service

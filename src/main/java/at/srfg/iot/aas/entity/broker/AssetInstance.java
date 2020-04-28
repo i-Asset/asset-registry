@@ -43,6 +43,9 @@ public class AssetInstance implements Serializable {
     @ApiModelProperty(value = "ownerProperty")
     private String ownerProperty;
 
+    @ApiModelProperty(value = "assetImages")
+    private BinaryObject[] assetImages;
+
 
     public Long getId() {
         return id;
@@ -105,5 +108,12 @@ public class AssetInstance implements Serializable {
     }
     public void setOwnerProperty(String owner) {
         this.ownerProperty = owner;
+    }
+
+    public BinaryObject[] getAssetImages() {
+        return assetImages;
+    }
+    public void setAssetImages(BinaryObject[] images) {
+        this.assetImages = images;
     }
 }
