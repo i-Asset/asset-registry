@@ -19,12 +19,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.basys.RegistryProvider;
 import at.srfg.iot.aas.common.referencing.IdPart;
 import at.srfg.iot.aas.common.referencing.IdType;
 import at.srfg.iot.aas.dependency.SemanticLookup;
-import at.srfg.iot.aas.repository.AssetAdministrationShellRepository;
-import at.srfg.iot.aas.repository.IdentifiableRepository;
+import at.srfg.iot.aas.repository.basys.AssetAdministrationShellRepository;
+import at.srfg.iot.aas.repository.basys.IdentifiableRepository;
+import at.srfg.iot.aas.service.basys.RegistryProvider;
 import at.srfg.iot.eclass.model.ClassificationClass;
 import at.srfg.iot.eclass.model.PropertyDefinition;
 

@@ -6,12 +6,10 @@ import org.eclipse.basyx.vab.coder.json.metaprotocol.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.HandlerMapping;
 
-import at.srfg.iot.aas.basys.RegistryProvider;
+import at.srfg.iot.aas.service.basys.RegistryProvider;
 
 @RestController
 @RequestMapping("/basyx")
