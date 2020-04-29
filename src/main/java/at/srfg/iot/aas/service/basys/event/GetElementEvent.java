@@ -68,8 +68,8 @@ public abstract class GetElementEvent<T, M extends Map<String,Object>>  implemen
 //			return new Event();
 		case Operation:
 			return new Operation();
-		case OperationVariable:
-			return new OperationVariable();
+//		case OperationVariable:
+//			return new OperationVariable();
 		case ReferenceElement:
 			return new ReferenceElement();
 		case RelationshipElement:

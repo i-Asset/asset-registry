@@ -2,6 +2,7 @@ package at.srfg.iot.aas.service.basys.event.handler;
 
 import java.util.Optional;
 
+import org.eclipse.basyx.submodel.metamodel.map.qualifier.LangString;
 import org.eclipse.basyx.submodel.metamodel.map.qualifier.LangStrings;
 import org.eclipse.basyx.submodel.metamodel.map.qualifier.Referable;
 import org.springframework.context.event.EventListener;
@@ -44,7 +45,8 @@ public class ReferableHandler {
 		Optional<Description> d = readEvent.getLocal().getFirstDescription();
 		if ( d.isPresent()) {
 			Description desc = d.get();
-			ls.add(desc.getLanguage(), desc.getDescription());
+			LangString s = new LangString(desc.getLanguage(), desc.getDescription());
+			ls.add(s);
 		}
 		facade.setDescription(ls);
 		

@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.basyx.aas.metamodel.map.descriptor.AASDescriptor;
+import org.eclipse.basyx.vab.exception.provider.ProviderException;
 import org.eclipse.basyx.vab.modelprovider.api.IModelProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class AssetProvider implements IModelProvider {
 	private BasysService basys;
 
 	@Override
-	public Object getModelPropertyValue(String path) throws Exception {
+	public Object getModelPropertyValue(String path) throws ProviderException {
 		Optional<AssetAdministrationShell> aas = aasRepo.findByIdentification(new Identifier(path));
 		if ( aas.isPresent()) {
 			return basys.processAssetAdministrationShell(aas.get());
@@ -39,7 +40,7 @@ public class AssetProvider implements IModelProvider {
 		return null;
 	}
 	@Override
-	public void setModelPropertyValue(String path, Object newValue) throws Exception {
+	public void setModelPropertyValue(String path, Object newValue) throws ProviderException {
 		// 
 		Optional<AssetAdministrationShell> aas = aasRepo.findByIdentification(new Identifier(path));
 		// TODO Auto-generated method stub
@@ -47,7 +48,7 @@ public class AssetProvider implements IModelProvider {
 	}
 
 	@Override
-	public void createValue(String path, Object newEntity) throws Exception {
+	public void createValue(String path, Object newEntity) throws ProviderException {
 		// check for the basyx map
 		if (newEntity instanceof Map<?,?>) {
 			// check the identifiable ...
@@ -74,7 +75,7 @@ public class AssetProvider implements IModelProvider {
 	}
 
 	@Override
-	public void deleteValue(String path) throws Exception {
+	public void deleteValue(String path) throws ProviderException {
 		Optional<AssetAdministrationShell> reg = aasRepo.findByIdentification(new Identifier(path));
 		if ( reg.isPresent() ) {
 			aasRepo.delete(reg.get());
@@ -84,14 +85,14 @@ public class AssetProvider implements IModelProvider {
 	}
 
 	@Override
-	public void deleteValue(String path, Object obj) throws Exception {
-		throw new Exception("wrong usage");
+	public void deleteValue(String path, Object obj) throws ProviderException {
+		throw new ProviderException("wrong usage");
 
 	}
 
 	@Override
-	public Object invokeOperation(String path, Object... parameter) throws Exception {
-		throw new Exception("wrong usage");
+	public Object invokeOperation(String path, Object... parameter) throws ProviderException {
+		throw new ProviderException("wrong usage");
 	}
 
 }

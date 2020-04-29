@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.eclipse.basyx.aas.metamodel.map.descriptor.AASDescriptor;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
+import org.eclipse.basyx.vab.exception.provider.ProviderException;
 import org.eclipse.basyx.vab.modelprovider.api.IModelProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,10 @@ import org.springframework.stereotype.Service;
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
-import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
 import at.srfg.iot.aas.repository.basys.AssetAdministrationShellRepository;
 import at.srfg.iot.aas.repository.basys.IdentifiableRepository;
+import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
+import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
 
 @Service
 public class RegistryProvider implements IModelProvider {
@@ -27,7 +28,7 @@ public class RegistryProvider implements IModelProvider {
 	@Autowired
 	private MappingEventPublisher mappingEvent;
 	@Override
-	public Object getModelPropertyValue(String path) throws Exception {
+	public Object getModelPropertyValue(String path) throws ProviderException {
 		// 
 		at.srfg.iot.aas.basic.Identifier id = new at.srfg.iot.aas.basic.Identifier(path);
 		Optional<AssetAdministrationShell> reg = aasRepo.findByIdentification(id);
@@ -44,13 +45,13 @@ public class RegistryProvider implements IModelProvider {
 		return null;
 	}
 	@Override
-	public void setModelPropertyValue(String path, Object newValue) throws Exception {
+	public void setModelPropertyValue(String path, Object newValue) throws ProviderException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void createValue(String path, Object newEntity) throws Exception {
+	public void createValue(String path, Object newEntity) throws ProviderException {
 		// check for the basyx map
 		if (newEntity instanceof Map<?,?>) {
 			// path must be null ... 
@@ -79,7 +80,7 @@ public class RegistryProvider implements IModelProvider {
 	}
 
 	@Override
-	public void deleteValue(String path) throws Exception {
+	public void deleteValue(String path) throws ProviderException {
 		Optional<AssetAdministrationShell> reg = aasRepo.findByIdentification(new Identifier(path));
 		if ( reg.isPresent() ) {
 			aasRepo.delete(reg.get());
@@ -89,14 +90,14 @@ public class RegistryProvider implements IModelProvider {
 	}
 
 	@Override
-	public void deleteValue(String path, Object obj) throws Exception {
-		throw new Exception("wrong usage");
+	public void deleteValue(String path, Object obj) throws ProviderException {
+		throw new ProviderException("wrong usage");
 
 	}
 
 	@Override
-	public Object invokeOperation(String path, Object... parameter) throws Exception {
-		throw new Exception("wrong usage");
+	public Object invokeOperation(String path, Object... parameter) throws ProviderException {
+		throw new ProviderException("wrong usage");
 	}
 
 }
