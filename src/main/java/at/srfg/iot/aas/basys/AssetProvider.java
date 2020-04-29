@@ -55,11 +55,15 @@ public class AssetProvider implements IModelProvider {
 		if (newEntity instanceof Map<?,?>) {
 			// check the identifiable ...
 			if ( path==null) {
+				@SuppressWarnings("unchecked")
+				Map<String,Object> map = (Map<String, Object>) newEntity;
 				// when no path - the asset is provided
 				@SuppressWarnings("unchecked")
-				AASDescriptor aasDescriptor = new AASDescriptor((Map<String, Object>) newEntity);
-
-				basys.processAssetAdministrationShell(aasDescriptor);
+				
+				org.eclipse.basyx.aas.metamodel.map.AssetAdministrationShell shell = org.eclipse.basyx.aas.metamodel.map.AssetAdministrationShell.createAsFacade(map);
+				
+				AASDescriptor aasDescriptor = new AASDescriptor(shell);
+				basys.processAssetAdministrationShell(shell);
 				//
 				//
 			}

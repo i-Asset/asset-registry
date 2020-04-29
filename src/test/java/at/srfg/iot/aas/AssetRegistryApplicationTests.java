@@ -6,18 +6,27 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.basyx.aas.metamodel.map.descriptor.AASDescriptor;
+import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
+import org.eclipse.basyx.submodel.metamodel.api.identifier.IIdentifier;
+import org.eclipse.basyx.submodel.metamodel.api.identifier.IdentifierType;
+import org.eclipse.basyx.submodel.metamodel.map.identifier.Identifier;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;import com.sun.jersey.api.client.async.ITypeListener;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import at.srfg.iot.aas.basic.Submodel;
+import at.srfg.iot.aas.basys.RegistryProvider;
 import at.srfg.iot.aas.common.referencing.IdPart;
 import at.srfg.iot.aas.common.referencing.IdType;
 import at.srfg.iot.aas.dependency.SemanticLookup;
+import at.srfg.iot.aas.repository.AssetAdministrationShellRepository;
+import at.srfg.iot.aas.repository.IdentifiableRepository;
 import at.srfg.iot.eclass.model.ClassificationClass;
 import at.srfg.iot.eclass.model.PropertyDefinition;
-import feign.FeignException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -25,9 +34,19 @@ public class AssetRegistryApplicationTests {
 	@Autowired
 	private SemanticLookup rexRoth;
 	
+	@Autowired
+	private RegistryProvider registry;
+	
+	@Autowired
+	private IdentifiableRepository<Submodel> subModelRepo;
+	
+	@Autowired
+	private AssetAdministrationShellRepository aasRepo;
+	
 	@Test
 	public void contextLoads() {
 	}
+	@Ignore
 	@Test
 	public void testFeign() {
 		// 
@@ -39,7 +58,7 @@ public class AssetRegistryApplicationTests {
 			assertTrue(values.size()>0);
 			
 			
-		} catch (FeignException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -80,6 +99,33 @@ public class AssetRegistryApplicationTests {
 		assertTrue("http://www.salzburgresearch.at/asset#".equals(nameSpace));
 		String protocol = IdPart.Protocol.getFrom("http://www.salzburgresearch.at/asset#registry");
 		assertTrue("http".equals(protocol));
+		
+	}
+	@Test
+	public void registerAsset() throws Exception {
+		IIdentifier iid = new Identifier(IdentifierType.IRI, "http://example.com/aas/1");
+		AASDescriptor descriptor = new AASDescriptor("aas_1", iid, "http://localhost");
+		
+		IIdentifier subId = new Identifier(IdentifierType.IRI, "http://example.com/aas/1/sub");
+		SubmodelDescriptor sub1 = new SubmodelDescriptor("aas_1_sub", subId, "http://localhost/");
+		descriptor.addSubmodelDescriptor(sub1);
+		SubmodelDescriptor sub2 = new SubmodelDescriptor("aas_2_sub", subId, "http://localhost/");
+		descriptor.addSubmodelDescriptor(sub2);
+		// directory-service
+		registry.deleteValue("http://example.com/aas/1");
+		// 
+		registry.createValue(null, descriptor);
+		
+		Optional<Submodel> model = subModelRepo.findByIdentification(new at.srfg.iot.aas.basic.Identifier("http://example.com/aas/1/sub"));
+		assert(model.isPresent());
+		
+		Submodel subModel =model.get();
+		Optional<at.srfg.iot.aas.basic.AssetAdministrationShell> theShell = aasRepo.findByIdentification(new at.srfg.iot.aas.basic.Identifier( "http://example.com/aas/1"));
+		assertTrue(theShell.isPresent());
+		
+//		subModelRepo.delete(subModel);
+		registry.deleteValue(theShell.get().getId());
+		
 		
 	}
 }

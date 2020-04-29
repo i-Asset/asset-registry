@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.basyx.aas.metamodel.map.descriptor.AASDescriptor;
-import org.eclipse.basyx.aas.metamodel.map.descriptor.ModelUrn;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
 import org.eclipse.basyx.vab.modelprovider.api.IModelProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.basys.event.handler.util.MappingHelper;
 import at.srfg.iot.aas.basys.event.publisher.MappingEventPublisher;
+import at.srfg.iot.aas.basys.event.publisher.ModelEventPublisher;
 import at.srfg.iot.aas.repository.AssetAdministrationShellRepository;
 import at.srfg.iot.aas.repository.IdentifiableRepository;
 
@@ -27,6 +27,9 @@ public class RegistryProvider implements IModelProvider {
 
 	@Autowired
 	private MappingEventPublisher mappingEvent;
+	
+	@Autowired
+	private ModelEventPublisher modelEvent;
 	@Override
 	public Object getModelPropertyValue(String path) throws Exception {
 		// 
@@ -60,7 +63,10 @@ public class RegistryProvider implements IModelProvider {
 				// when no path - the asset is provided
 				@SuppressWarnings("unchecked")
 				AASDescriptor aasDescriptor = new AASDescriptor((Map<String, Object>) newEntity);
-				AssetAdministrationShell shell = new AssetAdministrationShell(aasDescriptor.getIdentifier().getId());
+				Identifier id = new Identifier(aasDescriptor.getIdentifier().getId());
+				Optional<AssetAdministrationShell> theShell = aasRepo.findByIdentification(id);
+				AssetAdministrationShell shell = theShell.orElse(new AssetAdministrationShell(aasDescriptor.getIdentifier().getId()));
+//				AssetAdministrationShell shell = new AssetAdministrationShell(aasDescriptor.getIdentifier().getId());
 				for ( Map<String, Object> ep : aasDescriptor.getEndpoints()) {
 					int index = ep.get("index")!=null ? Integer.valueOf(ep.get("index").toString()) : 0;
 					String address = ep.get("address").toString(); // + "/" + shell.getId();
@@ -70,11 +76,23 @@ public class RegistryProvider implements IModelProvider {
 				aasRepo.save(shell);
 				// process arbitrary submodel descriptors
 				for (SubmodelDescriptor desc : aasDescriptor.getSubModelDescriptors() ) {
-					Identifier id = MappingHelper.getIdentifier(desc);
-					Submodel submodel = new Submodel(id, shell);
+					Identifier subId = MappingHelper.getIdentifier(desc);
+					Optional<Submodel> theSubmodel = submodelRepo.findByIdentification(subId);
+					
+					Submodel submodel = theSubmodel.orElse(new Submodel(subId, shell));
 					submodel.setIdShort(MappingHelper.getIdShort(desc));
+					for ( Map<String, Object> ep : desc.getEndpoints()) {
+						if ( submodel.getId() != null && submodel.getId().length() > 1 ) {
+							int index = ep.get("index")!=null ? Integer.valueOf(ep.get("index").toString()) : 0;
+							String address = ep.get("address").toString(); // + "/" + shell.getId();
+							String type = ep.get("type").toString();
+							submodel.setEndpoint(index, address, type);
+						}
+					}
 					submodelRepo.save(submodel);
 				}
+				// all stored - trigger data registrations/storage
+				modelEvent.processRegistration(aasDescriptor);
 			}
 		}
 	}
@@ -83,7 +101,9 @@ public class RegistryProvider implements IModelProvider {
 	public void deleteValue(String path) throws Exception {
 		Optional<AssetAdministrationShell> reg = aasRepo.findByIdentification(new Identifier(path));
 		if ( reg.isPresent() ) {
-			aasRepo.delete(reg.get());
+			aasRepo.deleteById(reg.get().getElementId());
+//			aasRepo.delete(reg.get());
+			
 		}
 
 

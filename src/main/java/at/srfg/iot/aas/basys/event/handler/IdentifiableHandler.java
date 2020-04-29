@@ -32,7 +32,12 @@ public class IdentifiableHandler {
 		Identifiable facade = Identifiable.createAsFacade(event.getBasyxMap());
 		AdministrativeInformation admin = event.getLocal().getAdministration();
 		if ( admin!=null) {
-			facade.setAdministration(admin.getVersion(), admin.getRevision());
+			org.eclipse.basyx.submodel.metamodel.map.qualifier.AdministrativeInformation a 
+				= new org.eclipse.basyx.submodel.metamodel.map.qualifier.AdministrativeInformation(
+						admin.getVersion(), 
+						admin.getRevision());
+			// set the administration
+			facade.setAdministration(a);
 		}
 		Identifier id = event.getLocal().getIdentification();
 		if ( id != null) {

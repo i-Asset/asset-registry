@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
+import at.srfg.iot.aas.basys.AssetProvider;
 import at.srfg.iot.aas.service.AssetService;
 import at.srfg.iot.aas.service.BoschRexRoth;
 import at.srfg.iot.aas.service.SubmodelService;
@@ -33,6 +34,9 @@ public class AssetController {
 	AssetService assetService;
 	@Autowired
 	SubmodelService submodelService;
+	
+	@Autowired
+	AssetProvider basys;
 	/**
 	 * Retrieve a full Asset Administration Shell 
 	 * @param uri
@@ -71,5 +75,16 @@ public class AssetController {
 	public ResponseEntity<?> findCC(@RequestParam String id) {
 		Optional<ClassificationClass> cc = rexRoth.getClassType(id);
 		return ResponseEntity.of(cc);
+	}
+	@Consumes(MediaType.APPLICATION_JSON)
+	@PostMapping("/basys")
+	public ResponseEntity<?> postJSON(@RequestBody Object body) {
+		try {
+			basys.createValue(null, body);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ResponseEntity.ok().build();
 	}
 }

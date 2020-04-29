@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import at.srfg.iot.aas.dependency.SemanticLookup;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -21,6 +22,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //	// asset-registry components
 //	"at.srfg.iot.aas"})
 @EnableDiscoveryClient
+@EnableAsync
 @EnableSwagger2
 @EnableFeignClients(clients = SemanticLookup.class)
 public class AssetRegistryApplication {
