@@ -20,6 +20,28 @@ public interface RegistryAPI {
     /**
      * See API documentation
      *
+     * @param typeName Identifier of requested registry.
+     * @param bearer    OpenID Connect token storing requesting identity
+     * @return See API documentation
+     * @throws AuthenticationException Error while communication with the Identity Service
+     */
+    @ApiOperation(value = "Get registered AssetTypes.", response = AssetType.class,
+            notes = "Returns list of registered AssetTypes sorted by ID", nickname = "getRegisteredAssetTypes", responseContainer = "List")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "TypeName found", response = AssetType.class, responseContainer = "List"),
+            @ApiResponse(code = 400, message = "Error while fetching TypeName"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "TypeName not found") })
+    @RequestMapping(value = "/{typeName}/assoctype", produces = {"application/json"}, method = RequestMethod.GET)
+    ResponseEntity<?> getAssociatedTypeByName(
+            @ApiParam(value = "typeName", required = true) @PathVariable String typeName,
+            @RequestHeader(value = "Authorization") String bearer)
+            throws IOException, AuthenticationException;
+
+    /**
+     * See API documentation
+     *
      * @param registryID Identifier of requested registry.
      * @param bearer    OpenID Connect token storing requesting identity
      * @return See API documentation

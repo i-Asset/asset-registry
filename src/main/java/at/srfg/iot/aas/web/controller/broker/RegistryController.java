@@ -44,6 +44,24 @@ public class RegistryController implements RegistryAPI {
     @Autowired
     private AssetInstanceRepo repoAssetInstance;
 
+
+    //--------------------------------------------------------------------------------------
+    // getRegisteredAssetTypes
+    //--------------------------------------------------------------------------------------
+    public ResponseEntity<?> getAssociatedTypeByName(
+            @ApiParam(value = "typeName", required = true) @PathVariable String typeName,
+            @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
+    {
+        AssetType assetType = repoAssetType.findOneByName(typeName);
+        if (assetType == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        logger.info("Success: Found associated type");
+        return new ResponseEntity<>(assetType, HttpStatus.OK);
+    }
+
+
     //--------------------------------------------------------------------------------------
     // getRegisteredAssetTypes
     //--------------------------------------------------------------------------------------
