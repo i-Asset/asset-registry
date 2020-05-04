@@ -36,6 +36,7 @@ public class AssetInstance implements Serializable {
     private String originalLocation;
 
     @ApiModelProperty(value = "listMaintenance")
+    @ElementCollection(targetClass=Maintenance.class)
     private List<Maintenance> listMaintenance;
 
     @ApiModelProperty(value = "listAvailableProperties")
