@@ -54,6 +54,12 @@ public class RegistryController implements RegistryAPI {
             @ApiParam(value = "typeName", required = true) @PathVariable String typeName,
             @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
     {
+        // check if request is authorized
+        //String companyID = identityResolver.resolveCompanyId(bearer);
+        //if (isAuthorized(channelConfiguration, companyID) == false) {
+        //    return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        //}
+
         AssetType assetType = repoAssetType.findOneByName(typeName);
         if (assetType == null) {
             return ResponseEntity.notFound().build();
@@ -99,6 +105,10 @@ public class RegistryController implements RegistryAPI {
         //if (isAuthorized(channelConfiguration, companyID) == false) {
         //    return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         //}
+
+        if (type == null) {
+            return ResponseEntity.badRequest().build();
+        }
 
         repoAssetType.save(type);
 
@@ -168,6 +178,10 @@ public class RegistryController implements RegistryAPI {
         //    return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         //}
 
+        if (instance == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
         repoAssetInstance.save(instance);
 
         logger.info("Success: Register Instance");
@@ -213,6 +227,10 @@ public class RegistryController implements RegistryAPI {
         //if (isAuthorized(channelConfiguration, companyID) == false) {
         //    return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         //}
+
+        if (maintenance == null) {
+            return ResponseEntity.badRequest().build();
+        }
 
         AssetInstance assetInstance = repoAssetInstance.findOneByName(instanceName);
         if (assetInstance == null) {
