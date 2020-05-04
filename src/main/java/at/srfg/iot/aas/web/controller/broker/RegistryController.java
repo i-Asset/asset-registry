@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -217,7 +219,13 @@ public class RegistryController implements RegistryAPI {
             return ResponseEntity.notFound().build();
         }
 
-        assetInstance.getListMaintenance().add(maintenance);
+        // add a maintenance entry to the instance
+        List<Maintenance> list = new ArrayList<>(Arrays.asList(assetInstance.getListMaintenance()));
+        list.add(maintenance);
+        assetInstance.setListMaintenance(list.toArray(new Maintenance[0]));
+
+        // re-save the instance
+        assetInstance = repoAssetInstance.save(assetInstance);
 
         logger.info("Success: Register Maintenance");
         return new ResponseEntity<>(assetInstance, HttpStatus.OK);

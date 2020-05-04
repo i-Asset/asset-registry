@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.List;
 
 
 @Entity
@@ -36,8 +35,7 @@ public class AssetInstance implements Serializable {
     private String originalLocation;
 
     @ApiModelProperty(value = "listMaintenance")
-    @ElementCollection(targetClass=Maintenance.class)
-    private List<Maintenance> listMaintenance;
+    private Maintenance[] listMaintenance;
 
     @ApiModelProperty(value = "listAvailableProperties")
     private String listAvailableProperties;
@@ -91,10 +89,10 @@ public class AssetInstance implements Serializable {
         this.originalLocation = location;
     }
 
-    public List<Maintenance> getListMaintenance() {
+    public Maintenance[] getListMaintenance() {
         return listMaintenance;
     }
-    public void setListMaintenance(List<Maintenance> list) {
+    public void setListMaintenance(Maintenance[] list) {
         this.listMaintenance = list;
     }
 
