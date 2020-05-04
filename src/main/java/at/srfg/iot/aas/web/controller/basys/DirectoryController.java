@@ -1,4 +1,4 @@
-package at.srfg.iot.aas.web.controller;
+package at.srfg.iot.aas.web.controller.basys;
 
 import javax.servlet.http.HttpServletRequest;
 
