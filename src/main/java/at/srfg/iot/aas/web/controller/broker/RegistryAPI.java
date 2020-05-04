@@ -198,9 +198,8 @@ public interface RegistryAPI {
     /**
      * See API documentation
      *
-     * @param registryID Identifier of requested registry.
+     * @param instanceName Identifier of requested registry.
      * @param maintenance Maintenance to be added
-     * @param instanceName AssetInstance the maintenance will be added to
      * @param bearer OpenID Connect token storing requesting identity
      * @return See API documentation
      * @throws AuthenticationException Error while communication with the Identity Service
@@ -210,16 +209,15 @@ public interface RegistryAPI {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Maintenance added", response = AssetInstance.class),
             @ApiResponse(code = 201, message = "Created"),
-            @ApiResponse(code = 400, message = "Error while fetching RegistryID"),
+            @ApiResponse(code = 400, message = "Error while fetching instanceName"),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "RegistryID not found"),
+            @ApiResponse(code = 404, message = "instanceName not found"),
             @ApiResponse(code = 409, message = "Maintenance already exists") })
-    @RequestMapping(value = "/{registryID}/maintenance", produces = {"application/json"}, method = RequestMethod.POST)
+    @RequestMapping(value = "/{instanceName}/maintenance", produces = {"application/json"}, method = RequestMethod.POST)
     ResponseEntity<?> registerMaintenance(
-            @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
+            @ApiParam(value = "instanceName", required = true) @PathVariable String instanceName,
             @ApiParam(value = "Maintenance to be added", required = true) @RequestBody Maintenance maintenance,
-            @ApiParam(value = "Instance the maintenance will be added to", required = true) @RequestBody String instanceName,
             @RequestHeader(value = "Authorization") String bearer)
             throws IOException, AuthenticationException;
 }

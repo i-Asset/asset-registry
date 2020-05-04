@@ -202,9 +202,8 @@ public class RegistryController implements RegistryAPI {
     // registerMaintenance
     //--------------------------------------------------------------------------------------
     public ResponseEntity<?> registerMaintenance(
-            @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
+            @ApiParam(value = "instanceName", required = true) @PathVariable String instanceName,
             @ApiParam(value = "Maintenance to be added", required = true) @RequestBody Maintenance maintenance,
-            @ApiParam(value = "Instance the maintenance will be added to", required = true) @RequestBody String instanceName,
             @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
     {
         // check if request is authorized
