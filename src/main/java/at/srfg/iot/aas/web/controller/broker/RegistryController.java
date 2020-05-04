@@ -3,6 +3,7 @@ package at.srfg.iot.aas.web.controller.broker;
 //import eu.nimble.common.rest.identity.IdentityResolver;
 import at.srfg.iot.aas.entity.broker.AssetType;
 import at.srfg.iot.aas.entity.broker.AssetInstance;
+import at.srfg.iot.aas.entity.broker.Maintenance;
 import at.srfg.iot.aas.repository.broker.AssetInstanceRepo;
 import at.srfg.iot.aas.repository.broker.AssetTypeRepo;
 import io.swagger.annotations.Api;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -195,5 +195,32 @@ public class RegistryController implements RegistryAPI {
 
         logger.info("Success: Unregister Instance");
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    //--------------------------------------------------------------------------------------
+    // registerMaintenance
+    //--------------------------------------------------------------------------------------
+    public ResponseEntity<?> registerMaintenance(
+            @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
+            @ApiParam(value = "Maintenance to be added", required = true) @RequestBody Maintenance maintenance,
+            @ApiParam(value = "Instance the maintenance will be added to", required = true) @RequestBody String instanceName,
+            @RequestHeader(value = "Authorization") String bearer) throws IOException, AuthenticationException
+    {
+        // check if request is authorized
+        //String companyID = identityResolver.resolveCompanyId(bearer);
+        //if (isAuthorized(channelConfiguration, companyID) == false) {
+        //    return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        //}
+
+        AssetInstance assetInstance = repoAssetInstance.findOneByName(instanceName);
+        if (assetInstance == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        assetInstance.getListMaintenance().add(maintenance);
+
+        logger.info("Success: Register Maintenance");
+        return new ResponseEntity<>(assetInstance, HttpStatus.OK);
     }
 }

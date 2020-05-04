@@ -2,6 +2,7 @@ package at.srfg.iot.aas.web.controller.broker;
 
 import at.srfg.iot.aas.entity.broker.AssetType;
 import at.srfg.iot.aas.entity.broker.AssetInstance;
+import at.srfg.iot.aas.entity.broker.Maintenance;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -190,6 +191,35 @@ public interface RegistryAPI {
             @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
             @ApiParam(value = "InstanceID to be removed", required = true)
             @PathVariable Long instanceID,
+            @RequestHeader(value = "Authorization") String bearer)
+            throws IOException, AuthenticationException;
+
+
+    /**
+     * See API documentation
+     *
+     * @param registryID Identifier of requested registry.
+     * @param maintenance Maintenance to be added
+     * @param instanceName AssetInstance the maintenance will be added to
+     * @param bearer OpenID Connect token storing requesting identity
+     * @return See API documentation
+     * @throws AuthenticationException Error while communication with the Identity Service
+     */
+    @ApiOperation(value = "Register a new Maintenance", response = AssetInstance.class,
+            notes = "Register a new Maintenance", nickname = "registerMaintenance")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Maintenance added", response = AssetInstance.class),
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 400, message = "Error while fetching RegistryID"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "RegistryID not found"),
+            @ApiResponse(code = 409, message = "Maintenance already exists") })
+    @RequestMapping(value = "/{registryID}/maintenance", produces = {"application/json"}, method = RequestMethod.POST)
+    ResponseEntity<?> registerMaintenance(
+            @ApiParam(value = "registryID", required = true) @PathVariable String registryID,
+            @ApiParam(value = "Maintenance to be added", required = true) @RequestBody Maintenance maintenance,
+            @ApiParam(value = "Instance the maintenance will be added to", required = true) @RequestBody String instanceName,
             @RequestHeader(value = "Authorization") String bearer)
             throws IOException, AuthenticationException;
 }
