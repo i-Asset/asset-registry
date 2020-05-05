@@ -73,10 +73,10 @@ public class AssetType implements Serializable {
         this.description = description;
     }
 
-    public String getDataSpecification() {
+    public String getCertificate() {
         return certificate;
     }
-    public void setDataSpecification(String cert) {
+    public void setCertificate(String cert) {
         this.certificate = cert;
     }
 
