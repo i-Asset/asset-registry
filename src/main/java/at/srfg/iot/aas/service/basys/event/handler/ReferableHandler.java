@@ -5,6 +5,8 @@ import java.util.Optional;
 import org.eclipse.basyx.submodel.metamodel.map.qualifier.LangString;
 import org.eclipse.basyx.submodel.metamodel.map.qualifier.LangStrings;
 import org.eclipse.basyx.submodel.metamodel.map.qualifier.Referable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -14,23 +16,18 @@ import at.srfg.iot.aas.common.referencing.Description;
 
 @Component
 public class ReferableHandler {
+	private static final Logger logger = LoggerFactory.getLogger(ReferableHandler.class);
 	@EventListener
 	public void onApplicationEvent(SetReferable event) {
-		System.out.println("Referable handling");
-		Referable ref = Referable.createAsFacade(event.getBasyxMap());
+		logger.info("Referable handling for {}", event.getLocal());
+		Referable ref = event.getBasyxReferable();
 		String idShort = ref.getIdShort();
 		String category = ref.getCategory();
 		LangStrings ls = ref.getDescription();
 		for ( String lang : ls.getLanguages() ) {
 			event.getLocal().setDescription(lang, ls.get(lang));
 		}
-//		Collection<Map<String,Object>> descriptions = MappingHelper.getElementAsCollection(event.getBasyxMap(), "description");
-//		for ( Map<String,Object> desc : descriptions) {
-//			String lang = MappingHelper.getElementValue(desc, String.class, "language");
-//			String text = MappingHelper.getElementValue(desc, String.class, "text");
-//			event.getLocal().setDescription(lang, text);
-//			//
-//		}
+
 		event.getLocal().setIdShort(idShort);
 		event.getLocal().setCategory(category);
 		

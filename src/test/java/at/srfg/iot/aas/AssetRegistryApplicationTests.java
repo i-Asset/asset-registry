@@ -2,11 +2,13 @@ package at.srfg.iot.aas;
 
 import static org.junit.Assert.assertTrue;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.basyx.aas.metamodel.map.descriptor.AASDescriptor;
+import org.eclipse.basyx.aas.metamodel.map.descriptor.ModelUrn;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
 import org.eclipse.basyx.submodel.metamodel.api.identifier.IIdentifier;
 import org.eclipse.basyx.submodel.metamodel.api.identifier.IdentifierType;
@@ -67,7 +69,7 @@ public class AssetRegistryApplicationTests {
 	public void testNamspaceDetection() {
 		String full = "urn:indexing:"+ClassificationClass.class.getSimpleName()+"#localName";
 		IdType uri = IdType.getType(full);
-		assertTrue(uri.equals(IdType.URI));
+		assertTrue(uri.equals(IdType.IRI));
 		String nameSpace = IdPart.Namespace.getFrom(full);
 		String localName = IdPart.LocalName.getFrom(full);
 		assertTrue(nameSpace.equals("urn:indexing:"+ClassificationClass.class.getSimpleName()+"#"));
@@ -76,14 +78,15 @@ public class AssetRegistryApplicationTests {
 	
 	@Test
 	public void testIdTypeDetection() {
-		
+
 		IdType uri = IdType.getType("http://www.salzburgresearch.at/asset#registry");
 		IdType eclassIrdi = IdType.getType("0173-1#01-AFW236#002");
 		IdType iecIrdi = IdType.getType("0112/2///61360_4#AAA001#004");
 		IdType idShort = IdType.getType("123456");
 		IdType custom = IdType.getType("$%&1234");
+		IdType urn = IdType.getType(new ModelUrn("srfg", "at", "iasset", "1.0", "01", "asset", "instance01").getURN());
 		IdType uuid = IdType.getType(UUID.randomUUID().toString());
-		assertTrue(IdType.URI.equals(uri));
+		assertTrue(IdType.IRI.equals(uri));
 		assertTrue(IdType.IRDI.equals(eclassIrdi));
 		assertTrue(IdType.IRDI.equals(iecIrdi));
 		assertTrue(IdType.IdShort.equals(idShort));
@@ -99,6 +102,8 @@ public class AssetRegistryApplicationTests {
 		assertTrue("http://www.salzburgresearch.at/asset#".equals(nameSpace));
 		String protocol = IdPart.Protocol.getFrom("http://www.salzburgresearch.at/asset#registry");
 		assertTrue("http".equals(protocol));
+		String legalEntity = IdPart.LegalEntity.getFrom(new ModelUrn("srfg", "at", "iasset", "1.0", "01", "asset", "instance01").getURN());
+		assertTrue("srfg".equals(legalEntity));
 		
 	}
 	@Test

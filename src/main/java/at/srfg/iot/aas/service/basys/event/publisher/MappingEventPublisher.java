@@ -2,8 +2,12 @@ package at.srfg.iot.aas.service.basys.event.publisher;
 
 import java.util.Map;
 
+import org.eclipse.basyx.aas.metamodel.api.IAssetAdministrationShell;
+import org.eclipse.basyx.aas.metamodel.api.parts.IConceptDictionary;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.AASDescriptor;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
+import org.eclipse.basyx.submodel.metamodel.api.ISubModel;
+import org.eclipse.basyx.submodel.metamodel.api.parts.IConceptDescription;
 import org.eclipse.basyx.submodel.metamodel.map.SubModel;
 import org.eclipse.basyx.submodel.metamodel.map.identifier.Identifier;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,9 @@ import org.springframework.stereotype.Component;
 import at.srfg.iot.aas.basic.Asset;
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.aas.basic.Submodel;
+import at.srfg.iot.aas.dictionary.ConceptDescription;
+import at.srfg.iot.aas.dictionary.ConceptDictionary;
+import at.srfg.iot.aas.modeling.SubmodelElement;
 import at.srfg.iot.aas.service.basys.event.GetAssetAdministrationShellEvent;
 import at.srfg.iot.aas.service.basys.event.GetAssetEvent;
 import at.srfg.iot.aas.service.basys.event.GetConceptDescriptionEvent;
@@ -25,20 +32,22 @@ import at.srfg.iot.aas.service.basys.event.SetConceptDescriptionEvent;
 import at.srfg.iot.aas.service.basys.event.SetConceptDictionaryEvent;
 import at.srfg.iot.aas.service.basys.event.SetSubmodelElementEvent;
 import at.srfg.iot.aas.service.basys.event.SetSubmodelEvent;
-import at.srfg.iot.aas.dictionary.ConceptDescription;
-import at.srfg.iot.aas.dictionary.ConceptDictionary;
-import at.srfg.iot.aas.modeling.SubmodelElement;
 
 @Component
 public class MappingEventPublisher {
 	@Autowired
 	private ApplicationEventPublisher publisher;
+//	public void handleSubmodel(Map<String,Object> map, Submodel model) {
+//		System.out.println("Wanna handle the submodel");
+//		SetSubmodelEvent sme = new SetSubmodelEvent(map, model);
+//		publisher.publishEvent(sme);
+//	}
 	/**
 	 * Process the provided {@link Submodel} including all contained {@link SubmodelElement}
 	 * @param map The map
 	 * @param model
 	 */
-	public void handleSubmodel(Map<String,Object> map, Submodel model) {
+	public void handleSubmodel(ISubModel map, Submodel model) {
 		System.out.println("Wanna handle the submodel");
 		SetSubmodelEvent sme = new SetSubmodelEvent(map, model);
 		publisher.publishEvent(sme);
@@ -53,14 +62,26 @@ public class MappingEventPublisher {
 		SetAssetEvent assetEvent = new SetAssetEvent(map, model);
 		publisher.publishEvent(assetEvent);
 	}
-	public void handleAssetAdministrationShell(Map<String,Object> map, AssetAdministrationShell model) {
-		System.out.println("Wanna handle the submodel");
+	public void handleAssetAdministrationShell(IAssetAdministrationShell map, AssetAdministrationShell model) {
+		System.out.println("Wanna handle the AAS");
 		SetAssetAdministrationShellEvent sme = new SetAssetAdministrationShellEvent(map, model);
 		publisher.publishEvent(sme);
+	}
+	public void handleConceptDictionary(IConceptDictionary map, ConceptDictionary dictionary) {
+		System.out.println("Wanna handle the concept dictionary");
+		SetConceptDictionaryEvent sme = new SetConceptDictionaryEvent(map, dictionary);
+		publisher.publishEvent(sme);
+		
 	}
 	public void handleConceptDictionary(Map<String,Object> map, ConceptDictionary dictionary) {
 		System.out.println("Wanna handle the concept dictionary");
 		SetConceptDictionaryEvent sme = new SetConceptDictionaryEvent(map, dictionary);
+		publisher.publishEvent(sme);
+		
+	}
+	public void handleConceptDescription(IConceptDescription map, ConceptDescription description) {
+		System.out.println("Wanna handle the concept dictionary");
+		SetConceptDescriptionEvent sme = new SetConceptDescriptionEvent(map, description);
 		publisher.publishEvent(sme);
 		
 	}

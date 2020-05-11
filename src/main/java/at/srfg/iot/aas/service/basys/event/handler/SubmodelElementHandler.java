@@ -96,8 +96,13 @@ public class SubmodelElementHandler {
 		// Data elements
 		case DataElement:
 			Map<String,Object> valueType = MappingHelper.getElementAsMap(map, "valueType");
-			
-			PropertyValueTypeDef def = PropertyValueTypeDefHelper.readTypeDef(valueType);
+			PropertyValueTypeDef def = PropertyValueTypeDef.String;
+			if (! valueType.isEmpty() ) {
+				String defName = MappingHelper.getElementValue(valueType, String.class, "dataObjectType", "name");
+				if ( defName != null && defName.length()>0) {
+					def = PropertyValueTypeDefHelper.fromName(defName);
+				}
+			}
 			Property property = new Property(idShort, collection);
 			property.setValueQualifier(def.name().toUpperCase());
 			return property;
@@ -130,7 +135,13 @@ public class SubmodelElementHandler {
 	}
 	private void visitProperty(Map<String,Object> map, Property value) {
 		Map<String,Object> valueType = MappingHelper.getElementAsMap(map, "valueType");
-		PropertyValueTypeDef def = PropertyValueTypeDefHelper.readTypeDef(valueType);
+		PropertyValueTypeDef def = PropertyValueTypeDef.String;
+		if (! valueType.isEmpty() ) {
+			String defName = MappingHelper.getElementValue(valueType, String.class, "dataObjectType", "name");
+			if ( defName != null && defName.length()>0) {
+				def = PropertyValueTypeDefHelper.fromName(defName);
+			}
+		}
 		switch (def) {
 		case String:
 			value.setValue(MappingHelper.getElementValue(map, String.class, "value"));

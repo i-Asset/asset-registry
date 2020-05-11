@@ -7,7 +7,6 @@ import at.srfg.iot.aas.common.HasDataSpecification;
  * @author dglachs
  *
  */
-public interface GetHasDataSpecification extends GetElement {
-	public HasDataSpecification getLocal();
+public interface GetHasDataSpecification extends HasDataSpecificationEvent {
 	
 }

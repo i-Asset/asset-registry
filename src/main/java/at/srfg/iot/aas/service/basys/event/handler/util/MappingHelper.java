@@ -9,11 +9,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.basyx.aas.metamodel.map.AssetAdministrationShell;
+import org.eclipse.basyx.submodel.metamodel.api.identifier.IIdentifier;
 import org.eclipse.basyx.submodel.metamodel.map.modeltype.ModelType;
 import org.eclipse.basyx.submodel.metamodel.map.qualifier.Identifiable;
 import org.eclipse.basyx.submodel.metamodel.map.qualifier.Referable;
@@ -222,9 +224,18 @@ public abstract class MappingHelper {
 	public static Kind getKind(Map<String,Object> map) {
 		return null;
 	}
-	public static Identifier getIdentifier(Map<String,Object> map) {
+	public static Optional<Identifier> getIdentifier(Map<String,Object> map) {
 		String id = getElementValue(map, String.class, IDENTIFICATION, "id");
-		return new Identifier(id);
+		if ( id != null && id.length() > 0) {
+			return Optional.of(new Identifier(id));
+		}
+		return Optional.empty();
+	}
+	public static Optional<Identifier> getIdentifier(IIdentifier id) {
+		if (id != null && id.getId() != null && id.getId().length() > 0 ) {
+			return Optional.of(new Identifier(id.getId()));
+		}
+		return Optional.empty();
 	}
 	
 }

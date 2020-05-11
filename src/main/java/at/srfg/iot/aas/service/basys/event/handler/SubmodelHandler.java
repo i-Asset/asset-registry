@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
+import org.eclipse.basyx.submodel.metamodel.api.submodelelement.ISubmodelElement;
+import org.eclipse.basyx.submodel.metamodel.facade.submodelelement.SubmodelElementFacadeFactory;
 import org.eclipse.basyx.submodel.metamodel.map.SubModel;
 import org.eclipse.basyx.submodel.metamodel.map.submodelelement.dataelement.property.valuetypedef.PropertyValueTypeDef;
 import org.eclipse.basyx.submodel.metamodel.map.submodelelement.dataelement.property.valuetypedef.PropertyValueTypeDefHelper;
@@ -38,26 +40,44 @@ public class SubmodelHandler {
 
 	@EventListener
 	public void onSubmodelSet(SetSubmodelEvent event) {
-		System.out.println("Submodel handling: " + MappingHelper.getIdShort(event.getBasyxMap()));
+		SubModel subModel = event.getBasyxSubModel();
 		
-		Collection<Map<String,Object>> properties = MappingHelper.getAsCollection(event.getBasyxMap(), SubModel.SUBMODELELEMENT);
+		System.out.println("Submodel handling: " + subModel.getIdShort());
+		
+//		for (ISubmodelElement iSubModelElement : subModel.getSubmodelElements().values() ) {
+//			// 
+//			Optional<SubmodelElement> local = event.getLocal().getSubmodelElement(iSubModelElement.getIdShort());
+//			
+//			SubmodelElement submodelElement = local.orElse(create(event.getLocal(), (org.eclipse.basyx.submodel.metamodel.map.submodelelement.SubmodelElement) iSubModelElement));
+//
+//			if ( submodelElement != null) {
+//				// process the submodel element
+//				publisher.handleSubmodelElement((org.eclipse.basyx.submodel.metamodel.map.submodelelement.SubmodelElement) iSubModelElement, submodelElement);
+//				
+////				new SubmodelElementData(property, submodelElement).accept(new SubmodelElementVisitor<>());
+//				submodelElementRepo.save(submodelElement);
+//			}
+//		}
+		Collection<Map<String,Object>> properties = MappingHelper.getAsCollection(subModel, SubModel.SUBMODELELEMENT);
 		
 		for ( Map<String,Object> property : properties ) {
 			
 			String idShort = MappingHelper.getIdShort(property);
 			// find the 
-			
-			
-			Optional<SubmodelElement> local = event.getLocal().getSubmodelElement(idShort);
-			SubmodelElement submodelElement = local.orElse(create(event.getLocal(), property));
-
-			if ( submodelElement != null) {
-				// process the submodel element
-				publisher.handleSubmodelElement(property, submodelElement);
+			if ( idShort != null && idShort.length() > 0) {
+				Optional<SubmodelElement> local = event.getLocal().getSubmodelElement(idShort);
+				SubmodelElement submodelElement = local.orElse(create(event.getLocal(), property));
 				
+				if ( submodelElement != null) {
+					// process the submodel element
+					publisher.handleSubmodelElement(property, submodelElement);
+					
 //				new SubmodelElementData(property, submodelElement).accept(new SubmodelElementVisitor<>());
-				submodelElementRepo.save(submodelElement);
+					submodelElementRepo.save(submodelElement);
+				}
+				
 			}
+			
 		}
 
 		
@@ -73,16 +93,32 @@ public class SubmodelHandler {
 		}
 		
 	}	
+//	private SubmodelElement create(Submodel model, ISubmodelElement map) {
+//		String modelType = map.getModelType();
+//		KeyElementsEnum elementType = KeyElementsEnum.valueOf(modelType);
+//		switch(elementType) {
+//		}
+//		return null;
+//	}
 	private SubmodelElement create(Submodel model, Map<String,Object> map) {
 		//
+		ISubmodelElement e = SubmodelElementFacadeFactory.createSubmodelElement(map);
 		String idShort = MappingHelper.getIdShort(map);
 		KeyElementsEnum elementType = MappingHelper.getModelType(map);
 		switch(elementType) {
 		// Data elements
 		case DataElement:
-			Map<String,Object> valueType = MappingHelper.getElementAsMap(map, "valueType");
-			PropertyValueTypeDef def = PropertyValueTypeDefHelper.readTypeDef(valueType);
+		case Property:
 			Property property = new Property(idShort, model);
+			Map<String,Object> valueType = MappingHelper.getElementAsMap(map, "valueType");
+			// use String as default
+			PropertyValueTypeDef def = PropertyValueTypeDef.String;
+			if (! valueType.isEmpty() ) {
+				String defName = MappingHelper.getElementValue(valueType, String.class, "dataObjectType", "name");
+				if ( defName != null && defName.length()>0) {
+					def = PropertyValueTypeDefHelper.fromName(defName);
+				}
+			}
 			property.setValueQualifier(def.name().toUpperCase());
 			return property;
 		case Blob:

@@ -17,6 +17,7 @@ import at.srfg.iot.aas.repository.basys.AssetAdministrationShellRepository;
 import at.srfg.iot.aas.repository.basys.IdentifiableRepository;
 import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
 import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
+import at.srfg.iot.aas.service.basys.event.publisher.ModelEventPublisher;
 
 @Service
 public class RegistryProvider implements IModelProvider {
@@ -27,6 +28,10 @@ public class RegistryProvider implements IModelProvider {
 
 	@Autowired
 	private MappingEventPublisher mappingEvent;
+	
+	@Autowired
+	private ModelEventPublisher modelEvent;
+	
 	@Override
 	public Object getModelPropertyValue(String path) throws ProviderException {
 		// 
@@ -70,11 +75,17 @@ public class RegistryProvider implements IModelProvider {
 				aasRepo.save(shell);
 				// process arbitrary submodel descriptors
 				for (SubmodelDescriptor desc : aasDescriptor.getSubModelDescriptors() ) {
-					Identifier id = MappingHelper.getIdentifier(desc);
+					Optional<Identifier> optId = MappingHelper.getIdentifier(desc);
+					String idShort = MappingHelper.getIdShort(desc);
+					//
+					Identifier id = optId.orElse(new Identifier(idShort));
+					//
 					Submodel submodel = new Submodel(id, shell);
 					submodel.setIdShort(MappingHelper.getIdShort(desc));
 					submodelRepo.save(submodel);
 				}
+				// trigger event
+				modelEvent.processRegistration(aasDescriptor);
 			}
 		}
 	}

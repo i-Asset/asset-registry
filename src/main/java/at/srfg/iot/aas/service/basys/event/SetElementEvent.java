@@ -2,7 +2,7 @@ package at.srfg.iot.aas.service.basys.event;
 
 import java.util.Map;
 
-public abstract class SetElementEvent<T>  implements SetElement {
+public abstract class SetElementEvent<T>  implements BasyxEvent {
 	
 	private final T local;
 	private final Map<String,Object> mapElement;

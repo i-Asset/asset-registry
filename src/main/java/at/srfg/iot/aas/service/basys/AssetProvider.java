@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.basyx.aas.metamodel.map.descriptor.AASDescriptor;
+import org.eclipse.basyx.submodel.metamodel.map.SubModel;
 import org.eclipse.basyx.vab.exception.provider.ProviderException;
 import org.eclipse.basyx.vab.modelprovider.api.IModelProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +66,8 @@ public class AssetProvider implements IModelProvider {
 				// handle submodel & properties ...
 				@SuppressWarnings("unchecked")
 				Map<String,Object> map = (Map<String,Object>)newEntity;
-				basys.processSubmodel(map);
+				
+				basys.processSubmodel(SubModel.createAsFacade(map));
 			}
 			
 			//

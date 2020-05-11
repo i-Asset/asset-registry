@@ -7,7 +7,7 @@ import at.srfg.iot.aas.common.referencing.IdType;
 public class IdTypeHelper {
 	public static IdentifierType asIdentifierType(IdType idType) {
 		switch(idType) {
-		case URI:
+		case IRI:
 			return IdentifierType.IRI;
 		case IRDI:
 			return IdentifierType.IRDI;

@@ -40,11 +40,11 @@ public class BoschRexRoth {
 	
 	public Optional<AssetAdministrationShell> createAsset() {
 		
-		Optional<Asset> theOptAsset = assetRepo.findByIdentification(new Identifier(IdType.URI, "http://pk.festo.com/3s7plfdrs35"));
+		Optional<Asset> theOptAsset = assetRepo.findByIdentification(new Identifier(IdType.IRI, "http://pk.festo.com/3s7plfdrs35"));
 		Asset theAsset = theOptAsset.orElse(new Asset()); 
 		if ( theAsset.getElementId() == null) {
 			theAsset.setDescription("en", "Festo Controller");
-			theAsset.setIdentification(new Identifier(IdType.URI, "http://pk.festo.com/3s7plfdrs35"));
+			theAsset.setIdentification(new Identifier(IdType.IRI, "http://pk.festo.com/3s7plfdrs35"));
 			theAsset.setKind(Kind.Instance);
 			theAsset.setIdShort("3s7plfdrs35");
 			assetRepo.save(theAsset);
@@ -54,7 +54,7 @@ public class BoschRexRoth {
 		AssetAdministrationShell shell = null;
 		if (!opt.isPresent()) {
 			shell = new AssetAdministrationShell(theAsset);
-			shell.setIdentification(new Identifier(IdType.URI, "www.admin-shell.io/aas-sample/1/0"));
+			shell.setIdentification(new Identifier(IdType.IRI, "www.admin-shell.io/aas-sample/1/0"));
 			shell.setIdShort("123456");
 		}
 		else {
@@ -63,10 +63,10 @@ public class BoschRexRoth {
 
 		aasRepo.save(shell);
 
-		Identifier cdId = new Identifier(IdType.URI, "www.festo.com/dic/08111234");
+		Identifier cdId = new Identifier(IdType.IRI, "www.festo.com/dic/08111234");
 		
-		Identifier subId = new Identifier(IdType.URI, "http://www.zvei.de/demo/submodel/12345679");
-		Identifier typeId = new Identifier(IdType.URI, "http://www.zvei.de/demo/submodelDefinitions/87654346");
+		Identifier subId = new Identifier(IdType.IRI, "http://www.zvei.de/demo/submodel/12345679");
+		Identifier typeId = new Identifier(IdType.IRI, "http://www.zvei.de/demo/submodelDefinitions/87654346");
 		Optional<ConceptDescription> cdOpt = conceptDescRepo.findByIdentification(cdId);
 		ConceptDescription cd = cdOpt.orElse(new ConceptDescription());
 		if ( cd.getElementId() == null) {

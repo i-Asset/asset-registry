@@ -3,16 +3,19 @@ package at.srfg.iot.aas.service.basys;
 import java.util.Map;
 import java.util.Optional;
 
+import org.eclipse.basyx.submodel.metamodel.api.ISubModel;
+import org.eclipse.basyx.submodel.metamodel.api.identifier.IIdentifier;
+import org.eclipse.basyx.submodel.metamodel.map.SubModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
-import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
 import at.srfg.iot.aas.repository.basys.AssetAdministrationShellRepository;
 import at.srfg.iot.aas.repository.basys.IdentifiableRepository;
+import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
+import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
 
 @Service
 public class BasysService {
@@ -21,7 +24,7 @@ public class BasysService {
 	
 
 	@Autowired
-	private MappingEventPublisher submodelEvent;
+	private MappingEventPublisher mappingEvent;
 	
 	@Autowired
 	private IdentifiableRepository<Submodel> submodelRepo;
@@ -30,40 +33,54 @@ public class BasysService {
 	 * Process 
 	 * @param map
 	 */
-	public void processAssetAdministrationShell(Map<String,Object> map) {
-		Identifier identifier = MappingHelper.getIdentifier(map);
+	public AssetAdministrationShell processAssetAdministrationShell(Map<String,Object> map) {
+		Optional<Identifier> optId = MappingHelper.getIdentifier(map);
+		if ( optId.isPresent()) {
+			Identifier identifier = optId.get();
+			Optional<AssetAdministrationShell> shell = aasRepo.findByIdentification(identifier);
+			// when not yet registered, create the shell
+			AssetAdministrationShell theShell = shell.orElse(new AssetAdministrationShell(identifier));
+			// process the map
+			
+			mappingEvent.handleAssetAdministrationShell(org.eclipse.basyx.aas.metamodel.map.AssetAdministrationShell.createAsFacade(map), theShell);
+			// save the shell 
+			aasRepo.save(theShell);
+			return theShell;
+		}
 		// does it exist?
-		Optional<AssetAdministrationShell> shell = aasRepo.findByIdentification(identifier);
-		// when not yet registered, create the shell
-		AssetAdministrationShell theShell = shell.orElse(new AssetAdministrationShell(identifier));
-		// process the map
-		
-		submodelEvent.handleAssetAdministrationShell(map, theShell);
-		// save the shell 
-		aasRepo.save(theShell);
-
+		return null;
 		
 	}
-	public void processSubmodel(Map<String,Object> map) {
-		Identifier identifier = MappingHelper.getIdentifier(map);
-
+	public void processSubmodel(AssetAdministrationShell aas, SubModel map) {
+		Optional<Submodel> sub = aas.getSubmodel(map.getIdShort());
+		if ( sub.isPresent() ) {
+			Submodel subModel = sub.get();
+			mappingEvent.handleSubmodel(map, subModel);
+		}
 		
+	}
+	public void processSubmodel(ISubModel map) {
+		IIdentifier iId = map.getIdentification();
+		
+		if ( iId != null && iId.getId().length()>0 ) {
+			Identifier identifier = new Identifier(iId.getId());
+			Optional<Submodel> shell = submodelRepo.findByIdentification(identifier);
+			if ( shell.isPresent() ) {
+				
+				Submodel theShell = shell.get();
+				// fill in the submodel
+				mappingEvent.handleSubmodel(map, theShell);
+				// 
+				submodelRepo.save(theShell);
+			}
+			else {
+				throw new IllegalArgumentException("Cannot store an unregistered submodel" );
+			}
+		}		
 		// does it exist?
-		Optional<Submodel> shell = submodelRepo.findByIdentification(identifier);
-		if ( shell.isPresent() ) {
-			
-			Submodel theShell = shell.get();
-			// fill in the submodel
-			submodelEvent.handleSubmodel(map, theShell);
-			// 
-			submodelRepo.save(theShell);
-		}
-		else {
-			throw new IllegalArgumentException("Cannot store an unregistered submodel" );
-		}
 	}
 	public Map<String,Object> processAssetAdministrationShell(AssetAdministrationShell aas) {
-		Map<String,Object> result = submodelEvent.getFromAssetAdministrationShell(aas);
+		Map<String,Object> result = mappingEvent.getFromAssetAdministrationShell(aas);
 		
 		return result;
 	}

@@ -8,11 +8,6 @@ import at.srfg.iot.aas.common.Referable;
  * @author dglachs
  *
  */
-public interface SetReferable extends SetElement {
-	/**
-	 * Obtain access to the local element implementing {@link Referable}
-	 * @return
-	 */
-	public Referable getLocal();
+public interface SetReferable extends ReferableEvent {
 
 }

@@ -31,15 +31,18 @@ public class ConceptDictionaryHandler {
 		Collection<Map<String,Object>> conceptDescriptions = MappingHelper.getAsCollection(event.getBasyxMap(), "conceptDescriptions");
 		
 		for (Map<String,Object> conceptDescriptionMap : conceptDescriptions ) {
-			Identifier id = MappingHelper.getIdentifier(conceptDescriptionMap);
-			Optional<ConceptDescription> cd = cdRepo.findByIdentification(id);
-			
-			ConceptDescription conceptDescription = cd.orElse(new ConceptDescription(id));
+			Optional<Identifier> optId = MappingHelper.getIdentifier(conceptDescriptionMap);
+			if ( optId.isPresent()) {
+				Identifier id = optId.get();
+				Optional<ConceptDescription> cd = cdRepo.findByIdentification(id);
+				
+				ConceptDescription conceptDescription = cd.orElse(new ConceptDescription(id));
 //
-			publisher.handleConceptDescription(conceptDescriptionMap, conceptDescription);
-			//
-			event.getLocal().addConceptDescription(conceptDescription);
-			cdRepo.save(conceptDescription);
+				publisher.handleConceptDescription(conceptDescriptionMap, conceptDescription);
+				//
+				event.getLocal().addConceptDescription(conceptDescription);
+				cdRepo.save(conceptDescription);
+			}
 			
 		}
 		

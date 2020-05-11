@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.eclipse.basyx.aas.metamodel.api.parts.IConceptDictionary;
+import org.eclipse.basyx.aas.metamodel.api.parts.asset.IAsset;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
 import org.eclipse.basyx.submodel.metamodel.api.reference.IReference;
 import org.eclipse.basyx.submodel.metamodel.map.SubModel;
@@ -25,12 +27,12 @@ import at.srfg.iot.aas.basic.Asset;
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.service.basys.event.GetAssetAdministrationShellEvent;
-import at.srfg.iot.aas.service.basys.event.SetAssetAdministrationShellEvent;
-import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
-import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
 import at.srfg.iot.aas.dictionary.ConceptDictionary;
 import at.srfg.iot.aas.repository.basys.IdentifiableRepository;
+import at.srfg.iot.aas.service.basys.event.GetAssetAdministrationShellEvent;
+import at.srfg.iot.aas.service.basys.event.SetAssetAdministrationShell;
+import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
+import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
 
 @Component
 public class AssetAdministrationShellHandler {
@@ -88,11 +90,11 @@ public class AssetAdministrationShellHandler {
 	 * @param event
 	 */
 	@EventListener
-	public void onAssetAdministrationShellSet(SetAssetAdministrationShellEvent  event) {
+	public void onAssetAdministrationShellSet(SetAssetAdministrationShell event) {
 		logger.info("Start persisting the shell to storage:  {}", event.getLocal());
-		
-		Map<String,Object> assetMap = MappingHelper.getElementAsMap(event.getBasyxMap(), ASSET);
-		if ( assetMap!=null) {
+		// access the asset	
+		if ( event.getBasyxAsset()!=null) {
+			// access the local asset, create it if not present
 			Asset asset = event.getLocal().getAsset();
 			if ( asset == null) {
 				asset = new Asset();
@@ -101,55 +103,72 @@ public class AssetAdministrationShellHandler {
 				event.getLocal().setAsset(asset);
 			}
 			// handle the asset, e.g. let event listeners fill in the asset
-			mappingEventPublisher.handleAsset(assetMap, asset);
+			mappingEventPublisher.handleAsset(event.getBasyxAsset(), asset);
 			// save the asset
 			assetRepo.save(asset);
 			
 		}
-		Collection<Map<String,Object>> dictionaries = MappingHelper.getAsCollection(event.getBasyxMap(), CONCEPTDICTIONARY);
-		// 
-		for (Map<String,Object> dictMap : dictionaries) {
-			String idShort = MappingHelper.getIdShort(dictMap);
-			
+		// check the dictionary 
+		Collection<IConceptDictionary> dicts = event.getBasyxAssetAdministrationShell().getConceptDictionary();
+		for (IConceptDictionary iDict : dicts) {
+			String idShort = iDict.getIdShort();
 			Optional<ConceptDictionary> dict = event.getLocal().getConceptDictionary(idShort);
 			// when not present, create the dictionary within the shell
 			ConceptDictionary cd = dict.orElse(new ConceptDictionary(idShort, event.getLocal()));
-			mappingEventPublisher.handleConceptDictionary(dictMap, cd);
-			
+			mappingEventPublisher.handleConceptDictionary(iDict, cd);
 		}
-		List<IReference> derivedFrom = MappingHelper.getAsCollection(event.getBasyxMap(), 
-				new Function<Map<String,Object>, IReference>() {
-					@Override
-					public IReference apply(Map<String, Object> t) {
-						return Reference.createAsFacade(t);
-					}
-				
-				}, 
-				DERIVEDFROM);
-		if (derivedFrom.size()> 0) {
-			// for a reference to another aas - only on key  is re
-		}
-		// check for contained SubmodelDescriptors
-		Collection<Map<String,Object>> submodels = MappingHelper.getAsCollection(event.getBasyxMap(), SUBMODELS);
-		for (Map<String,Object> subModel : submodels) {
-			// 
-			Identifier identifier = MappingHelper.getIdentifier(subModel);
-//			Map<String,Object> idMap = getElementAsMap(subModel,IDENTIFICATION, ID);
-			// search for the contained & connected submodel
-			Optional<Submodel> sub = event.getLocal().getSubmodel(identifier);
-			Submodel sm = null;
-			if ( sub.isPresent()) {
-				sm = sub.get();
-			}
-			else {
-				// TODO: consider checking for existing, but disconnected submodel
-				sm = new Submodel(identifier, event.getLocal());
-			}
-			// handle the submodel, let event listeners fill in the submodel
-			mappingEventPublisher.handleSubmodel(subModel, sm);
-			// save the submodel
-			submodelRepo.save(sm);
-		}
+//		IReference derivedFrom = event.getBasyxAssetAdministrationShell().getDerivedFrom();
+//		// TODO: work with derived from!!!
+//
+//		
+//		for (SubmodelDescriptor smDesc : event.getBasyxAssetAdministrationShell().getSubModelDescriptors() ) {
+//			//
+//			// is there a shortId?
+//			String idShort = smDesc.getIdShort();
+//			
+//			
+//		}
+//		// check for contained SubmodelDescriptors
+//		for (ISubModel sub : event.getBasyxAssetAdministrationShell().getSubModels()) {
+//			
+//		}
+//		Collection<Map<String,Object>> submodels = MappingHelper.getAsCollection(event.getBasyxMap(), SUBMODELS);
+//		for (Map<String,Object> subModel : submodels) {
+//			// 
+//			
+//			Submodel sm = null;
+//			Optional<Identifier> subIdentifier = MappingHelper.getIdentifier(subModel);
+//			if ( subIdentifier.isPresent()) {
+////			Map<String,Object> idMap = getElementAsMap(subModel,IDENTIFICATION, ID);
+//				// search for the contained & connected submodel
+//				Identifier identifier = subIdentifier.get();
+//				Optional<Submodel> sub = event.getLocal().getSubmodel(identifier);
+//				if ( sub.isPresent()) {
+//					sm = sub.get();
+//				}
+//				else {
+//					// TODO: consider checking for existing, but disconnected submodel
+//					sm = new Submodel(identifier, event.getLocal());
+//				}
+//			}
+//			else {
+//				// check the idShort
+//				String idShort = MappingHelper.getIdShort(subModel);
+//				// 
+//				Identifier subId = new Identifier(idShort);
+//				Optional<Submodel> subModelOpt = event.getLocal().getSubmodel(idShort);
+//				if ( subModelOpt.isPresent()) {
+//					sm = subModelOpt.get();
+//				}
+//				else {
+//					sm = new Submodel(subId, event.getLocal());
+//				}
+//			}
+//			mappingEventPublisher.handleSubmodel(subModel, sm);
+//			// handle the submodel, let event listeners fill in the submodel
+//			// save the submodel
+//			submodelRepo.save(sm);
+//		}
 		System.out.println("End of AssetAdministrationShell Handling: " + event.getLocal().getId());
 
 	}
