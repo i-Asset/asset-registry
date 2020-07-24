@@ -45,7 +45,7 @@ public class BoschRexRoth {
 		if ( theAsset.getElementId() == null) {
 			theAsset.setDescription("en", "Festo Controller");
 			theAsset.setIdentification(new Identifier(IdType.IRI, "http://pk.festo.com/3s7plfdrs35"));
-			theAsset.setKind(Kind.Instance);
+			theAsset.setAssetKind(Kind.Instance);
 			theAsset.setIdShort("3s7plfdrs35");
 			assetRepo.save(theAsset);
 		}
