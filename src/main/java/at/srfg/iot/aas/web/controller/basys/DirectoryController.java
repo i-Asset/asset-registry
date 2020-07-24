@@ -1,5 +1,7 @@
 package at.srfg.iot.aas.web.controller.basys;
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.basyx.vab.coder.json.metaprotocol.Result;
@@ -54,7 +56,11 @@ public class DirectoryController implements BasyxRegistry {
 		
 		try {
 			Result result = new Result(true);
-			result.put(Result.ENTITY, provider.getModelPropertyValue(path));
+			Object o = provider.getModelPropertyValue(path);
+			if ( o == null ) {
+				o = new HashMap<String, Object>();
+			}
+			result.put(Result.ENTITY, o);
 			// return the result
 			return ResponseEntity.ok(result);
 		} catch (Exception e) {
