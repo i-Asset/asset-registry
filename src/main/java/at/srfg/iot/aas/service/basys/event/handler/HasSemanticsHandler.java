@@ -28,7 +28,7 @@ import at.srfg.iot.aas.common.referencing.KeyElementsEnum;
 import at.srfg.iot.aas.common.referencing.ReferableElement;
 import at.srfg.iot.aas.dictionary.ConceptDescription;
 import at.srfg.iot.aas.modeling.SubmodelElement;
-import at.srfg.iot.aas.repository.basys.IdentifiableRepository;
+import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 
 @Component
 public class HasSemanticsHandler {

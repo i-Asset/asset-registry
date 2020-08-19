@@ -28,7 +28,7 @@ import at.srfg.iot.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.dictionary.ConceptDictionary;
-import at.srfg.iot.aas.repository.basys.IdentifiableRepository;
+import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.service.basys.event.GetAssetAdministrationShellEvent;
 import at.srfg.iot.aas.service.basys.event.SetAssetAdministrationShell;
 import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
@@ -67,18 +67,18 @@ public class AssetAdministrationShellHandler {
 		}
 		// process the submodels 
 		for ( Submodel model : local.getSubModel()) {
-			String endpoint = local.getFirstEndpoint().getAddress()+"/submodels";
-			if (readEvent.getDescriptorOnly()) {
-				SubmodelDescriptor descriptor = mappingEventPublisher.getDescriptorFromSubmodel(model);
+//			String endpoint = local.getFirstEndpoint().getAddress()+"/submodels";
+			SubModel descriptor = mappingEventPublisher.getFromSubmodel(model);
 //				SubModel sub = mappingEventPublisher.getFromSubmodel(model);
 //				SubmodelDescriptor descriptor = new SubmodelDescriptor(sub, endpoint);
-				facade.addSubModel(descriptor);
-			}
-			else {
-				SubModel sub = mappingEventPublisher.getFromSubmodel(model);
-				SubmodelDescriptor descriptor = new SubmodelDescriptor(sub, endpoint);
-				facade.addSubModel(descriptor);
-			}
+			facade.addSubModel(descriptor);
+//			if (readEvent.getDescriptorOnly()) {
+//			}
+//			else {
+//				SubModel sub = mappingEventPublisher.getFromSubmodel(model);
+//				SubmodelDescriptor descriptor = new SubmodelDescriptor(sub, endpoint);
+//				facade.addSubModel(descriptor);
+//			}
 		}
 		for (ConceptDictionary dict : local.getConceptDictionary() ) {
 			// TODO: implement 

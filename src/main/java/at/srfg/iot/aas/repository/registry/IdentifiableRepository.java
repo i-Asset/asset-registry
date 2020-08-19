@@ -1,4 +1,4 @@
-package at.srfg.iot.aas.repository.basys;
+package at.srfg.iot.aas.repository.registry;
 import java.util.Optional;
 
 import at.srfg.iot.aas.basic.Identifier;

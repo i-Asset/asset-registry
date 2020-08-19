@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import at.srfg.iot.aas.basic.Asset;
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.aas.basic.Identifier;
-import at.srfg.iot.aas.repository.basys.IdentifiableRepository;
+import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 
 @Service
 public class AssetService {
@@ -40,8 +40,4 @@ public class AssetService {
 		}
 		return false;
 	}
-	
-	
-	
-
 }

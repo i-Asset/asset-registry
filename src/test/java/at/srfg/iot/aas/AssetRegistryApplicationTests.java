@@ -2,8 +2,7 @@ package at.srfg.iot.aas;
 
 import static org.junit.Assert.assertTrue;
 
-import java.net.URI;
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,11 +23,12 @@ import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.common.referencing.IdPart;
 import at.srfg.iot.aas.common.referencing.IdType;
 import at.srfg.iot.aas.dependency.SemanticLookup;
-import at.srfg.iot.aas.repository.basys.AssetAdministrationShellRepository;
-import at.srfg.iot.aas.repository.basys.IdentifiableRepository;
+import at.srfg.iot.aas.repository.registry.AssetAdministrationShellRepository;
+import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.service.basys.RegistryProvider;
-import at.srfg.iot.eclass.model.ClassificationClass;
-import at.srfg.iot.eclass.model.PropertyDefinition;
+import at.srfg.iot.classification.model.ConceptBase;
+import at.srfg.iot.classification.model.ConceptClass;
+import at.srfg.iot.classification.model.Property;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -53,10 +53,10 @@ public class AssetRegistryApplicationTests {
 	public void testFeign() {
 		// 
 		try {
-			Optional<ClassificationClass> cc = rexRoth.getClass("0173-1#01-AFW236#002");
+			Optional<ConceptBase> cc = rexRoth.getConcept("0173-1#01-AFW236#002");
 			assertTrue(cc.isPresent());
-			assertTrue(cc.get().getIdentifier().contentEquals("AFW236"));
-			List<PropertyDefinition> values = rexRoth.getPropertiesForClass("0173-1#01-AFY428#003");//, "0173-1#02-AAP794#001");
+//			assertTrue(cc.get().getIdentifier().contentEquals("AFW236"));
+			Collection<Property> values = rexRoth.getPropertiesForConceptClass("0173-1#01-AFY428#003", false);//, "0173-1#02-AAP794#001");
 			assertTrue(values.size()>0);
 			
 			
@@ -67,12 +67,12 @@ public class AssetRegistryApplicationTests {
 	}
 	@Test
 	public void testNamspaceDetection() {
-		String full = "urn:indexing:"+ClassificationClass.class.getSimpleName()+"#localName";
+		String full = "urn:indexing:"+ConceptClass.class.getSimpleName()+"#localName";
 		IdType uri = IdType.getType(full);
 		assertTrue(uri.equals(IdType.IRI));
 		String nameSpace = IdPart.Namespace.getFrom(full);
 		String localName = IdPart.LocalName.getFrom(full);
-		assertTrue(nameSpace.equals("urn:indexing:"+ClassificationClass.class.getSimpleName()+"#"));
+		assertTrue(nameSpace.equals("urn:indexing:"+ConceptClass.class.getSimpleName()+"#"));
 		assertTrue(localName.equals("localName"));
 	}
 	

@@ -19,7 +19,7 @@ public interface ReferableEvent extends BasyxEvent {
 	 * @return
 	 */
 	default org.eclipse.basyx.submodel.metamodel.map.qualifier.Referable getBasyxReferable() {
-		return org.eclipse.basyx.submodel.metamodel.map.qualifier.Referable.createAsFacade(getBasyxMap());
+		return org.eclipse.basyx.submodel.metamodel.map.qualifier.Referable.createAsFacade(getBasyxMap(),null);
 	}
 
 }

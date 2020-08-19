@@ -28,7 +28,7 @@ import at.srfg.iot.aas.modeling.submodelelement.Property;
 import at.srfg.iot.aas.modeling.submodelelement.ReferenceElement;
 import at.srfg.iot.aas.modeling.submodelelement.RelationshipElement;
 import at.srfg.iot.aas.modeling.submodelelement.SubmodelElementCollection;
-import at.srfg.iot.aas.repository.basys.ReferableRepository;
+import at.srfg.iot.aas.repository.registry.ReferableRepository;
 
 @Component
 public class SubmodelHandler {

@@ -14,8 +14,8 @@ import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.modeling.SubmodelElement;
 import at.srfg.iot.aas.modeling.submodelelement.SubmodelElementCollection;
-import at.srfg.iot.aas.repository.basys.IdentifiableRepository;
-import at.srfg.iot.aas.repository.basys.SubmodelElementRepository;
+import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
+import at.srfg.iot.aas.repository.registry.SubmodelElementRepository;
 
 @Service
 public class SubmodelService {

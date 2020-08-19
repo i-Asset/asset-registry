@@ -14,6 +14,6 @@ public interface IdentifiableEvent extends BasyxEvent {
 	 */
 	Identifiable getLocal();
 	default org.eclipse.basyx.submodel.metamodel.map.qualifier.Identifiable getBasyxIdentifiable() {
-		return org.eclipse.basyx.submodel.metamodel.map.qualifier.Identifiable.createAsFacade(getBasyxMap());
+		return org.eclipse.basyx.submodel.metamodel.map.qualifier.Identifiable.createAsFacade(getBasyxMap(), null);
 	}
 }

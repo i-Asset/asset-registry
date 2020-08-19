@@ -176,10 +176,10 @@
 			<artifactId>jersey-client</artifactId>
 			<version>2.29</version>
 		</dependency>
-		<!-- data model (i-asset eclass) -->
+		<!-- data model (i-asset semantic-lookup) -->
 		<dependency>
 			<groupId>at.srfg.iot.iasset</groupId>
-			<artifactId>eclass-data-model</artifactId>
+			<artifactId>semantic-lookup-data-model</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>

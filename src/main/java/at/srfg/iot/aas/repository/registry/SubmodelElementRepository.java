@@ -1,4 +1,4 @@
-package at.srfg.iot.aas.repository.basys;
+package at.srfg.iot.aas.repository.registry;
 
 import java.util.List;
 

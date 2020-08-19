@@ -16,5 +16,4 @@ public interface BasyxEvent {
 	 * @return
 	 */
 	public Map<String,Object> getBasyxMap();
-
 }

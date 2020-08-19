@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.basyx.aas.metamodel.map.AssetAdministrationShell;
-import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
+import org.eclipse.basyx.submodel.metamodel.api.ISubModel;
 import org.eclipse.basyx.submodel.metamodel.map.SubModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.common.referencing.KeyElementsEnum;
-import at.srfg.iot.aas.repository.basys.AssetAdministrationShellRepository;
-import at.srfg.iot.aas.repository.basys.IdentifiableRepository;
+import at.srfg.iot.aas.repository.registry.AssetAdministrationShellRepository;
+import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.service.basys.event.RegistrationEvent;
 import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
 import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
@@ -69,7 +69,7 @@ public class RegistrationEventHandler {
 				// 
 				aasRepo.save(localShell);
 				//
-				for (SubmodelDescriptor desc : remoteShell.getSubModelDescriptors() ) {
+				for (ISubModel desc : remoteShell.getSubModels().values() ) {
 					String idShort = desc.getIdShort();
 					Object subObject = event.getElementProxy().getModelPropertyValue("aas/submodels/"+idShort);
 					if ( subObject instanceof Map<?,?> ) {

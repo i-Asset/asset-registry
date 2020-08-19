@@ -1,5 +1,6 @@
 package at.srfg.iot.aas.service.basys.event.handler;
 
+import org.eclipse.basyx.submodel.metamodel.api.reference.enums.KeyElements;
 import org.eclipse.basyx.submodel.metamodel.map.qualifier.Identifiable;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -29,7 +30,7 @@ public class IdentifiableHandler {
 	}
 	@EventListener
 	public void onIdentifiableGet(GetIdentifiable  event) {
-		Identifiable facade = Identifiable.createAsFacade(event.getBasyxMap());
+		Identifiable facade = Identifiable.createAsFacade(event.getBasyxMap(),null);
 		AdministrativeInformation admin = event.getLocal().getAdministration();
 		if ( admin!=null) {
 			org.eclipse.basyx.submodel.metamodel.map.qualifier.AdministrativeInformation a 

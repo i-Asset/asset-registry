@@ -15,10 +15,10 @@ import at.srfg.iot.aas.dependency.SemanticLookup;
 import at.srfg.iot.aas.dictionary.ConceptDescription;
 import at.srfg.iot.aas.modeling.submodelelement.Property;
 import at.srfg.iot.aas.modeling.submodelelement.SubmodelElementCollection;
-import at.srfg.iot.aas.repository.basys.AssetAdministrationShellRepository;
-import at.srfg.iot.aas.repository.basys.IdentifiableRepository;
-import at.srfg.iot.aas.repository.basys.SubmodelRepository;
-import at.srfg.iot.eclass.model.ClassificationClass;
+import at.srfg.iot.aas.repository.registry.AssetAdministrationShellRepository;
+import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
+import at.srfg.iot.aas.repository.registry.SubmodelRepository;
+import at.srfg.iot.classification.model.ConceptClass;
 
 @Service
 public class BoschRexRoth {
@@ -38,13 +38,13 @@ public class BoschRexRoth {
 	
 	
 	
-	public Optional<AssetAdministrationShell> createAsset() {
+	public Optional<AssetAdministrationShell> createAsset(String uri) {
 		
-		Optional<Asset> theOptAsset = assetRepo.findByIdentification(new Identifier(IdType.IRI, "http://pk.festo.com/3s7plfdrs35"));
-		Asset theAsset = theOptAsset.orElse(new Asset()); 
+		Optional<Asset> theOptAsset = assetRepo.findByIdentification(new Identifier(uri+"#asset"));
+		Asset theAsset = theOptAsset.orElse(new Asset(new Identifier(uri))); 
 		if ( theAsset.getElementId() == null) {
 			theAsset.setDescription("en", "Festo Controller");
-			theAsset.setIdentification(new Identifier(IdType.IRI, "http://pk.festo.com/3s7plfdrs35"));
+//			theAsset.setIdentification(new Identifier(IdType.IRI, "http://pk.festo.com/3s7plfdrs35"));
 			theAsset.setKind(Kind.Instance);
 			theAsset.setIdShort("3s7plfdrs35");
 			assetRepo.save(theAsset);
@@ -54,7 +54,7 @@ public class BoschRexRoth {
 		AssetAdministrationShell shell = null;
 		if (!opt.isPresent()) {
 			shell = new AssetAdministrationShell(theAsset);
-			shell.setIdentification(new Identifier(IdType.IRI, "www.admin-shell.io/aas-sample/1/0"));
+			shell.setIdentification(new Identifier(uri+"#aas"));
 			shell.setIdShort("123456");
 		}
 		else {
@@ -65,7 +65,8 @@ public class BoschRexRoth {
 
 		Identifier cdId = new Identifier(IdType.IRI, "www.festo.com/dic/08111234");
 		
-		Identifier subId = new Identifier(IdType.IRI, "http://www.zvei.de/demo/submodel/12345679");
+		Identifier subId = new Identifier("definitions");
+		
 		Identifier typeId = new Identifier(IdType.IRI, "http://www.zvei.de/demo/submodelDefinitions/87654346");
 		Optional<ConceptDescription> cdOpt = conceptDescRepo.findByIdentification(cdId);
 		ConceptDescription cd = cdOpt.orElse(new ConceptDescription());
@@ -76,21 +77,14 @@ public class BoschRexRoth {
 		/*
 		 * Demonstrate the possibilities of a submodel
 		 */
-		Submodel type = subModelRepo.findByIdentification(typeId);
-		if ( type == null) {
-			type = new Submodel(typeId,shell);
-			type.setIdentification(typeId);
-		}
+		Optional<Submodel> typeOpt = subModelRepo.findByIdentification(typeId);
+		Submodel type = typeOpt.orElse(new Submodel(typeId, shell));
 		type.setKind(Kind.Type);
 		type.setIdShort("87654346");
 		subModelRepo.save(type);
-		Submodel sub = subModelRepo.findByIdentification(subId);
-		if ( sub == null) {
-			sub = new Submodel(subId, shell);
-			sub.setIdentification(subId);
-			
-			
-		}
+
+		Optional<Submodel> subOpt = subModelRepo.findByIdentification(subId);
+		Submodel sub = subOpt.orElse(new Submodel(subId, shell));
 		sub.setParent(shell);
 		sub.setKind(Kind.Instance);
 		sub.setSemanticElement(type);
@@ -139,10 +133,10 @@ public class BoschRexRoth {
 
 
 
-	public Optional<ClassificationClass> getClassType(String id) {
+	public Optional<ConceptClass> getClassType(String id) {
 //		return Optional.empty();
 
-		return eclass.getClass(id);
+		return eclass.getConceptClass(id);
 	}
 
 

@@ -14,7 +14,7 @@ import at.srfg.iot.aas.service.basys.event.SetConceptDictionaryEvent;
 import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
 import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
 import at.srfg.iot.aas.dictionary.ConceptDescription;
-import at.srfg.iot.aas.repository.basys.IdentifiableRepository;
+import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 
 @Component
 public class ConceptDictionaryHandler {

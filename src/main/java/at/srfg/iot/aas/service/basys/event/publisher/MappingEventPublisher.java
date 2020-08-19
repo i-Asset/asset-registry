@@ -127,20 +127,21 @@ public class MappingEventPublisher {
 		return event.getBasyxMap();
 	}
 	public SubmodelDescriptor getDescriptorFromSubmodel(Submodel submodel) {
-		Identifier id = new Identifier();
-		id.setId(submodel.getId());
-		return new SubmodelDescriptor(submodel.getIdShort(), id, submodel.getParentElement().getFirstEndpoint().getAddress());
-//		GetSubmodelEvent event = new GetSubmodelEvent(submodel, true);
-//		publisher.publishEvent(event);
-//		SubModel map = event.getBasyxMap();
-//		String endpoint = submodel.getParentElement().getFirstEndpoint().getAddress();
-//		// the endpoint
-////		if (! endpoint.endsWith(shell.getId())) {
-////			endpoint = String.format("%s/%s", endpoint, shell.getId());
-////		}
-//		SubmodelDescriptor desriptor = new SubmodelDescriptor(map);
-//		desriptor.setEndpoint(endpoint, submodel.getParentElement().getFirstEndpoint().getType());
-//		return descriptor);
+//		Identifier id = new Identifier();
+//		id.setId(submodel.getId());
+//		return new SubmodelDescriptor(submodel.getIdShort(), id, submodel.getParentElement().getFirstEndpoint().getAddress());
+////		GetSubmodelEvent event = new GetSubmodelEvent(submodel, true);
+////		publisher.publishEvent(event);
+////		SubModel map = event.getBasyxMap();
+////		String endpoint = submodel.getParentElement().getFirstEndpoint().getAddress();
+////		// the endpoint
+//////		if (! endpoint.endsWith(shell.getId())) {
+//////			endpoint = String.format("%s/%s", endpoint, shell.getId());
+//////		}
+////		SubmodelDescriptor desriptor = new SubmodelDescriptor(map);
+////		desriptor.setEndpoint(endpoint, submodel.getParentElement().getFirstEndpoint().getType());
+////		return descriptor);
+		return null;
 	}
 	public SubModel getFromSubmodel(Submodel model) {
 		GetSubmodelEvent event = new GetSubmodelEvent(model);

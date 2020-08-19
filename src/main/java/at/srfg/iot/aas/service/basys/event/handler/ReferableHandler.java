@@ -34,7 +34,7 @@ public class ReferableHandler {
 	}
 	@EventListener
 	public void onReadFromReferable(GetReferable readEvent) {
-		Referable facade = Referable.createAsFacade(readEvent.getBasyxMap());
+		Referable facade = Referable.createAsFacade(readEvent.getBasyxMap(), null);
 		
 		facade.setCategory(readEvent.getLocal().getCategory());
 		facade.setIdShort(readEvent.getLocal().getIdShort());

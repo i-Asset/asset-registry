@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.aas.basic.Identifier;
-import at.srfg.iot.aas.repository.basys.AssetAdministrationShellRepository;
+import at.srfg.iot.aas.repository.registry.AssetAdministrationShellRepository;
 
 @Service
 public class AssetProvider implements IModelProvider {
