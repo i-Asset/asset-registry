@@ -24,6 +24,16 @@ public interface EventElementEvent extends ApiEvent {
 		return (getEntity().getObservableElement() == null || 
 				!(getEntity().getObservableElement() instanceof Reference));
 	}
+	@JsonIgnore
+	default boolean isSemanticElementResolved() {
+		return (getEntity().getSemanticElement() == null || 
+				!(getEntity().getSemanticElement() instanceof Reference));
+	}
+	@JsonIgnore
+	default boolean isMessageBrokerResolved() {
+		return (getEntity().getMessageBroker() == null || 
+				!(getEntity().getMessageBroker() instanceof Reference));
+	}
 	default boolean isValidObservedElement(ReferableElement observedElement) {
 		if ( observedElement instanceof AssetAdministrationShell) {
 			return true;
