@@ -28,7 +28,7 @@ import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.service.basys.RegistryProvider;
 import at.srfg.iot.classification.model.ConceptBase;
 import at.srfg.iot.classification.model.ConceptClass;
-import at.srfg.iot.classification.model.Property;
+import at.srfg.iot.classification.model.ConceptProperty;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -56,7 +56,7 @@ public class AssetRegistryApplicationTests {
 			Optional<ConceptBase> cc = rexRoth.getConcept("0173-1#01-AFW236#002");
 			assertTrue(cc.isPresent());
 //			assertTrue(cc.get().getIdentifier().contentEquals("AFW236"));
-			Collection<Property> values = rexRoth.getPropertiesForConceptClass("0173-1#01-AFY428#003", false);//, "0173-1#02-AAP794#001");
+			Collection<ConceptProperty> values = rexRoth.getPropertiesForConceptClass("0173-1#01-AFY428#003", false);//, "0173-1#02-AAP794#001");
 			assertTrue(values.size()>0);
 			
 			

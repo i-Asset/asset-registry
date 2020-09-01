@@ -4,6 +4,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import at.srfg.iot.aas.common.Identifiable;
+import at.srfg.iot.aas.service.registry.event.IdentifiableEvent;
 
 @Component
 public class IdentifiableEventHandler {

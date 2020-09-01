@@ -1,4 +1,4 @@
-package at.srfg.iot.aas.service.registry.event.handler;
+package at.srfg.iot.aas.service.registry.event.object;
 
 import org.springframework.context.ApplicationEvent;
 
@@ -16,36 +16,37 @@ public abstract class RegistryEventObject<T extends ReferableElement, DTO> exten
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
-	 * The registry element already stored & persisted, <code>null</code> when a new data is provided
+	 * The registry element already stored & persisted, must not be <code>null</code>
 	 */
-	private T entity;
+	private final T entity;
 	/**
 	 * The corresponding element provided via API - must not be <code>null</code> 
 	 */
 	private final DTO dto;
+	/**
+	 * Constructor for the {@link RegistryEventObject}, both the persisted entity and the data transfer object
+	 * must not be null!
+	 * @param source
+	 * @param stored
+	 * @param api
+	 */
 	public RegistryEventObject(Object source, T stored, DTO api) {
 		super(source);
 		this.dto = api;
 		this.entity = stored;
 	}
 	public RegistryEventObject(Object source, DTO api) {
-		super(source);
-		this.dto = api;
-		this.entity = null;
+		this(source, null, api);
 	}
+	/**
+	 * Obtain the entity element
+	 * @return
+	 */
 	public T getEntity() {
-		if ( entity == null) {
-			entity = newEntity();
-		}
 		return entity;
-	}
-	public void setEntity(T toStore) {
-		this.entity = toStore;
 	}
 	public DTO getDTO() {
 		return dto;
 	}
-	
-	protected abstract T newEntity();
 	
 }

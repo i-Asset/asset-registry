@@ -5,23 +5,42 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import at.srfg.iot.aas.basic.Asset;
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.aas.basic.Submodel;
+import at.srfg.iot.aas.common.referencing.Reference;
 import at.srfg.iot.aas.dictionary.ConceptDescription;
 import at.srfg.iot.aas.modeling.SubmodelElement;
-import at.srfg.iot.aas.service.registry.AssetRegistryService;
+import at.srfg.iot.aas.service.basys.BoschRexRoth;
+import at.srfg.iot.aas.service.registry.RegistryService;
+import at.srfg.iot.aas.service.registry.RegistryWorker;
 import at.srfg.iot.api.AssetRegistryAPI;
 
 @RestController
 public class AssetRegistryController implements AssetRegistryAPI {
+//	@Autowired
+//	private AssetRegistryService registry;
 	@Autowired
-	private AssetRegistryService registry;
+	private RegistryWorker worker;
+	
+	@Autowired
+	private RegistryService registry;
+	@Autowired
+	private BoschRexRoth sample;
 
 	@Override
 	public Optional<AssetAdministrationShell> getAssetAdministrationShell(String uri) throws Exception {
-		return registry.getAssetAdministrationShell(uri);
+		Optional<AssetAdministrationShell> opt = registry.getAssetAdministrationShell(uri);
+		// FIXME: remove this, for development only
+		if (! opt.isPresent()) {
+			return sample.createAsset(uri);
+		}
+		return opt;
 	}
-
+	@Override
+	public Optional<Asset> getAsset(String uri) throws Exception {
+		return registry.getAsset(uri);
+	}
 	@Override
 	public boolean deleteAssetAdministrationShell(String uri) throws Exception {
 		return registry.deleteAssetAdministrationShell(uri);
@@ -34,43 +53,64 @@ public class AssetRegistryController implements AssetRegistryAPI {
 
 	@Override
 	public Optional<Submodel> addSubmodel(String uri, Submodel submodel) throws Exception {
-		return registry.addSubmodel(uri, submodel);
+		return worker.createSubmodel(uri, submodel);
 	}
 
 	@Override
 	public Optional<Submodel> setSubmodel(Submodel submodel) throws Exception {
-		return registry.setSubmodel(submodel);
+		return worker.setSubmodel(submodel);
 	}
 	@Override
 	public boolean deleteSubmodel(String uri) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		return registry.deleteSubmodel(uri);
 	}
 
 	@Override
 	public Optional<SubmodelElement> getSubmodelElement(String uri, String path) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return registry.resolveReference(uri, path, SubmodelElement.class);
 	}
 
 	@Override
+	public Optional<AssetAdministrationShell> getAssetAdministrationShellByReference(Reference reference)
+			throws Exception {
+		return registry.resolveReference(reference, AssetAdministrationShell.class);
+	}
+
+	@Override
+	public Optional<Asset> getAssetByReference(Reference reference) throws Exception {
+		return registry.resolveReference(reference, Asset.class);
+	}
+
+	@Override
+	public Optional<Submodel> getSubmodelByReference(Reference reference) throws Exception {
+		return registry.resolveReference(reference, Submodel.class);
+	}
+
+	@Override
+	public Optional<SubmodelElement> getSubmodelElementByReference(Reference reference) throws Exception {
+		return registry.resolveReference(reference, SubmodelElement.class);
+	}
+
+	@Override
+	public Optional<ConceptDescription> getConceptDescriptionByReference(Reference reference) throws Exception {
+		return registry.resolveReference(reference, ConceptDescription.class);
+	}
+	
+	@Override
 	public Optional<SubmodelElement> addSubmodelElement(String uri, String path, SubmodelElement submodelElement)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return worker.addSubmodelElement(uri, path, submodelElement);
 	}
 
 	@Override
 	public Optional<SubmodelElement> setSubmodelElement(String uri, String path, SubmodelElement submodelElement)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return worker.setSubmodelElement(uri, path, submodelElement);
 	}
 
 	@Override
 	public boolean deleteSubmodelElement(String uri, String path) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		return registry.deleteSubmodelElement(uri, path);
 	}
 
 	@Override
@@ -81,15 +121,14 @@ public class AssetRegistryController implements AssetRegistryAPI {
 	@Override
 	public Optional<ConceptDescription> addConceptDescription(String uri, ConceptDescription submodelElement)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return registry.addConceptDescription(submodelElement);
+		throw new UnsupportedOperationException("Adding concept description is currently not supported!");
+
 	}
 
 	@Override
 	public Optional<ConceptDescription> setConceptDescription(String uri, ConceptDescription conceptDescription)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Updateing concept description is currently not supported!");
 	}
 
 	@Override

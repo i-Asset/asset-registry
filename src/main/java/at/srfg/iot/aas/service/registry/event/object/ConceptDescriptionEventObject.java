@@ -1,6 +1,8 @@
-package at.srfg.iot.aas.service.registry.event.handler;
+package at.srfg.iot.aas.service.registry.event.object;
 
 import at.srfg.iot.aas.dictionary.ConceptDescription;
+import at.srfg.iot.aas.service.registry.event.HasDataSpecificationEvent;
+import at.srfg.iot.aas.service.registry.event.ReferableEvent;
 
 public class ConceptDescriptionEventObject extends RegistryEventObject<ConceptDescription, ConceptDescription> 
 	implements ReferableEvent, HasDataSpecificationEvent
@@ -15,10 +17,6 @@ public class ConceptDescriptionEventObject extends RegistryEventObject<ConceptDe
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Override
-	protected ConceptDescription newEntity() {
-		return new ConceptDescription();
-	}
 	
 
 }

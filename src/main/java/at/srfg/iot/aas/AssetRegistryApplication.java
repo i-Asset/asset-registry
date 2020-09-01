@@ -18,7 +18,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 		ManagementWebSecurityAutoConfiguration.class
 		})
 // 
-@EntityScan("at.srfg.iot.aas")
+@EntityScan({
+	// model for the assset registry
+	"at.srfg.iot.aas", 
+	// model for the classification system
+	"at.srfg.iot.classification"})
 //@ComponentScan({
 //	// asset-registry components
 //	"at.srfg.iot.aas"})

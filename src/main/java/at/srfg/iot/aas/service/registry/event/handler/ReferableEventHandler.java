@@ -4,7 +4,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import at.srfg.iot.aas.common.Referable;
-import at.srfg.iot.aas.common.referencing.Description;
+import at.srfg.iot.aas.common.referencing.ReferableDescription;
+import at.srfg.iot.aas.service.registry.event.ReferableEvent;
 
 @Component
 public class ReferableEventHandler {
@@ -17,7 +18,7 @@ public class ReferableEventHandler {
 		entity.setCategory(dto.getCategory());
 		entity.setIdShort(dto.getIdShort());
 		
-		for (Description c : dto.getDescription()) {
+		for (ReferableDescription c : dto.getDescription()) {
 			entity.setDescription(c.getLanguage(), c.getDescription());
 		}
 		

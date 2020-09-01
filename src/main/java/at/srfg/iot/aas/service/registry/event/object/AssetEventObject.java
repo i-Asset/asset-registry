@@ -1,4 +1,4 @@
-package at.srfg.iot.aas.service.registry.event.handler;
+package at.srfg.iot.aas.service.registry.event.object;
 
 import at.srfg.iot.aas.basic.Asset;
 
@@ -12,10 +12,6 @@ public class AssetEventObject extends RegistryEventObject<Asset, Asset> {
 		super(source, api);
 	}
 
-	@Override
-	protected Asset newEntity() {
-		return new Asset();
-	}
 
 
 }

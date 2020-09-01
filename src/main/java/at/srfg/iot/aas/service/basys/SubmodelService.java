@@ -149,7 +149,7 @@ public class SubmodelService {
 			T obj = clazz.newInstance();
 			obj.setIdShort(idShort);
 			obj.setSubmodel(submodel);
-			obj.setParentElement(submodel);
+			obj.setParent(submodel);
 //			submodel.addChildElement(obj);
 			return obj;
 		} catch (InstantiationException | IllegalAccessException e) {
@@ -163,7 +163,7 @@ public class SubmodelService {
 			T obj = clazz.newInstance();
 			obj.setIdShort(idShort);
 			obj.setSubmodel(collection.getSubmodel());
-			obj.setParentElement(collection);
+			obj.setParent(collection);
 //			obj.setSubmodelElementCollection(collection);
 //			collection.addChildElement(obj);
 			return obj;

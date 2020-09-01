@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import at.srfg.iot.aas.service.basys.event.GetReferable;
 import at.srfg.iot.aas.service.basys.event.SetReferable;
-import at.srfg.iot.aas.common.referencing.Description;
+import at.srfg.iot.aas.common.referencing.ReferableDescription;
 
 @Component
 public class ReferableHandler {
@@ -39,9 +39,9 @@ public class ReferableHandler {
 		facade.setCategory(readEvent.getLocal().getCategory());
 		facade.setIdShort(readEvent.getLocal().getIdShort());
 		LangStrings ls = new LangStrings();
-		Optional<Description> d = readEvent.getLocal().getFirstDescription();
+		Optional<ReferableDescription> d = readEvent.getLocal().getFirstDescription();
 		if ( d.isPresent()) {
-			Description desc = d.get();
+			ReferableDescription desc = d.get();
 			LangString s = new LangString(desc.getLanguage(), desc.getDescription());
 			ls.add(s);
 		}

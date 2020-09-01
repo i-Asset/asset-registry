@@ -96,7 +96,6 @@ public class HasSemanticsHandler {
 				globalReferenceRepo.save(globalReference);
 				// relate local element with global reference
 				local.setSemanticElement(globalReference);
-				local.setSemanticIdentifier(theKey.asIdentifier());
 				break;
 			case ConceptDescription:
 				
@@ -110,7 +109,6 @@ public class HasSemanticsHandler {
 				conceptDescriptionRepo.save(conceptDescription);
 				// relate local element with concept descripton
 				local.setSemanticElement(conceptDescription);
-				local.setSemanticIdentifier(theKey.asIdentifier());
 				break;
 			default:
 				break;
@@ -190,10 +188,10 @@ public class HasSemanticsHandler {
 
 				@Override
 				public Key apply(IKey t) {
-					KeyElementsEnum type = KeyElementsEnum.valueOf(t.getType().toString());
+					KeyElementsEnum type = KeyElementsEnum.valueOf(t.getType().getStandardizedLiteral());
 					IdType.getType(t.getValue());
-					
-					Key k = Key.of(type.name(), t.getValue(), IdType.getType(t.getValue()));
+					Key k = Key.of(t.getValue(), type);
+//					Key k = Key.of(type.name(), t.getValue(), IdType.getType(t.getValue()));
 					return k;
 				}
 			})
