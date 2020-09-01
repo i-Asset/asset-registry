@@ -48,7 +48,6 @@ public class AssetRegistryApplicationTests {
 	@Test
 	public void contextLoads() {
 	}
-	@Ignore
 	@Test
 	public void testFeign() {
 		// 
@@ -106,6 +105,7 @@ public class AssetRegistryApplicationTests {
 		assertTrue("srfg".equals(legalEntity));
 		
 	}
+	@Ignore
 	@Test
 	public void registerAsset() throws Exception {
 		IIdentifier iid = new Identifier(IdentifierType.IRI, "http://example.com/aas/1");
