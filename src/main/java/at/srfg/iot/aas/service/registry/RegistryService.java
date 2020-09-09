@@ -1,6 +1,6 @@
 package at.srfg.iot.aas.service.registry;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,11 +45,41 @@ public class RegistryService {
 	@Autowired
 	private SemanticLookup lookup;
 	
+	
+	public AssetAdministrationShell saveAssetAdministrationShell(AssetAdministrationShell elem) {
+		return aasRepo.save(elem);
+	}
+	public Submodel saveSubmodel(Submodel elem) {
+		return submodelRepo.save(elem);
+	}
+	public SubmodelElement saveSubmodelElement(SubmodelElement elem) {
+		return submodelElementRepo.save(elem);
+	}
+	public Optional<AssetAdministrationShell> getAssetAdministrationShell(String uri, boolean complete) {
+		return getAssetAdministrationShell(new Identifier(uri),complete);
+	}
 	public Optional<AssetAdministrationShell> getAssetAdministrationShell(String uri) {
-		return getAssetAdministrationShell(new Identifier(uri));
+		return getAssetAdministrationShell(new Identifier(uri), false);
+	}
+	public Optional<AssetAdministrationShell> getAssetAdministrationShell(Identifier identifier, boolean complete) {
+		Optional<AssetAdministrationShell> theShell = aasRepo.findByIdentification(identifier);
+		if (theShell.isPresent()) {
+			// is complete true
+			if (complete) {
+				for(Submodel sub : theShell.get().getSubModel()) {
+					enhanceSubmodel(sub);
+				}
+			}
+			else {
+				// omit the submodels from the parent (derivedFrom AAS)  
+				theShell.get().setSubModel(new ArrayList<>());
+			}
+		}
+		
+		return theShell;
 	}
 	public Optional<AssetAdministrationShell> getAssetAdministrationShell(Identifier identifier) {
-		return aasRepo.findByIdentification(identifier);
+		return getAssetAdministrationShell(identifier, false);
 	}
 	public Optional<AssetAdministrationShell> getAssetAdministrationShell(Key key) {
 		return aasRepo.findByIdentification(new Identifier(key.getIdType(), key.getValue()));
@@ -68,21 +98,30 @@ public class RegistryService {
 	public Optional<Submodel> getSubmodel(String uri) {
 		return getSubmodel(new Identifier(uri));
 	}
-	public Optional<Submodel> getSubmodel(Identifier identification) {
+	public Optional<Submodel> getSubmodel(Identifier identification) { 
+		return getSubmodel(identification, false);
+	}
+	public Optional<Submodel> getSubmodel(Identifier identification, boolean includeDerived) {
 		Optional<Submodel> model = submodelRepo.findByIdentification(identification);
 		if (model.isPresent()) {
 			Submodel sub = model.get();
-			
-			if (sub.getSemanticElement() != null && sub.getSemanticElement() instanceof Submodel) {
-				Submodel parent = (Submodel)sub.getSemanticElement();
-				// merge elements ... 
-				
-				mergeSubmodelElements(sub, parent);
-				
-				
+			if( includeDerived ) {
+				enhanceSubmodel(sub);
 			}
 		}
 		return model;
+	}
+	/**
+	 * Helper method which checks for derived elements
+	 * @param sub
+	 */
+	private void enhanceSubmodel(Submodel sub) {
+		if (sub.getSemanticElement() != null && sub.getSemanticElement() instanceof Submodel) {
+			Submodel parent = (Submodel)sub.getSemanticElement();
+			// merge elements ... 
+			
+			mergeSubmodelElements(sub, parent);
+		}
 	}
 	/**
 	 * 
@@ -91,7 +130,6 @@ public class RegistryService {
 	 * @return
 	 */
 	private void mergeSubmodelElements(SubmodelElementContainer child, SubmodelElementContainer parent) {
-		Collection<SubmodelElement> elements = child.getSubmodelElements();
 		for (SubmodelElement parentElement : parent.getSubmodelElements() ) {
 			Optional<SubmodelElement> childElement = child.getSubmodelElement(parentElement.getIdShort());
 			if (childElement.isPresent()) {

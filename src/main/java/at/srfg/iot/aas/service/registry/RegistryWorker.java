@@ -15,6 +15,7 @@ import at.srfg.iot.aas.dictionary.ConceptDescription;
 import at.srfg.iot.aas.modeling.SubmodelElement;
 import at.srfg.iot.aas.repository.registry.SubmodelElementRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelRepository;
+import at.srfg.iot.aas.service.registry.event.object.AssetAdministrationShellEventObject;
 import at.srfg.iot.aas.service.registry.event.object.AssetEventObject;
 import at.srfg.iot.aas.service.registry.event.object.ConceptDescriptionEventObject;
 import at.srfg.iot.aas.service.registry.event.object.SubmodelEventObject;
@@ -38,7 +39,21 @@ public class RegistryWorker {
 		//
 		return e.getEntity();
 	}
-	
+	public Optional<AssetAdministrationShell> saveAssetAdministrationShell(AssetAdministrationShell dto) {
+		Optional<AssetAdministrationShell> shell = registry.getAssetAdministrationShell(dto.getIdentification());
+		if ( shell.isPresent()) {
+			AssetAdministrationShellEventObject e = new AssetAdministrationShellEventObject(this, shell.get(), dto);
+			publisher.publishEvent(e);
+			// save & return
+			return Optional.of(registry.saveAssetAdministrationShell(e.getEntity()));
+		}
+		else {
+			AssetAdministrationShellEventObject e = new AssetAdministrationShellEventObject(this, new AssetAdministrationShell(dto.getIdentification()), dto);
+			publisher.publishEvent(e);
+			// save & return
+			return Optional.of(registry.saveAssetAdministrationShell(e.getEntity()));
+		}
+	}
 	public Optional<Submodel> createSubmodel(String shellId, Submodel dto) {
 		// create an event - the result submodel will be created/filled on the fly
 		Optional<AssetAdministrationShell> shell = registry.getAssetAdministrationShell(shellId);
@@ -92,7 +107,13 @@ public class RegistryWorker {
 			
 		}
 	}
-	
+	public Optional<Submodel> setSubmodel(Submodel existing, Submodel dto) {
+		// the existing must have the containing shell assigned
+		SubmodelEventObject e = new SubmodelEventObject(this, existing.getAssetAdministrationShell(), existing, dto);
+		publisher.publishEvent(e);
+		return Optional.of(registry.saveSubmodel(e.getEntity()));
+
+	}
 	public Optional<Submodel> setSubmodel(Submodel dto) {
 		Optional<Submodel> entity = submodelRepo.findByIdentification(dto.getIdentification());
 		

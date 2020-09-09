@@ -19,7 +19,7 @@ spring:
       # it can be set via an environment variable or the config server
       enabled: ${discovery.enabled:${DISCOVERY_ENABLED:true}}
   jpa:
-    show-sql: true
+    show-sql: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: ${DDL_AUTO:update}

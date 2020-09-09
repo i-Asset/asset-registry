@@ -42,7 +42,7 @@ public class CMMSTypeService extends ApplicationTypeService {
 				shell.setVersion("V0.01");
 				shell.setRevision("001");
 				// keep the CMMS as derived from the generic ApplicationType
-				shell.setDerivedFrom(app.orElse(null));
+				shell.setDerivedFromElement(app.orElse(null));
 				return aasRepo.save(shell);
 			}});
 		

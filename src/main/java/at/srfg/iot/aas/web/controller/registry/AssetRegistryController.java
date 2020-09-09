@@ -29,13 +29,18 @@ public class AssetRegistryController implements AssetRegistryAPI {
 	private BoschRexRoth sample;
 
 	@Override
-	public Optional<AssetAdministrationShell> getAssetAdministrationShell(String uri) throws Exception {
-		Optional<AssetAdministrationShell> opt = registry.getAssetAdministrationShell(uri);
+	public Optional<AssetAdministrationShell> getAssetAdministrationShell(String uri, boolean complete) throws Exception {
+		Optional<AssetAdministrationShell> opt = registry.getAssetAdministrationShell(uri, complete);
 		// FIXME: remove this, for development only
 		if (! opt.isPresent()) {
 			return sample.createAsset(uri);
 		}
 		return opt;
+	}
+	@Override
+	public Optional<AssetAdministrationShell> setAssetAdministrationShell(AssetAdministrationShell dto) throws Exception {
+		// pass the dto element to the worker
+		return worker.saveAssetAdministrationShell(dto);
 	}
 	@Override
 	public Optional<Asset> getAsset(String uri) throws Exception {

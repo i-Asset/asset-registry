@@ -110,7 +110,7 @@ public class ApplicationTypeService {
 				ref.setCategory("eventType");
 				ref.setIdShort("sensorEventType");
 				ref.setDescription("de", "Event für Sensor-Daten");
-				return ref;
+				return globalReferenceRepo.save(ref);
 			}
 		});
 		

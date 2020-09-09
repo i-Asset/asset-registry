@@ -19,6 +19,7 @@ public class EventElementEventHandler {
 	public void onEventElementEvent(EventElementEvent event) {
 		event.getEntity().setActive(event.getDTO().isActive());
 		event.getEntity().setDirection(event.getDTO().getDirection());
+		event.getEntity().setMessageTopic(event.getDTO().getMessageTopic());
 		// 
 		if (! event.isObservedReferenceResolved()) {
 			// 

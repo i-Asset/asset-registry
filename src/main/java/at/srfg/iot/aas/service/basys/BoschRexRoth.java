@@ -19,6 +19,7 @@ import at.srfg.iot.aas.common.referencing.Reference;
 import at.srfg.iot.aas.dependency.SemanticLookup;
 import at.srfg.iot.aas.dictionary.ConceptDescription;
 import at.srfg.iot.aas.modeling.SubmodelElement;
+import at.srfg.iot.aas.modeling.submodelelement.File;
 import at.srfg.iot.aas.modeling.submodelelement.Property;
 import at.srfg.iot.aas.modeling.submodelelement.SubmodelElementCollection;
 import at.srfg.iot.aas.repository.registry.AssetAdministrationShellRepository;
@@ -184,7 +185,20 @@ public class BoschRexRoth {
 				return submodelElementRepository.save(property);
 			}
 		});
-		
+		Optional<File> file = sub.getSubmodelElement("file", File.class);
+		File theFile = file.orElseGet(new Supplier<File>() {
+
+			@Override
+			public File get() {
+				File file = new File("file", sub);
+				file.setCategory("aFile");
+				file.setMimeType("application/pdf");
+				file.setValue("./path/to/file.pdf");
+				
+				// TODO Auto-generated method stub
+				return submodelElementRepository.save(file);
+			}
+		});
 
 		Optional<SubmodelElementCollection> c = sub.getSubmodelElement("operations", SubmodelElementCollection.class);
 		
