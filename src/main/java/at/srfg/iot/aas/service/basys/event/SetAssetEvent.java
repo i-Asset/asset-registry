@@ -11,7 +11,7 @@ import at.srfg.iot.aas.basic.Asset;
  */
 public class SetAssetEvent extends SetIdentifiableElement<Asset> 
 	
-	implements SetReferable, SetHasKind, SetHasDataSpecification, SetIdentifiable {
+	implements SetReferable, SetHasDataSpecification, SetIdentifiable {
 
 	public SetAssetEvent(Map<String, Object> map, Asset referable) {
 		super(map, referable);

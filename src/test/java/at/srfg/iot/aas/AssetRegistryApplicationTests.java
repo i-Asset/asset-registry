@@ -83,11 +83,12 @@ public class AssetRegistryApplicationTests {
 		IdType iecIrdi = IdType.getType("0112/2///61360_4#AAA001#004");
 		IdType idShort = IdType.getType("123456");
 		IdType custom = IdType.getType("$%&1234");
-		IdType urn = IdType.getType(new ModelUrn("srfg", "at", "iasset", "1.0", "01", "asset", "instance01").getURN());
+		IdType urn = IdType.getType(new ModelUrn("srfg", "iot", "iasset", "1.0", "01", "asset", "instance01").getURN());
 		IdType uuid = IdType.getType(UUID.randomUUID().toString());
 		assertTrue(IdType.IRI.equals(uri));
 		assertTrue(IdType.IRDI.equals(eclassIrdi));
 		assertTrue(IdType.IRDI.equals(iecIrdi));
+		assertTrue(IdType.IRDI.equals(urn));
 		assertTrue(IdType.IdShort.equals(idShort));
 		assertTrue(IdType.UUID.equals(uuid));
 		assertTrue(IdType.Custom.equals(custom));
@@ -101,7 +102,7 @@ public class AssetRegistryApplicationTests {
 		assertTrue("http://www.salzburgresearch.at/asset#".equals(nameSpace));
 		String protocol = IdPart.Protocol.getFrom("http://www.salzburgresearch.at/asset#registry");
 		assertTrue("http".equals(protocol));
-		String legalEntity = IdPart.LegalEntity.getFrom(new ModelUrn("srfg", "at", "iasset", "1.0", "01", "asset", "instance01").getURN());
+		String legalEntity = IdPart.LegalEntity.getFrom(new ModelUrn("srfg", "iot", "iasset", "1.0", "01", "asset", "instance01").getURN());
 		assertTrue("srfg".equals(legalEntity));
 		
 	}

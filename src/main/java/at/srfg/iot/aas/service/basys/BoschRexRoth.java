@@ -46,6 +46,21 @@ public class BoschRexRoth {
 	@Autowired
 	private SemanticLookup eclass;
 	
+	
+	
+	public Optional<Asset> createAsset() {
+		
+		Optional<Asset> theOptAsset = assetRepo.findByIdentification(new Identifier(IdType.IRI, "http://pk.festo.com/3s7plfdrs35"));
+		Asset theAsset = theOptAsset.orElse(new Asset()); 
+		if ( theAsset.getElementId() == null) {
+			theAsset.setDescription("en", "Festo Controller");
+			theAsset.setIdentification(new Identifier(IdType.IRI, "http://pk.festo.com/3s7plfdrs35"));
+			theAsset.setKind(Kind.Instance);
+			theAsset.setIdShort("3s7plfdrs35");
+			assetRepo.save(theAsset);
+		}
+		return theOptAsset;
+	}
 
 	public AssetAdministrationShell getApplicationTypeShell() {
 		return getApplicationTypeShell("http://iasset.salzburgresarch.at/application");
