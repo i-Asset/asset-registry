@@ -1,6 +1,8 @@
 package at.srfg.iot.aas.service.registry;
 
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,6 @@ import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelElementRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelRepository;
 import at.srfg.iot.classification.model.ConceptBase;
-import at.srfg.iot.classification.model.ConceptBaseDescription;
 
 @Service
 public class RegistryService {
@@ -320,8 +321,10 @@ public class RegistryService {
 			if ( base.isPresent()) {
 				ConceptBase cb = base.get();
 				ConceptDescription concept = new ConceptDescription(new Identifier(uri));
-				for ( ConceptBaseDescription desc : cb.getDescription()) {
-					concept.setDescription(desc.getLanguage(), desc.getPreferredName());
+				Map<Locale, String> pref = cb.getPreferredLabel();
+				for ( Locale locale : pref.keySet()) {
+					String label = pref.get(locale);
+					concept.setDescription(locale.getLanguage(), label);
 				}
 				concept.setIdShort(cb.getShortName());
 				
