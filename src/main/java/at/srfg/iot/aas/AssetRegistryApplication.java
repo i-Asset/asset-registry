@@ -21,7 +21,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EntityScan({
 	// model for the assset registry
 	"at.srfg.iot.aas", 
-	// model for the classification system
+	// model for the classification system (this creates the respective tables in the assetdb!)
 	"at.srfg.iot.classification"})
 //@ComponentScan({
 //	// asset-registry components

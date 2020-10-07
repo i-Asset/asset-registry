@@ -10,14 +10,18 @@ import org.springframework.stereotype.Component;
 import at.srfg.iot.aas.basic.Asset;
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.aas.basic.Submodel;
+import at.srfg.iot.aas.basic.directory.AssetAdministrationShellDescriptor;
+import at.srfg.iot.aas.basic.directory.SubmodelDescriptor;
 import at.srfg.iot.aas.common.SubmodelElementContainer;
 import at.srfg.iot.aas.dictionary.ConceptDescription;
 import at.srfg.iot.aas.modeling.SubmodelElement;
 import at.srfg.iot.aas.repository.registry.SubmodelElementRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelRepository;
+import at.srfg.iot.aas.service.registry.event.object.AssetAdministrationShellDescriptorEventObject;
 import at.srfg.iot.aas.service.registry.event.object.AssetAdministrationShellEventObject;
 import at.srfg.iot.aas.service.registry.event.object.AssetEventObject;
 import at.srfg.iot.aas.service.registry.event.object.ConceptDescriptionEventObject;
+import at.srfg.iot.aas.service.registry.event.object.SubmodelDescriptorEventObject;
 import at.srfg.iot.aas.service.registry.event.object.SubmodelEventObject;
 import at.srfg.iot.aas.service.registry.event.object.submodel.SubmodelElementEventObject;
 
@@ -38,6 +42,16 @@ public class RegistryWorker {
 		publisher.publishEvent(e);
 		//
 		return e.getEntity();
+	}
+	public Optional<AssetAdministrationShell> registerAdministrationShell(AssetAdministrationShellDescriptor dto) {
+		Optional<AssetAdministrationShell> shell = registry.getAssetAdministrationShell(dto.getIdentification());
+		if (! shell.isPresent()) {
+			AssetAdministrationShellDescriptorEventObject e = new AssetAdministrationShellDescriptorEventObject(this, shell.get(), dto);
+			publisher.publishEvent(e);
+			// save & return
+			return Optional.of(registry.saveAssetAdministrationShell(e.getEntity()));
+		}
+		return shell;
 	}
 	public Optional<AssetAdministrationShell> saveAssetAdministrationShell(AssetAdministrationShell dto) {
 		Optional<AssetAdministrationShell> shell = registry.getAssetAdministrationShell(dto.getIdentification());
@@ -107,6 +121,27 @@ public class RegistryWorker {
 			
 		}
 	}
+	public Optional<Submodel> registerSubmodel(String shellId, SubmodelDescriptor dto) {
+		// create an event - the result submodel will be created/filled on the fly
+		Optional<AssetAdministrationShell> shell = registry.getAssetAdministrationShell(shellId);
+		if ( shell.isPresent()) {
+			SubmodelDescriptorEventObject e = new SubmodelDescriptorEventObject(this, shell.get(), null, dto);
+			publisher.publishEvent(e);
+			Submodel changed = e.getEntity();
+			// save the submodel
+			Submodel updated = submodelRepo.save(changed);
+			return Optional.of(updated);
+		}
+		return Optional.empty();		
+	}
+	public Optional<Submodel> registerSubmodel(Submodel existing, SubmodelDescriptor dto) {
+		// the existing must have the containing shell assigned
+		SubmodelDescriptorEventObject e = new SubmodelDescriptorEventObject(this, existing.getAssetAdministrationShell(), existing, dto);
+		publisher.publishEvent(e);
+		return Optional.of(registry.saveSubmodel(e.getEntity()));
+
+	}
+	
 	public Optional<Submodel> setSubmodel(Submodel existing, Submodel dto) {
 		// the existing must have the containing shell assigned
 		SubmodelEventObject e = new SubmodelEventObject(this, existing.getAssetAdministrationShell(), existing, dto);

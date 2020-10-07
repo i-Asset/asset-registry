@@ -39,7 +39,7 @@ public class ConceptDictionaryHandler {
 				ConceptDescription conceptDescription = cd.orElse(new ConceptDescription(id));
 //
 				publisher.handleConceptDescription(conceptDescriptionMap, conceptDescription);
-				//
+				// add the concept to the dictionary
 				event.getLocal().addConceptDescription(conceptDescription);
 				cdRepo.save(conceptDescription);
 			}

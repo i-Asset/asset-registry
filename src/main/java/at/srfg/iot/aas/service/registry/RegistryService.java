@@ -149,7 +149,7 @@ public class RegistryService {
 				// merge only in memory - do not persist (e.g. save) afterwards
 				// mark the element as derived
 				parentElement.setDerived(true);
-				child.addChildElement(parentElement);
+				child.addSubmodelElement(parentElement);
 			}
 		}
 	}
