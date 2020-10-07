@@ -145,6 +145,37 @@
 			<artifactId>basyx.sdk</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<!-- Add BaSys components from local repository. Maven build of SDK must generate a jar and place it into the repository to update -->
+		<dependency>
+			<groupId>org.eclipse.basyx</groupId>
+			<artifactId>basyx.components.lib</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- Add explicit SQLRegistry dependency -->
+		<dependency>
+			<groupId>org.eclipse.basyx</groupId>
+			<artifactId>basyx.components.sqlregistry</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- Add explicit InMemoryRegistry dependency -->
+		<dependency>
+			<groupId>org.eclipse.basyx</groupId>
+			<artifactId>basyx.components.simple</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+				
+		<!-- Add explicit AAS Server component dependency -->
+		<dependency>
+			<groupId>org.eclipse.basyx</groupId>
+			<artifactId>basyx.components.AASServer</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		
+		
 		<!--swagger dependencies -->
 		<dependency>
 			<groupId>io.springfox</groupId>
