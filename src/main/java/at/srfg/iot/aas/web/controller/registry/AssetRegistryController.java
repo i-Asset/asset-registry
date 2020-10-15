@@ -14,10 +14,10 @@ import at.srfg.iot.aas.modeling.SubmodelElement;
 import at.srfg.iot.aas.service.basys.BoschRexRoth;
 import at.srfg.iot.aas.service.registry.RegistryService;
 import at.srfg.iot.aas.service.registry.RegistryWorker;
-import at.srfg.iot.api.AssetRegistryAPI;
+import at.srfg.iot.api.AssetRepositoryAPI;
 
 @RestController
-public class AssetRegistryController implements AssetRegistryAPI {
+public class AssetRegistryController implements AssetRepositoryAPI {
 //	@Autowired
 //	private AssetRegistryService registry;
 	@Autowired
