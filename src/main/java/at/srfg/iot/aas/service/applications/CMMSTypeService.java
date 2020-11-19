@@ -10,13 +10,14 @@ import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.basic.GlobalReference;
 import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.common.referencing.Kind;
 import at.srfg.iot.aas.common.types.DirectionEnum;
 import at.srfg.iot.aas.modeling.submodelelement.Event;
 import at.srfg.iot.aas.modeling.submodelelement.Operation;
+import at.srfg.iot.aas.modeling.submodelelement.OperationVariable;
+import at.srfg.iot.aas.modeling.submodelelement.Property;
 
 @Service
 public class CMMSTypeService extends ApplicationTypeService {
@@ -77,6 +78,21 @@ public class CMMSTypeService extends ApplicationTypeService {
 				return aasSubmodelRepo.save(model);
 			}
 		});
+		Optional<Property> operationVariableValue = operationModel.getSubmodelElement("maintenanceHistoryInputV1Value", Property.class);
+		Property maintenanceHistoryInputV1Value = operationVariableValue.orElseGet(new Supplier<Property>() {
+
+			@Override
+			public Property get() {
+				// 
+				Property property = new Property("maintenanceHistoryInputV1Value", operationModel);
+				property.setCategory(CMMS_TYPE_CATEGORY);
+				property.setKind(Kind.Type);
+				property.setDescription("de", "Typ-Defintion Input-Parameter 1 für Maintenance History");
+				property.setValueQualifier("STRING");
+				return aasSubmodelElementRepo.save(property);
+			}
+			
+		});
 		Optional<Operation> historyOperation = operationModel.getSubmodelElement("maintenanceHistory", Operation.class);
 		Operation maintenanceHistory = historyOperation.orElseGet(new Supplier<Operation>() {
 
@@ -85,6 +101,7 @@ public class CMMSTypeService extends ApplicationTypeService {
 				Operation m = new Operation("maintenanceHistory", operationModel);
 				m.setCategory(CMMS_TYPE_CATEGORY);
 				m.setDescription("de", "Abfrage der Maintenance Historie");
+				
 //				OperationVariable inParam = new OperationVariable("identifier", operationModel);
 //				inParam.setCategory(CMMS_TYPE_CATEGORY);
 //				inParam.setDescription("de", "CMMS Asset Identifier");
@@ -94,6 +111,23 @@ public class CMMSTypeService extends ApplicationTypeService {
 				
 				// the output variable is specified with the CMMS instance!
 				return aasSubmodelElementRepo.save(m);
+			}
+		});
+
+		
+		Optional<OperationVariable> operationVariable = maintenanceHistory.getOperationVariable("maintenanceHistoryInputV1");
+		OperationVariable  maintenanceHistoryV1 = operationVariable.orElseGet(new Supplier<OperationVariable>() {
+
+			@Override
+			public OperationVariable get() {
+				OperationVariable v = new OperationVariable("maintenanceHistoryInputV1", maintenanceHistory, DirectionEnum.Input);
+				v.setKind(Kind.Type);
+				v.setDescription("de", "Input-Variable für Maintenance History" );
+				// use the property as the value
+				v.setValue(maintenanceHistoryInputV1Value);
+				// 
+				
+				return aasSubmodelElementRepo.save(v);
 			}
 		});
 		Optional<Submodel> applicationTypeEventModel = aasSubmodelRepo.findByIdentification(CMMS_TYPE_EVENT_MODEL);
