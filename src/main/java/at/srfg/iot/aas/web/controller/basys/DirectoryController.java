@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import at.srfg.iot.aas.service.basys.RegistryProvider;
 
-@RestController
-@RequestMapping("/basyx")
+//@RestController
+//@RequestMapping("/basyx")
 public class DirectoryController implements BasyxRegistry {
 	@Autowired
 	private RegistryProvider provider;
