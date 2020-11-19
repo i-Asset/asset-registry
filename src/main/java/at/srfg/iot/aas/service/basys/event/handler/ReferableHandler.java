@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import at.srfg.iot.aas.common.referencing.ReferableDescription;
 import at.srfg.iot.aas.service.basys.event.GetReferable;
 import at.srfg.iot.aas.service.basys.event.SetReferable;
-import at.srfg.iot.aas.common.referencing.ReferableDescription;
 
 @Component
 public class ReferableHandler {

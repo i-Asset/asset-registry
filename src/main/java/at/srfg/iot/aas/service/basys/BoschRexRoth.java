@@ -13,12 +13,9 @@ import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.common.SubmodelElementContainer;
 import at.srfg.iot.aas.common.referencing.IdType;
-import at.srfg.iot.aas.common.referencing.KeyElementsEnum;
 import at.srfg.iot.aas.common.referencing.Kind;
-import at.srfg.iot.aas.common.referencing.Reference;
 import at.srfg.iot.aas.dependency.SemanticLookup;
 import at.srfg.iot.aas.dictionary.ConceptDescription;
-import at.srfg.iot.aas.modeling.SubmodelElement;
 import at.srfg.iot.aas.modeling.submodelelement.File;
 import at.srfg.iot.aas.modeling.submodelelement.Property;
 import at.srfg.iot.aas.modeling.submodelelement.SubmodelElementCollection;
@@ -26,6 +23,8 @@ import at.srfg.iot.aas.repository.registry.AssetAdministrationShellRepository;
 import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelElementRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelRepository;
+import at.srfg.iot.api.ISubmodel;
+import at.srfg.iot.api.ISubmodelElement;
 import at.srfg.iot.classification.model.ConceptClass;
 
 @Service
@@ -98,8 +97,8 @@ public class BoschRexRoth {
 	 * @param container
 	 * @return
 	 */
-	public SubmodelElement getApplicationTypeVendor(SubmodelElementContainer container) {
-		Optional<SubmodelElement> opt = container.getSubmodelElement("vendor");
+	public ISubmodelElement getApplicationTypeVendor(SubmodelElementContainer container) {
+		Optional<ISubmodelElement> opt = container.getSubmodelElement("vendor");
 		if ( opt.isPresent()) {
 			return opt.get();
 		}
@@ -173,8 +172,8 @@ public class BoschRexRoth {
 				
 				
 		// try to find the submodel with it's idShort
-		Optional<Submodel> subOpt = shell.getSubmodel(subId); //subModelRepo.findByIdentification(subId);
-		final Submodel sub = subOpt.orElseGet(new Supplier<Submodel>() {
+		Optional<ISubmodel> subOpt = shell.getSubmodel(subId); //subModelRepo.findByIdentification(subId);
+		final ISubmodel sub = subOpt.orElseGet(new Supplier<Submodel>() {
 
 			@Override
 			public Submodel get() {
@@ -244,7 +243,7 @@ public class BoschRexRoth {
 		});
 		
 
-		subModelRepo.save(sub);
+		subModelRepo.save((Submodel)sub);
 		
 		aasRepo.save(shell);
 		

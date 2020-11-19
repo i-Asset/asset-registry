@@ -19,6 +19,7 @@ import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.service.basys.event.RegistrationEvent;
 import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
 import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
+import at.srfg.iot.api.ISubmodel;
 
 @Component
 public class RegistrationEventHandler {
@@ -75,7 +76,7 @@ public class RegistrationEventHandler {
 					if ( subObject instanceof Map<?,?> ) {
 						@SuppressWarnings("unchecked")
 						Map<String,Object> subMap = (Map<String,Object>) subObject;
-						Submodel localSubmodel = null;
+						ISubmodel localSubmodel = null;
 						SubModel subModel = SubModel.createAsFacade(subMap);
 						//
 						
@@ -89,7 +90,7 @@ public class RegistrationEventHandler {
 						// handle the submodel (stereotypes)
 						mappingEvent.handleSubmodel(subModel, localSubmodel);
 						// store the submodel
-						subModelRepo.save(localSubmodel);
+						subModelRepo.save((Submodel)localSubmodel);
 					}
 				}
 				

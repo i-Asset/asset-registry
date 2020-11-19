@@ -1,7 +1,6 @@
 package at.srfg.iot.aas.service.basys.event;
 
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.common.HasDataSpecification;
 /**
  * Event for setting {@link AssetAdministrationShell} 
  * 

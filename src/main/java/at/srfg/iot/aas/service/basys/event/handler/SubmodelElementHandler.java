@@ -13,10 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import at.srfg.iot.aas.service.basys.event.GetSubmodelElementEvent;
-import at.srfg.iot.aas.service.basys.event.SetSubmodelElementEvent;
-import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
-import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
 import at.srfg.iot.aas.common.referencing.KeyElementsEnum;
 import at.srfg.iot.aas.modeling.SubmodelElement;
 import at.srfg.iot.aas.modeling.submodelelement.Blob;
@@ -27,6 +23,10 @@ import at.srfg.iot.aas.modeling.submodelelement.Property;
 import at.srfg.iot.aas.modeling.submodelelement.ReferenceElement;
 import at.srfg.iot.aas.modeling.submodelelement.RelationshipElement;
 import at.srfg.iot.aas.modeling.submodelelement.SubmodelElementCollection;
+import at.srfg.iot.aas.service.basys.event.GetSubmodelElementEvent;
+import at.srfg.iot.aas.service.basys.event.SetSubmodelElementEvent;
+import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
+import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
 
 @Component
 public class SubmodelElementHandler {
@@ -75,8 +75,8 @@ public class SubmodelElementHandler {
 			// find the 
 			
 			
-			Optional<SubmodelElement> local = collection.getSubmodelElement(idShort);
-			SubmodelElement submodelElement = local.orElse(create(collection, element));
+			Optional<at.srfg.iot.api.ISubmodelElement> local = collection.getSubmodelElement(idShort);
+			at.srfg.iot.api.ISubmodelElement submodelElement = local.orElse(create(collection, element));
 
 			if ( submodelElement != null) {
 				// process the submodel element
@@ -117,8 +117,8 @@ public class SubmodelElementHandler {
 			return null;
 		case Operation:
 			return new Operation(idShort, collection);
-		case OperationVariable:
-			return new OperationVariable(idShort, collection);
+//		case OperationVariable:
+//			return new OperationVariable(idShort, collection);
 		case RelationshipElement:
 			return new RelationshipElement(idShort, collection);
 		case SubmodelElementCollection:
@@ -170,7 +170,7 @@ public class SubmodelElementHandler {
 			org.eclipse.basyx.submodel.metamodel.map.submodelelement.SubmodelElementCollection collection = (org.eclipse.basyx.submodel.metamodel.map.submodelelement.SubmodelElementCollection) map;
 			Map<String,ISubmodelElement> elementMap = new HashMap<>();
 			
-			for (SubmodelElement subElement : element.getSubmodelElements() ) {
+			for (at.srfg.iot.api.ISubmodelElement subElement : element.getSubmodelElements() ) {
 				
 				ISubmodelElement sub = mappingEventPublisher.getFromSubmodelElement(subElement);
 				elementMap.put(sub.getIdShort(),sub);

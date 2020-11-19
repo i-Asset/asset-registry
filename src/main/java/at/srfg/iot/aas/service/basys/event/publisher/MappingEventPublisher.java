@@ -1,6 +1,7 @@
 package at.srfg.iot.aas.service.basys.event.publisher;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.eclipse.basyx.aas.metamodel.api.IAssetAdministrationShell;
 import org.eclipse.basyx.aas.metamodel.api.parts.IConceptDictionary;
@@ -9,13 +10,13 @@ import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
 import org.eclipse.basyx.submodel.metamodel.api.ISubModel;
 import org.eclipse.basyx.submodel.metamodel.api.parts.IConceptDescription;
 import org.eclipse.basyx.submodel.metamodel.map.SubModel;
-import org.eclipse.basyx.submodel.metamodel.map.identifier.Identifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import at.srfg.iot.aas.basic.Asset;
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.aas.basic.Endpoint;
 import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.dictionary.ConceptDescription;
 import at.srfg.iot.aas.dictionary.ConceptDictionary;
@@ -32,6 +33,8 @@ import at.srfg.iot.aas.service.basys.event.SetConceptDescriptionEvent;
 import at.srfg.iot.aas.service.basys.event.SetConceptDictionaryEvent;
 import at.srfg.iot.aas.service.basys.event.SetSubmodelElementEvent;
 import at.srfg.iot.aas.service.basys.event.SetSubmodelEvent;
+import at.srfg.iot.api.ISubmodel;
+import at.srfg.iot.api.ISubmodelElement;
 
 @Component
 public class MappingEventPublisher {
@@ -47,12 +50,12 @@ public class MappingEventPublisher {
 	 * @param map The map
 	 * @param model
 	 */
-	public void handleSubmodel(ISubModel map, Submodel model) {
+	public void handleSubmodel(ISubModel map, ISubmodel model) {
 		System.out.println("Wanna handle the submodel");
 		SetSubmodelEvent sme = new SetSubmodelEvent(map, model);
 		publisher.publishEvent(sme);
 	}
-	public void handleSubmodelElement(Map<String,Object> map, SubmodelElement model) {
+	public void handleSubmodelElement(Map<String,Object> map, ISubmodelElement model) {
 		System.out.println("Wanna handle the submodel element");
 		SetSubmodelElementEvent sme = new SetSubmodelElementEvent(map, model);
 		publisher.publishEvent(sme);
@@ -96,12 +99,16 @@ public class MappingEventPublisher {
 		GetAssetAdministrationShellEvent event = new GetAssetAdministrationShellEvent(shell, true);
 		publisher.publishEvent(event);
 		org.eclipse.basyx.aas.metamodel.map.AssetAdministrationShell map = event.getBasyxMap();
-		String endpoint = shell.getFirstEndpoint().getAddress();
-		// the endpoint
-//		if (! endpoint.endsWith(shell.getId())) {
-//			endpoint = String.format("%s/%s", endpoint, shell.getId());
-//		}
-		map.setEndpoint(endpoint, shell.getFirstEndpoint().getType());
+		Optional<Endpoint> ep = shell.getFirstEndpoint();
+		if ( ep.isPresent()) {
+			map.setEndpoint(ep.get().getAddress(), ep.get().getType());
+		}
+//		String endpoint = shell.getFirstEndpoint().getAddress();
+//		// the endpoint
+////		if (! endpoint.endsWith(shell.getId())) {
+////			endpoint = String.format("%s/%s", endpoint, shell.getId());
+////		}
+//		map.setEndpoint(endpoint, shell.getFirstEndpoint().getType());
 		return new AASDescriptor(event.getBasyxMap());
 	}
 	
@@ -148,7 +155,7 @@ public class MappingEventPublisher {
 		publisher.publishEvent(event);
 		return event.getBasyxMap();
 	}
-	public org.eclipse.basyx.submodel.metamodel.map.submodelelement.SubmodelElement getFromSubmodelElement(SubmodelElement model) {
+	public org.eclipse.basyx.submodel.metamodel.map.submodelelement.SubmodelElement getFromSubmodelElement(ISubmodelElement model) {
 		GetSubmodelElementEvent event = new GetSubmodelElementEvent(model);
 		publisher.publishEvent(event);
 		return event.getBasyxMap();

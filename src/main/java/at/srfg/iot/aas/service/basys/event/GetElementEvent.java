@@ -48,7 +48,7 @@ public abstract class GetElementEvent<T, M extends Map<String,Object>>  implemen
 	protected static SubmodelElementCollection newSubmodelElementCollection() {
 		return new SubmodelElementCollection();
 	}
-	protected static SubmodelElement newSubmodelElement(at.srfg.iot.aas.modeling.SubmodelElement entity) {
+	protected static SubmodelElement newSubmodelElement(at.srfg.iot.api.ISubmodelElement entity) {
 		if ( entity instanceof File) {
 			return new org.eclipse.basyx.submodel.metamodel.map.submodelelement.dataelement.File(((File) entity).getValue(), ((File) entity).getMimeType());
 		}

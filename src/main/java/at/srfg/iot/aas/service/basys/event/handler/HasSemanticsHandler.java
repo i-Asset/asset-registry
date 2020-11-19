@@ -16,19 +16,19 @@ import org.springframework.stereotype.Component;
 
 import at.srfg.iot.aas.basic.GlobalReference;
 import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.service.basys.event.GetHasSemantics;
-import at.srfg.iot.aas.service.basys.event.SetHasSemantics;
-import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
-import at.srfg.iot.aas.service.basys.event.handler.util.ReferenceHelper;
 import at.srfg.iot.aas.common.HasSemantics;
+import at.srfg.iot.aas.common.Referable;
 import at.srfg.iot.aas.common.SubmodelElementContainer;
 import at.srfg.iot.aas.common.referencing.IdType;
 import at.srfg.iot.aas.common.referencing.Key;
 import at.srfg.iot.aas.common.referencing.KeyElementsEnum;
-import at.srfg.iot.aas.common.referencing.ReferableElement;
 import at.srfg.iot.aas.dictionary.ConceptDescription;
-import at.srfg.iot.aas.modeling.SubmodelElement;
 import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
+import at.srfg.iot.aas.service.basys.event.GetHasSemantics;
+import at.srfg.iot.aas.service.basys.event.SetHasSemantics;
+import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
+import at.srfg.iot.aas.service.basys.event.handler.util.ReferenceHelper;
+import at.srfg.iot.api.ISubmodelElement;
 
 @Component
 public class HasSemanticsHandler {
@@ -122,7 +122,7 @@ public class HasSemanticsHandler {
 				if ( submodel.isPresent()) {
 					Submodel sub = submodel.get();
 					
-					ReferableElement element = resolvePath(sub, localKeys);
+					Referable element = resolvePath(sub, localKeys);
 					if ( element != null) {
 						local.setSemanticElement(element);
 					}
@@ -132,7 +132,7 @@ public class HasSemanticsHandler {
 			}
 		}
 	}
-	private ReferableElement resolvePath(SubmodelElementContainer container, List<Key>keys) {
+	private Referable resolvePath(SubmodelElementContainer container, List<Key>keys) {
 		if ( keys == null ) {
 			throw new IllegalArgumentException("Key must be provided");
 		}
@@ -142,9 +142,9 @@ public class HasSemanticsHandler {
 			if ( current.getIdType().equals(IdType.IdShort)) {
 				switch(current.getType()) {
 				case SubmodelElementCollection:
-					Optional<SubmodelElement> coll = container.getSubmodelElement(current.getValue());
+					Optional<ISubmodelElement> coll = container.getSubmodelElement(current.getValue());
 					if (coll.isPresent()) {
-						SubmodelElement collection = coll.get();
+						ISubmodelElement collection = coll.get();
 						if ( collection instanceof SubmodelElementContainer ) {
 							return resolvePath((SubmodelElementContainer)collection, keys);
 							
@@ -169,7 +169,7 @@ public class HasSemanticsHandler {
 					// wrong path
 					throw new IllegalArgumentException("wrong path");
 				default:
-					Optional<SubmodelElement> elem = container.getSubmodelElement(current.getValue());
+					Optional<ISubmodelElement> elem = container.getSubmodelElement(current.getValue());
 					return elem.orElse(null);
 				}
 				

@@ -2,8 +2,8 @@ package at.srfg.iot.aas.service.basys.event;
 
 import org.eclipse.basyx.submodel.metamodel.map.SubModel;
 
-import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.common.HasDataSpecification;
+import at.srfg.iot.api.ISubmodel;
 /**
  * Event for setting {@link HasDataSpecification} 
  * 
@@ -11,7 +11,7 @@ import at.srfg.iot.aas.common.HasDataSpecification;
  *
  */
 public interface SubmodelEvent extends BasyxEvent {
-	public Submodel getLocal();
+	public ISubmodel getLocal();
 	
 	default SubModel getBasyxSubModel() {
 		return SubModel.createAsFacade(getBasyxMap());

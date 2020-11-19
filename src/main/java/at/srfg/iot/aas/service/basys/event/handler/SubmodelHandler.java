@@ -13,11 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.service.basys.event.GetSubmodelEvent;
-import at.srfg.iot.aas.service.basys.event.SetSubmodelEvent;
-import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
-import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
 import at.srfg.iot.aas.common.referencing.KeyElementsEnum;
 import at.srfg.iot.aas.modeling.SubmodelElement;
 import at.srfg.iot.aas.modeling.submodelelement.Blob;
@@ -29,6 +24,11 @@ import at.srfg.iot.aas.modeling.submodelelement.ReferenceElement;
 import at.srfg.iot.aas.modeling.submodelelement.RelationshipElement;
 import at.srfg.iot.aas.modeling.submodelelement.SubmodelElementCollection;
 import at.srfg.iot.aas.repository.registry.ReferableRepository;
+import at.srfg.iot.aas.service.basys.event.GetSubmodelEvent;
+import at.srfg.iot.aas.service.basys.event.SetSubmodelEvent;
+import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
+import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
+import at.srfg.iot.api.ISubmodel;
 
 @Component
 public class SubmodelHandler {
@@ -65,15 +65,14 @@ public class SubmodelHandler {
 			String idShort = MappingHelper.getIdShort(property);
 			// find the 
 			if ( idShort != null && idShort.length() > 0) {
-				Optional<SubmodelElement> local = event.getLocal().getSubmodelElement(idShort);
-				SubmodelElement submodelElement = local.orElse(create(event.getLocal(), property));
+				Optional<at.srfg.iot.api.ISubmodelElement> local = event.getLocal().getSubmodelElement(idShort);
+				at.srfg.iot.api.ISubmodelElement submodelElement = local.orElse(create(event.getLocal(), property));
 				
 				if ( submodelElement != null) {
 					// process the submodel element
 					publisher.handleSubmodelElement(property, submodelElement);
-					
-//				new SubmodelElementData(property, submodelElement).accept(new SubmodelElementVisitor<>());
-					submodelElementRepo.save(submodelElement);
+					// TODO: ensure proper types
+					submodelElementRepo.save((SubmodelElement)submodelElement);
 				}
 				
 			}
@@ -87,7 +86,7 @@ public class SubmodelHandler {
 	public void onSubmodelGet(GetSubmodelEvent event) {
 		System.out.println("Submodel handling");
 		
-		for ( SubmodelElement submodelElement : event.getLocal().getSubmodelElements() ) {
+		for ( at.srfg.iot.api.ISubmodelElement submodelElement : event.getLocal().getSubmodelElements() ) {
 			org.eclipse.basyx.submodel.metamodel.map.submodelelement.SubmodelElement s = publisher.getFromSubmodelElement(submodelElement);
 			event.getBasyxMap().addSubModelElement(s);
 		}
@@ -100,7 +99,7 @@ public class SubmodelHandler {
 //		}
 //		return null;
 //	}
-	private SubmodelElement create(Submodel model, Map<String,Object> map) {
+	private SubmodelElement create(ISubmodel model, Map<String,Object> map) {
 		//
 		ISubmodelElement e = SubmodelElementFacadeFactory.createSubmodelElement(map);
 		String idShort = MappingHelper.getIdShort(map);
@@ -132,8 +131,8 @@ public class SubmodelHandler {
 			return null;
 		case Operation:
 			return new Operation(idShort, model);
-		case OperationVariable:
-			return new OperationVariable(idShort, model);
+//		case OperationVariable:
+//			return new OperationVariable(idShort, model);
 		case RelationshipElement:
 			return new RelationshipElement(idShort, model);
 		case SubmodelElementCollection:

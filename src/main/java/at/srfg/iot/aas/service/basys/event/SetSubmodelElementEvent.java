@@ -2,12 +2,12 @@ package at.srfg.iot.aas.service.basys.event;
 
 import java.util.Map;
 
-import at.srfg.iot.aas.modeling.SubmodelElement;
+import at.srfg.iot.api.ISubmodelElement;
 
-public class SetSubmodelElementEvent extends SetElementEvent<SubmodelElement> 
+public class SetSubmodelElementEvent extends SetElementEvent<ISubmodelElement> 
 	implements SetHasKind, SetReferable, SetHasSemantics, SetQualifiable {
 
-	public SetSubmodelElementEvent(Map<String, Object> map, SubmodelElement referable) {
+	public SetSubmodelElementEvent(Map<String, Object> map, ISubmodelElement referable) {
 		super(map, referable);
 	}
 }

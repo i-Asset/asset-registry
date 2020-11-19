@@ -16,6 +16,7 @@ import at.srfg.iot.aas.repository.registry.AssetAdministrationShellRepository;
 import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
 import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
+import at.srfg.iot.api.ISubmodel;
 
 @Service
 public class BasysService {
@@ -52,9 +53,9 @@ public class BasysService {
 		
 	}
 	public void processSubmodel(AssetAdministrationShell aas, SubModel map) {
-		Optional<Submodel> sub = aas.getSubmodel(map.getIdShort());
+		Optional<ISubmodel> sub = aas.getSubmodel(map.getIdShort());
 		if ( sub.isPresent() ) {
-			Submodel subModel = sub.get();
+			ISubmodel subModel = sub.get();
 			mappingEvent.handleSubmodel(map, subModel);
 		}
 		

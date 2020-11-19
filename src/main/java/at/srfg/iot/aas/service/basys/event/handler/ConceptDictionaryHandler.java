@@ -9,12 +9,12 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import at.srfg.iot.aas.basic.Identifier;
+import at.srfg.iot.aas.dictionary.ConceptDescription;
+import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.service.basys.event.GetConceptDictionaryEvent;
 import at.srfg.iot.aas.service.basys.event.SetConceptDictionaryEvent;
 import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
 import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
-import at.srfg.iot.aas.dictionary.ConceptDescription;
-import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 
 @Component
 public class ConceptDictionaryHandler {

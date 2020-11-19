@@ -8,13 +8,13 @@ import org.eclipse.basyx.submodel.metamodel.api.reference.IKey;
 import org.eclipse.basyx.submodel.metamodel.api.reference.IReference;
 import org.eclipse.basyx.submodel.metamodel.api.reference.enums.KeyElements;
 
+import at.srfg.iot.aas.common.Referable;
 import at.srfg.iot.aas.common.referencing.Key;
-import at.srfg.iot.aas.common.referencing.ReferableElement;
 import at.srfg.iot.aas.common.referencing.Reference;
 
 public class ReferenceHelper {
 	
-	public static IReference toIReference(ReferableElement referable) {
+	public static IReference toIReference(Referable referable) {
 		Reference ref = new Reference(referable);
 		// 
 		List<IKey> iKeyList = new ArrayList<IKey>();

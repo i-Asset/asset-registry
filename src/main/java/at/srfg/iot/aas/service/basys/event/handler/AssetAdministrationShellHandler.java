@@ -1,22 +1,10 @@
 package at.srfg.iot.aas.service.basys.event.handler;
 
-import static org.eclipse.basyx.aas.metamodel.map.AssetAdministrationShell.ASSET;
-import static org.eclipse.basyx.aas.metamodel.map.AssetAdministrationShell.CONCEPTDICTIONARY;
-import static org.eclipse.basyx.aas.metamodel.map.AssetAdministrationShell.DERIVEDFROM;
-import static org.eclipse.basyx.aas.metamodel.map.AssetAdministrationShell.SUBMODELS;
-
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 
 import org.eclipse.basyx.aas.metamodel.api.parts.IConceptDictionary;
-import org.eclipse.basyx.aas.metamodel.api.parts.asset.IAsset;
-import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
-import org.eclipse.basyx.submodel.metamodel.api.reference.IReference;
 import org.eclipse.basyx.submodel.metamodel.map.SubModel;
-import org.eclipse.basyx.submodel.metamodel.map.reference.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +13,11 @@ import org.springframework.stereotype.Component;
 
 import at.srfg.iot.aas.basic.Asset;
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.dictionary.ConceptDictionary;
 import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.service.basys.event.GetAssetAdministrationShellEvent;
 import at.srfg.iot.aas.service.basys.event.SetAssetAdministrationShell;
-import at.srfg.iot.aas.service.basys.event.handler.util.MappingHelper;
 import at.srfg.iot.aas.service.basys.event.publisher.MappingEventPublisher;
 
 @Component
@@ -66,7 +52,7 @@ public class AssetAdministrationShellHandler {
 			facade.setAsset(basyxAsset);
 		}
 		// process the submodels 
-		for ( Submodel model : local.getSubModel()) {
+		for ( Submodel model : local.getChildElements(Submodel.class)) {
 //			String endpoint = local.getFirstEndpoint().getAddress()+"/submodels";
 			SubModel descriptor = mappingEventPublisher.getFromSubmodel(model);
 //				SubModel sub = mappingEventPublisher.getFromSubmodel(model);

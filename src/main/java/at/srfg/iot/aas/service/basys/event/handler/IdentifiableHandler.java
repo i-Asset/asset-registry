@@ -1,6 +1,5 @@
 package at.srfg.iot.aas.service.basys.event.handler;
 
-import org.eclipse.basyx.submodel.metamodel.api.reference.enums.KeyElements;
 import org.eclipse.basyx.submodel.metamodel.map.qualifier.Identifiable;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
