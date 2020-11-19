@@ -24,6 +24,10 @@ public interface HasSemanticsEvent extends ApiEvent {
 	@JsonIgnore
 	default boolean isSemanticIdResolved() {
 		// 
+		
+		if ( getDTO().getSemanticId() != null) {
+			return getEntity().isSemanticReferenceResolved(getDTO().getSemanticId());
+		}
 		return (getEntity().getSemanticElement() == null || 
 				!(getEntity().getSemanticElement() instanceof Reference));
 	}

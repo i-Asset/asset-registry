@@ -1,5 +1,7 @@
 package at.srfg.iot.aas.service.registry;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
@@ -12,6 +14,7 @@ import at.srfg.iot.aas.basic.Asset;
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
+import at.srfg.iot.aas.common.Referable;
 import at.srfg.iot.aas.common.SubmodelElementContainer;
 import at.srfg.iot.aas.common.referencing.IdentifiableElement;
 import at.srfg.iot.aas.common.referencing.Key;
@@ -24,9 +27,14 @@ import at.srfg.iot.aas.repository.registry.AssetAdministrationShellRepository;
 import at.srfg.iot.aas.repository.registry.AssetRepository;
 import at.srfg.iot.aas.repository.registry.ConceptDescriptionRepository;
 import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
+import at.srfg.iot.aas.repository.registry.ReferableRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelElementRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelRepository;
+import at.srfg.iot.api.IAssetAdministrationShell;
+import at.srfg.iot.api.ISubmodel;
+import at.srfg.iot.api.ISubmodelElement;
 import at.srfg.iot.classification.model.ConceptBase;
+import at.srfg.iot.provider.IAssetProvider;
 
 @Service
 public class RegistryService {
@@ -34,7 +42,8 @@ public class RegistryService {
 	private IdentifiableRepository<IdentifiableElement> identifiableRepo;
 	@Autowired
 	private AssetAdministrationShellRepository aasRepo;
-	
+	@Autowired
+	private ReferableRepository<ReferableElement> referableRepo;
 	@Autowired
 	private AssetRepository assetRepo;
 	@Autowired
@@ -59,6 +68,16 @@ public class RegistryService {
 	public Optional<AssetAdministrationShell> getAssetAdministrationShell(String uri, boolean complete) {
 		return getAssetAdministrationShell(new Identifier(uri),complete);
 	}
+	public Optional<AssetAdministrationShell> getAssetAdministrationShell(Reference referenceToShell) {
+		// Reference must point to an AssetAdministrationShell
+		if ( referenceToShell.getModelType().getElementClass().equals(AssetAdministrationShell.class)) {
+			return aasRepo.findByIdentification(referenceToShell.getFirstIdentifier());
+		}
+		else {
+			
+			return Optional.empty();
+		}
+	}
 	public Optional<AssetAdministrationShell> getAssetAdministrationShell(String uri) {
 		return getAssetAdministrationShell(new Identifier(uri), false);
 	}
@@ -67,7 +86,7 @@ public class RegistryService {
 		if (theShell.isPresent()) {
 			// is complete true
 			if (complete) {
-				for(Submodel sub : theShell.get().getSubModel()) {
+				for(Submodel sub : theShell.get().getChildElements(Submodel.class)) {
 					enhanceSubmodel(sub);
 				}
 			}
@@ -124,6 +143,26 @@ public class RegistryService {
 			mergeSubmodelElements(sub, parent);
 		}
 	}
+	private String[] checkPath(String path) {
+		// remove leading and trailing slashes
+		try {
+			path = URLDecoder.decode(path,"UTF-8");
+			while( path.startsWith("/")) {
+				path = path.substring(1);
+			}
+			while (path.endsWith("/")) {
+				path = path.substring(0, path.length()-1);
+			}
+			while (path.contains("//") ) {
+				path = path.replaceAll("//", "/");
+			}
+			return path.split("/");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			return path.split("/");
+		}
+	}
+
 	/**
 	 * 
 	 * @param child
@@ -131,10 +170,10 @@ public class RegistryService {
 	 * @return
 	 */
 	private void mergeSubmodelElements(SubmodelElementContainer child, SubmodelElementContainer parent) {
-		for (SubmodelElement parentElement : parent.getSubmodelElements() ) {
-			Optional<SubmodelElement> childElement = child.getSubmodelElement(parentElement.getIdShort());
+		for (ISubmodelElement parentElement : parent.getSubmodelElements() ) {
+			Optional<ISubmodelElement> childElement = child.getSubmodelElement(parentElement.getIdShort());
 			if (childElement.isPresent()) {
-				SubmodelElement c = childElement.get();
+				ISubmodelElement c = childElement.get();
 				
 				
 				if ( parentElement instanceof SubmodelElementContainer && 
@@ -165,10 +204,29 @@ public class RegistryService {
 	public boolean deleteSubmodel(String uri) {
 		return deleteSubmodel(new Identifier(uri));
 	}
+	public Optional<IdentifiableElement> getIdentifiable(Identifier identifier) {
+		return identifiableRepo.findByIdentification(identifier);
+	}
 	public boolean deleteIdentifiable(Identifier identifier) {
 		Optional<IdentifiableElement> aas = identifiableRepo.findByIdentification(identifier);
 		if ( aas.isPresent() ) {
 			identifiableRepo.delete(aas.get());
+			return true;
+		}
+		return false;
+	}
+	public boolean deleteReferable(Reference reference) {
+		Optional<ReferableElement> toDelete = resolveReference(reference, ReferableElement.class);
+		if ( toDelete.isPresent() ) {
+			referableRepo.delete(toDelete.get());
+			return true;
+		}
+		return false;
+	}
+	public boolean deleteReferable(Referable referable) {
+		Optional<ReferableElement> toDelete = resolveReference(referable.asReference(), ReferableElement.class);
+		if ( toDelete.isPresent() ) {
+			referableRepo.delete(toDelete.get());
 			return true;
 		}
 		return false;
@@ -191,7 +249,17 @@ public class RegistryService {
 	 * @return The {@link ReferableElement} or empty
 	 */
 	public <T> Optional<T> resolveReference(String uri, String path, Class<T> clazz) {
-		Optional<ReferableElement> ref = resolveReference(uri,path);
+		Optional<Referable> ref = resolveReference(uri,path);
+		if ( ref.isPresent()) {
+			if ( clazz.isInstance(ref.get())) {
+				return Optional.of(clazz.cast(ref.get()));
+			}
+		}
+		return Optional.empty();
+		
+	}
+	public <T> Optional<T> resolveReference(Referable root, String path, Class<T> clazz) {
+		Optional<Referable> ref = resolveReference(root,path);
 		if ( ref.isPresent()) {
 			if ( clazz.isInstance(ref.get())) {
 				return Optional.of(clazz.cast(ref.get()));
@@ -208,7 +276,7 @@ public class RegistryService {
 	 * @return The Referable
 	 */
 	public <T> Optional<T> resolveReference(Reference reference, Class<T> clazz) {
-		Optional<ReferableElement> ref = resolveReference(reference);
+		Optional<Referable> ref = resolveReference(reference);
 		if ( ref.isPresent()) {
 			if ( clazz.isInstance(ref.get())) {
 				return Optional.of(clazz.cast(ref.get()));
@@ -223,8 +291,9 @@ public class RegistryService {
 	 * @param path The concatenated <code>idShort</code> values with slash "/" as delimiter 
 	 * @return The {@link ReferableElement} or empty
 	 */
-	public Optional<ReferableElement> resolveReference(String identifier, String path) {
-		return resolveReference(identifier, path.split("/"));
+	public Optional<Referable> resolveReference(String identifier, String path) {
+		
+		return resolveReference(identifier,checkPath(path));
 	}
 	/**
 	 * Resolve the {@link ReferableElement} as indicated in the provided <code>identifier</code> 
@@ -235,32 +304,36 @@ public class RegistryService {
 	 * @return The {@link ReferableElement} or empty
 	 */
 	
-	public Optional<ReferableElement> resolveReference(String identifier, String ... idShort) {
+	public Optional<Referable> resolveReference(String identifier, String ... idShort) {
 		Optional<IdentifiableElement> identfiable = identifiableRepo.findByIdentification(new Identifier(identifier));
 		if ( identfiable.isPresent()) {
-			Optional<ReferableElement> referable = Optional.of(identfiable.get());
-			for ( String s : idShort) {
-				// 
-				ReferableElement element = referable.get();
-				if ( element instanceof AssetAdministrationShell) {
-					Optional<Submodel> submodel  = ((AssetAdministrationShell) element).getSubmodel(s);
-					if ( submodel.isPresent()) {
-						referable = Optional.of(submodel.get());
-						continue;
-					}
-				}
-				else if ( element instanceof SubmodelElementContainer ) {
-					Optional<SubmodelElement> submodelElement = ((SubmodelElementContainer)element).getSubmodelElement(s);
-					if ( submodelElement.isPresent()) {
-						referable = Optional.of(submodelElement.get());
-						continue;
-					}
-				}
-
-			}
-			return referable;
+			return resolveReference(identfiable.get(), idShort);
 		}
 		return Optional.empty();
+	}
+	public Optional<Referable> resolveReference(Referable root, String ... path ) {
+		Optional<Referable> referable = Optional.of(root);
+		for ( String s : path) {
+			// 
+			Referable element = referable.get();
+			if ( element instanceof AssetAdministrationShell) {
+				Optional<ISubmodel> submodel  = ((AssetAdministrationShell) element).getSubmodel(s);
+				if ( submodel.isPresent()) {
+					referable = Optional.of(submodel.get());
+					continue;
+				}
+			}
+			else if ( element instanceof SubmodelElementContainer ) {
+				Optional<ISubmodelElement> submodelElement = ((SubmodelElementContainer)element).getSubmodelElement(s);
+				if ( submodelElement.isPresent()) {
+					referable = Optional.of(submodelElement.get());
+					continue;
+				}
+			}
+
+		}
+		return referable;
+
 	}
 	/**
 	 * Resolve the {@link ReferableElement} as indicated in the provided {@link Reference}
@@ -268,8 +341,9 @@ public class RegistryService {
 	 * 					requested element
 	 * @return The Referable
 	 */
-	public Optional<ReferableElement> resolveReference(Reference reference) {
-		Optional<ReferableElement> referable = Optional.empty();
+	public Optional<Referable> resolveReference(Reference reference) {
+		
+		Optional<Referable> referable = Optional.empty();
 		for (Key key : reference.getKeys()) {
 			// 
 			if (! referable.isPresent() ) {
@@ -291,16 +365,16 @@ public class RegistryService {
 				switch(key.getIdType()) {
 				case IdShort:
 					// 
-					ReferableElement element = referable.get();
-					if ( element instanceof AssetAdministrationShell) {
-						Optional<Submodel> submodel  = ((AssetAdministrationShell) element).getSubmodel(key.getValue());
+					Referable element = referable.get();
+					if ( element instanceof IAssetAdministrationShell) {
+						Optional<ISubmodel> submodel  = ((IAssetAdministrationShell) element).getSubmodel(key.getValue());
 						if ( submodel.isPresent()) {
 							referable = Optional.of(submodel.get());
 							continue;
 						}
 					}
 					else if ( element instanceof SubmodelElementContainer ) {
-						Optional<SubmodelElement> submodelElement = ((SubmodelElementContainer)element).getSubmodelElement(key.getValue());
+						Optional<ISubmodelElement> submodelElement = ((SubmodelElementContainer)element).getSubmodelElement(key.getValue());
 						if ( submodelElement.isPresent()) {
 							referable = Optional.of(submodelElement.get());
 							continue;

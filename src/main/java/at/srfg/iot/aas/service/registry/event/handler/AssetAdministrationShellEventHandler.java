@@ -35,11 +35,13 @@ public class AssetAdministrationShellEventHandler {
 				entity.setDerivedFromElement(parent.get());
 			}
 		}
-		for ( Submodel sub : dto.getSubModel()) {
+		registry.saveAssetAdministrationShell(entity);
+		// do the post-processing
+		for ( Submodel sub : dto.getChildElements(Submodel.class)) {
 			// the submodel might have an identifier "idShort", so need to find the model based on identifier
 			if ( sub.getIdType().equals(IdType.IdShort)) {
 				// retrieve the submodel via idShort
-				Optional<Submodel> existing = entity.getSubmodel(sub.getIdShort());
+				Optional<Submodel> existing = entity.getChildElement(sub.getIdShort(), Submodel.class);
 				processSubmodel(entity,  existing,  sub);
 			}
 			else {
@@ -52,7 +54,7 @@ public class AssetAdministrationShellEventHandler {
 	private void processSubmodel(AssetAdministrationShell shell, Optional<Submodel> existing, Submodel dto) {
 		if (existing.isPresent()) {
 			Submodel e = existing.get();
-			// update only when shell's are equal
+			// update onlywhen shell's are equal
 			if ( e.getAssetAdministrationShell().equals(shell)) {
 				worker.setSubmodel(existing.get(), dto);
 			}

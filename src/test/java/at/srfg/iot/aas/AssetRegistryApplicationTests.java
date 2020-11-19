@@ -2,30 +2,29 @@ package at.srfg.iot.aas;
 
 import static org.junit.Assert.assertTrue;
 
+import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.basyx.aas.metamodel.map.descriptor.AASDescriptor;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.ModelUrn;
-import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
-import org.eclipse.basyx.submodel.metamodel.api.identifier.IIdentifier;
-import org.eclipse.basyx.submodel.metamodel.api.identifier.IdentifierType;
-import org.eclipse.basyx.submodel.metamodel.map.identifier.Identifier;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import at.srfg.iot.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.aas.basic.Submodel;
+import at.srfg.iot.aas.basic.directory.AssetAdministrationShellDescriptor;
 import at.srfg.iot.aas.common.referencing.IdPart;
 import at.srfg.iot.aas.common.referencing.IdType;
 import at.srfg.iot.aas.dependency.SemanticLookup;
+import at.srfg.iot.aas.modeling.submodelelement.Property;
 import at.srfg.iot.aas.repository.registry.AssetAdministrationShellRepository;
 import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
-import at.srfg.iot.aas.service.basys.RegistryProvider;
+import at.srfg.iot.aas.service.registry.RegistryService;
+import at.srfg.iot.aas.service.registry.RegistryWorker;
 import at.srfg.iot.classification.model.ConceptBase;
 import at.srfg.iot.classification.model.ConceptClass;
 import at.srfg.iot.classification.model.ConceptProperty;
@@ -35,15 +34,13 @@ import at.srfg.iot.classification.model.ConceptProperty;
 public class AssetRegistryApplicationTests {
 	@Autowired
 	private SemanticLookup rexRoth;
+
+	@Autowired
+	private RegistryWorker registry;
 	
 	@Autowired
-	private RegistryProvider registry;
-	
-	@Autowired
-	private IdentifiableRepository<Submodel> subModelRepo;
-	
-	@Autowired
-	private AssetAdministrationShellRepository aasRepo;
+	private RegistryService repository;
+
 	
 	@Test
 	public void contextLoads() {
@@ -106,32 +103,43 @@ public class AssetRegistryApplicationTests {
 		assertTrue("srfg".equals(legalEntity));
 		
 	}
-	@Ignore
 	@Test
-	public void registerAsset() throws Exception {
-		IIdentifier iid = new Identifier(IdentifierType.IRI, "http://example.com/aas/1");
-		AASDescriptor descriptor = new AASDescriptor("aas_1", iid, "http://localhost");
+	public void directoryLookup() throws Exception {
+		AssetAdministrationShell aShell = new AssetAdministrationShell("http://example.com/aas/shell");
+		aShell.setIdShort("aas");
+		aShell.setDescription("en", "Shell Description");
+		// once registered, the directory holds the "direct" endpoint to access the AAS
+		String encodedId = URLEncoder.encode(aShell.getId(), "UTF-8");
+		aShell.setEndpoint(0, "http://example.com/repository/" + encodedId, "http");
+		Submodel submodel = new Submodel("submodel", aShell);
+		submodel.setDescription("en", "Submodel Description");
 		
-		IIdentifier subId = new Identifier(IdentifierType.IRI, "http://example.com/aas/1/sub");
-		SubmodelDescriptor sub1 = new SubmodelDescriptor("aas_1_sub", subId, "http://localhost/");
-		descriptor.addSubmodelDescriptor(sub1);
-		SubmodelDescriptor sub2 = new SubmodelDescriptor("aas_2_sub", subId, "http://localhost/");
-		descriptor.addSubmodelDescriptor(sub2);
-		// directory-service
-		registry.deleteValue("http://example.com/aas/1");
-		// 
-		registry.createValue(null, descriptor);
+		Submodel submodel2 = new Submodel("submodel2", aShell);
+		submodel2.setDescription("en", "Submodel2 Description");
 		
-		Optional<Submodel> model = subModelRepo.findByIdentification(new at.srfg.iot.aas.basic.Identifier("http://example.com/aas/1/sub"));
-		assert(model.isPresent());
 		
-		Submodel subModel =model.get();
-		Optional<at.srfg.iot.aas.basic.AssetAdministrationShell> theShell = aasRepo.findByIdentification(new at.srfg.iot.aas.basic.Identifier( "http://example.com/aas/1"));
-		assertTrue(theShell.isPresent());
+		Optional<AssetAdministrationShell> registered = registry.registerAdministrationShell(new AssetAdministrationShellDescriptor(aShell));
 		
-//		subModelRepo.delete(subModel);
-		registry.deleteValue(theShell.get().getId());
 		
+		
+		Optional<AssetAdministrationShell> retrieved = repository.getAssetAdministrationShell(aShell.getIdentification());
+		if ( retrieved.isPresent()) {
+			repository.deleteAssetAdministrationShell(retrieved.get().getIdentification());
+		}
+		
+	}
+	@Test
+	public void createElement() throws Exception {
+		AssetAdministrationShell aShell = new AssetAdministrationShell("http://example.com/aas/shell");
+		aShell.setIdShort("aas");
+		aShell.setDescription("en", "Shell Description");
+		// once registered, the directory holds the "direct" endpoint to access the AAS
+		String encodedId = URLEncoder.encode(aShell.getId(), "UTF-8");
+		aShell.setEndpoint(0, "http://example.com/repository/" + encodedId, "http");
+		Submodel submodel = new Submodel("submodel", aShell);
+		submodel.setDescription("en", "Submodel Description");
+		
+		Optional<AssetAdministrationShell> registered = registry.registerAdministrationShell(new AssetAdministrationShellDescriptor(aShell));
 		
 	}
 }

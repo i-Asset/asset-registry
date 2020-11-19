@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import at.srfg.iot.aas.common.referencing.ReferableElement;
@@ -16,6 +17,7 @@ public class EventElementEventHandler {
 	RegistryService registry;
 
 	@EventListener
+	@Order(1)
 	public void onEventElementEvent(EventElementEvent event) {
 		event.getEntity().setActive(event.getDTO().isActive());
 		event.getEntity().setDirection(event.getDTO().getDirection());
@@ -23,7 +25,7 @@ public class EventElementEventHandler {
 		// 
 		if (! event.isObservedReferenceResolved()) {
 			// 
-			Optional<ReferableElement> ref = registry.resolveReference(event.getDTO().getObservableReference());
+			Optional<ReferableElement> ref = registry.resolveReference(event.getDTO().getObservableReference(), ReferableElement.class);
 			if ( ref.isPresent()) {
 				// when reference points to a valid element 
 				if (event.isValidObservedElement(ref.get())) {

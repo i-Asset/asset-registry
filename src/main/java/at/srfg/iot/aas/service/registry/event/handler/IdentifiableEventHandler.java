@@ -1,6 +1,7 @@
 package at.srfg.iot.aas.service.registry.event.handler;
 
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import at.srfg.iot.aas.common.Identifiable;
@@ -10,6 +11,7 @@ import at.srfg.iot.aas.service.registry.event.IdentifiableEvent;
 public class IdentifiableEventHandler {
 
 	@EventListener
+	@Order(1)
 	public void onIdentifiableEvent(IdentifiableEvent event) {
 		Identifiable entity = event.getEntity();
 		Identifiable dto = event.getDTO();

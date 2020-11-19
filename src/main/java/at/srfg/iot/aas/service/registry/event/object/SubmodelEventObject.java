@@ -23,10 +23,10 @@ public class SubmodelEventObject extends RegistryEventObject<Submodel, Submodel>
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public SubmodelEventObject(Object source, AssetAdministrationShell aas, Submodel entity, Submodel dto) {
+	public SubmodelEventObject(Object source, Submodel entity, Submodel dto) {
 		super(source, entity, dto);
 		// keep the identifier (when required)
-		this.aasIdentifier = aas;
+		this.aasIdentifier = entity.getAssetAdministrationShell();
 	}
 	public AssetAdministrationShell getAssetAdministrationShell() {
 		return aasIdentifier;

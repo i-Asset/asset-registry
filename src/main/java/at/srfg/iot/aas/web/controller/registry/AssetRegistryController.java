@@ -51,18 +51,23 @@ public class AssetRegistryController implements AssetRepositoryAPI {
 		return registry.deleteAssetAdministrationShell(uri);
 	}
 
-	@Override
-	public Optional<Submodel> getSubmodel(String uri) throws Exception {
-		return registry.getSubmodel(uri);
-	}
+//	@Override
+//	public Optional<Submodel> getSubmodel(String uri) throws Exception {
+//		
+//		return registry.getSubmodel(uri);
+//	}
 
 	@Override
 	public Optional<Submodel> addSubmodel(String uri, Submodel submodel) throws Exception {
-		return worker.createSubmodel(uri, submodel);
+		worker.setElement(uri, submodel);
+		// TODO: handle return types
+		return Optional.of(submodel);
 	}
 
 	@Override
-	public Optional<Submodel> setSubmodel(Submodel submodel) throws Exception {
+	public Optional<Submodel> setSubmodel(String uri, Submodel submodel) throws Exception {
+		// 
+		
 		return worker.setSubmodel(submodel);
 	}
 	@Override

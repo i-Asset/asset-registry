@@ -1,7 +1,6 @@
 package at.srfg.iot.aas.service.registry.event.object.submodel;
 
 import at.srfg.iot.aas.basic.GlobalReference;
-import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.common.SubmodelElementContainer;
 import at.srfg.iot.aas.common.referencing.KeyElementsEnum;
 import at.srfg.iot.aas.common.referencing.Kind;

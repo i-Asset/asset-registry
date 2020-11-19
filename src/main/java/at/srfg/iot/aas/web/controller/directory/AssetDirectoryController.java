@@ -1,12 +1,16 @@
 package at.srfg.iot.aas.web.controller.directory;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
 
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.aas.basic.Endpoint;
 import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.basic.directory.AssetAdministrationShellDescriptor;
@@ -18,6 +22,11 @@ import at.srfg.iot.api.AssetDirectoryAPI;
 
 @RestController
 public class AssetDirectoryController implements AssetDirectoryAPI {
+	@Value("${iAsset.platformHost:}")
+	private String platformHost;
+	@Value("${server.port:}")
+	private int port;
+
 	@Autowired
 	private RegistryService registry;
 	
@@ -30,11 +39,12 @@ public class AssetDirectoryController implements AssetDirectoryAPI {
 		Optional<AssetAdministrationShell> aas = registry.getAssetAdministrationShell(id);
 		if (aas.isPresent()) {
 			AssetAdministrationShellDescriptor desc = new AssetAdministrationShellDescriptor(aas.get());
+			desc.withDefaultEndpoint(platformHost);
 			return Optional.of(desc);
 		}
 		return Optional.empty();
 	}
-
+	
 	@Override
 	public Optional<SubmodelDescriptor> lookup(String aasIdentifier, String submodelIdentifier) {
 		Identifier id = new Identifier(submodelIdentifier);
@@ -68,6 +78,7 @@ public class AssetDirectoryController implements AssetDirectoryAPI {
 
 	@Override
 	public void unregister(String aasIdentifier) {
+		registry.deleteAssetAdministrationShell(aasIdentifier);
 		
 		
 	}

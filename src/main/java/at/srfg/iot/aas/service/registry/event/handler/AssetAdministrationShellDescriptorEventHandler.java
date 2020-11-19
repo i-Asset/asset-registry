@@ -1,6 +1,9 @@
 package at.srfg.iot.aas.service.registry.event.handler;
 
 import java.util.Optional;
+import java.util.UUID;
+
+import javax.annotation.Priority;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -8,6 +11,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.aas.basic.Endpoint;
 import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.basic.directory.AssetAdministrationShellDescriptor;
 import at.srfg.iot.aas.basic.directory.SubmodelDescriptor;
@@ -15,6 +19,8 @@ import at.srfg.iot.aas.common.referencing.IdType;
 import at.srfg.iot.aas.service.registry.RegistryService;
 import at.srfg.iot.aas.service.registry.RegistryWorker;
 import at.srfg.iot.aas.service.registry.event.AssetAdministrationShellDescriptorEvent;
+import at.srfg.iot.aas.service.registry.event.SubmodelDescriptorEvent;
+import at.srfg.iot.api.ISubmodel;
 
 @Component
 public class AssetAdministrationShellDescriptorEventHandler {
@@ -25,30 +31,72 @@ public class AssetAdministrationShellDescriptorEventHandler {
 	@Autowired
 	private RegistryService registry;
 	@EventListener
+	public void onSubmodelDescriptorEvent(SubmodelDescriptorEvent event) {
+		Submodel entity = event.getEntity();
+		SubmodelDescriptor dto = event.getDTO();
+		if ( dto.getEndpoints()!= null) {
+			for (Integer index : dto.getEndpoints().keySet() ) {
+				Endpoint ep = dto.getEndpoint(index);
+				entity.setEndpoint(index, ep.getAddress(), ep.getType());
+			}
+		}
+	}
+	@EventListener
 	public void onAssetAdministrationShellEvent(AssetAdministrationShellDescriptorEvent event) {
 		
 		AssetAdministrationShell entity = event.getEntity();
 		AssetAdministrationShellDescriptor dto = event.getDTO();
-
+		// 
+		Optional<AssetAdministrationShell> type = Optional.empty();
+		if ( dto.getDerivedFrom() != null ) {
+			type = registry.resolveReference(dto.getDerivedFrom(), AssetAdministrationShell.class);
+			AssetAdministrationShell parentType = type.get();
+			entity.setDerivedFromElement(parentType);
+		}
+		
+		for (Integer index : dto.getEndpoints().keySet() ) {
+			Endpoint ep = dto.getEndpoint(index);
+			entity.setEndpoint(index, ep.getAddress(), ep.getType());
+		}
+		// save the entity before processing dendencies
+		registry.saveAssetAdministrationShell(entity);
+		// 
 		for ( SubmodelDescriptor sub : dto.getSubmodels()) {
 			// the submodel might have an identifier "idShort", so need to find the model based on identifier
 			if ( sub.getIdType().equals(IdType.IdShort)) {
 				// retrieve the submodel via idShort
-				Optional<Submodel> existing = entity.getSubmodel(sub.getIdShort());
-				processSubmodel(entity,  existing,  sub);
+				Optional<ISubmodel> existing = entity.getSubmodel(sub.getIdShort());
+				processSubmodel(entity,  existing.orElse(null),  sub);
 			}
 			else {
 				// the identifier is global, read the model from the registry
 				Optional<Submodel> existing = registry.getSubmodel(sub.getIdentification());
-				processSubmodel(entity,  existing,  sub);
+				processSubmodel(entity,  existing.orElse(null),  sub);
 			}
 		}
+		if ( type.isPresent()) {
+			AssetAdministrationShell parentType = type.get();
+			// 
+			for ( Submodel sub : parentType.getChildElements(Submodel.class)) {
+				Optional<ISubmodel> existing = entity.getSubmodel(sub.getIdShort());
+				if ( ! existing.isPresent()) {
+					SubmodelDescriptor subDesc = new SubmodelDescriptor(sub);
+					subDesc.setIdShort(sub.getIdShort());
+					subDesc.setId(UUID.randomUUID().toString());
+					subDesc.setSemanticId(sub.asReference());
+					processSubmodel(entity, null, subDesc);
+				}
+				
+			};
+			
+		}
+		
+
 	}
-	private void processSubmodel(AssetAdministrationShell shell, Optional<Submodel> existing, SubmodelDescriptor dto) {
-		if (existing.isPresent()) {
-			Submodel e = existing.get();
+	private void processSubmodel(AssetAdministrationShell shell, ISubmodel existing, SubmodelDescriptor dto) {
+		if (existing != null) {
 			throw new IllegalArgumentException(String.format("Submodel [%s] already exists and is not part of the the AssetAdministrationShell [%s]!",
-					e.getIdentification().toString(),
+					existing.getIdentification().toString(),
 					shell.getIdentification().toString()
 					));
 			// update only when shell's are equal

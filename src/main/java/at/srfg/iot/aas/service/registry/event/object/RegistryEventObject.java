@@ -1,6 +1,10 @@
 package at.srfg.iot.aas.service.registry.event.object;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 
 import at.srfg.iot.aas.common.referencing.ReferableElement;
 /**
@@ -23,6 +27,9 @@ public abstract class RegistryEventObject<T extends ReferableElement, DTO> exten
 	 * The corresponding element provided via API - must not be <code>null</code> 
 	 */
 	private final DTO dto;
+	
+	protected final List<ApplicationEvent> events = new ArrayList<ApplicationEvent>();
+
 	/**
 	 * Constructor for the {@link RegistryEventObject}, both the persisted entity and the data transfer object
 	 * must not be null!
@@ -48,5 +55,7 @@ public abstract class RegistryEventObject<T extends ReferableElement, DTO> exten
 	public DTO getDTO() {
 		return dto;
 	}
+
+	//public abstract void processDependencies(ApplicationEventPublisher publisher);
 	
 }

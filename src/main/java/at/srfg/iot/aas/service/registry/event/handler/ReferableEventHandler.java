@@ -1,6 +1,8 @@
 package at.srfg.iot.aas.service.registry.event.handler;
 
 import org.springframework.context.event.EventListener;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import at.srfg.iot.aas.common.Referable;
@@ -11,6 +13,7 @@ import at.srfg.iot.aas.service.registry.event.ReferableEvent;
 public class ReferableEventHandler {
 
 	@EventListener
+	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public void onReferableEvent(ReferableEvent event) {
 		Referable entity = event.getEntity();
 		Referable dto = event.getDTO();

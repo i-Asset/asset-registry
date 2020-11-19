@@ -25,9 +25,9 @@ public class SubmodelElementContainerEventHandler {
 		SubmodelElementContainer entity = event.getEntity();
 		SubmodelElementContainer dto = event.getDTO();
 		// 
-		for (SubmodelElement element : dto.getSubmodelElements()) {
+		for (SubmodelElement element : dto.getSubmodelElements(SubmodelElement.class)) {
 			// SubmodelElement is Referable only - identification only via idShort! 
-			Optional<SubmodelElement> existing = entity.getSubmodelElement(element.getIdShort());
+			Optional<SubmodelElement> existing = entity.getChildElement(element.getIdShort(), SubmodelElement.class);
 			if ( existing.isPresent() ) {
 				SubmodelElement submodelElement = existing.get();
 				if ( submodelElement.getSubmodel() != null && submodelElement.getParentElement()!= null) {
