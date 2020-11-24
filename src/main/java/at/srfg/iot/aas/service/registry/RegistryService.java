@@ -366,20 +366,22 @@ public class RegistryService {
 				case IdShort:
 					// 
 					Referable element = referable.get();
-					if ( element instanceof IAssetAdministrationShell) {
-						Optional<ISubmodel> submodel  = ((IAssetAdministrationShell) element).getSubmodel(key.getValue());
-						if ( submodel.isPresent()) {
-							referable = Optional.of(submodel.get());
-							continue;
-						}
-					}
-					else if ( element instanceof SubmodelElementContainer ) {
-						Optional<ISubmodelElement> submodelElement = ((SubmodelElementContainer)element).getSubmodelElement(key.getValue());
-						if ( submodelElement.isPresent()) {
-							referable = Optional.of(submodelElement.get());
-							continue;
-						}
-					}
+					referable = element.getChildElement(key.getValue());
+					continue;
+//					if ( element instanceof IAssetAdministrationShell) {
+//						Optional<ISubmodel> submodel  = ((IAssetAdministrationShell) element).getSubmodel(key.getValue());
+//						if ( submodel.isPresent()) {
+//							referable = Optional.of(submodel.get());
+//							continue;
+//						}
+//					}
+//					else if ( element instanceof SubmodelElementContainer ) {
+//						Optional<ISubmodelElement> submodelElement = ((SubmodelElementContainer)element).getSubmodelElement(key.getValue());
+//						if ( submodelElement.isPresent()) {
+//							referable = Optional.of(submodelElement.get());
+//							continue;
+//						}
+//					}
 				default: 
 					throw new IllegalArgumentException("Key element cannot be resolved: "+ key.getValue());
 				}

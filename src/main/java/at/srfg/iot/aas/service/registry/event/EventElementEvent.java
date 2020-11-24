@@ -4,14 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import at.srfg.iot.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.aas.basic.Submodel;
+import at.srfg.iot.aas.common.SubmodelElementContainer;
 import at.srfg.iot.aas.common.referencing.ReferableElement;
 import at.srfg.iot.aas.common.referencing.Reference;
 import at.srfg.iot.aas.modeling.SubmodelElement;
-import at.srfg.iot.aas.modeling.submodelelement.Event;
+import at.srfg.iot.aas.modeling.submodelelement.EventElement;
 
 public interface EventElementEvent extends ApiEvent {
-	Event getEntity();
-	Event getDTO();
+	EventElement getEntity();
+	EventElement getDTO();
 	
 	/**
 	* determine whether whether the semantic {@link ReferableElement} 
@@ -20,25 +21,29 @@ public interface EventElementEvent extends ApiEvent {
 	*/
 	@JsonIgnore
 	default boolean isObservedReferenceResolved() {
-		// 
-		return (getEntity().getObservableElement() == null || 
-				!(getEntity().getObservableElement() instanceof Reference));
-	}
-	@JsonIgnore
-	default boolean isSemanticElementResolved() {
-		return (getEntity().getSemanticElement() == null || 
-				!(getEntity().getSemanticElement() instanceof Reference));
+		if ( getDTO().getObservableReference() != null) {
+			if ( getEntity().getObservableElement() != null  ) {
+				return getEntity().getObservableElement().asReference().equals(getDTO().getObservableReference());		
+			}
+			return false;
+		}
+		return true;
 	}
 	@JsonIgnore
 	default boolean isMessageBrokerResolved() {
-		return (getEntity().getMessageBroker() == null || 
-				!(getEntity().getMessageBroker() instanceof Reference));
+		if ( getDTO().getMessageBroker() != null) {
+			if ( getEntity().getMessageBrokerElement() != null  ) {
+				return getEntity().getMessageBrokerElement().asReference().equals(getDTO().getMessageBroker());		
+			}
+			return false;
+		}
+		return true;
 	}
 	default boolean isValidObservedElement(ReferableElement observedElement) {
 		if ( observedElement instanceof AssetAdministrationShell) {
 			return true;
 		}
-		else if ( observedElement instanceof Submodel) {
+		else if ( observedElement instanceof SubmodelElementContainer) {
 			return true;
 			
 		}
@@ -49,5 +54,12 @@ public interface EventElementEvent extends ApiEvent {
 			return false;
 		}
 	}
-	
+	default boolean isValidMessageBroker(ReferableElement observedElement) {
+		if ( observedElement instanceof SubmodelElementContainer) {
+			return true;
+		}
+		else {
+			return false;
+		} 
+	}
 }

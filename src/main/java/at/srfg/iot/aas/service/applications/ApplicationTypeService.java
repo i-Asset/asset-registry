@@ -14,7 +14,7 @@ import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.common.referencing.Kind;
 import at.srfg.iot.aas.common.types.DirectionEnum;
-import at.srfg.iot.aas.modeling.submodelelement.Event;
+import at.srfg.iot.aas.modeling.submodelelement.EventElement;
 import at.srfg.iot.aas.repository.registry.AssetAdministrationShellRepository;
 import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelElementRepository;
@@ -114,11 +114,11 @@ public class ApplicationTypeService {
 			}
 		});
 		
-		Optional<Event> sensor = eventModel.getSubmodelElement("sensorData", Event.class);
-		Event sensorData = sensor.orElseGet(new Supplier<Event>() {
+		Optional<EventElement> sensor = eventModel.getSubmodelElement("sensorData", EventElement.class);
+		EventElement sensorData = sensor.orElseGet(new Supplier<EventElement>() {
 			@Override
-			public Event get() {
-				Event event = new Event("sensorData", eventModel);
+			public EventElement get() {
+				EventElement event = new EventElement("sensorData", eventModel);
 				event.setCategory(APPLICATION_TYPE_CATEGORY);
 				event.setDescription("de", "i-Asset Sensor Event-Settings");
 				event.setKind(Kind.Type);

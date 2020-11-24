@@ -13,8 +13,9 @@ import at.srfg.iot.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.common.referencing.Kind;
+import at.srfg.iot.aas.common.types.DataTypeEnum;
 import at.srfg.iot.aas.common.types.DirectionEnum;
-import at.srfg.iot.aas.modeling.submodelelement.Event;
+import at.srfg.iot.aas.modeling.submodelelement.EventElement;
 import at.srfg.iot.aas.modeling.submodelelement.Operation;
 import at.srfg.iot.aas.modeling.submodelelement.OperationVariable;
 import at.srfg.iot.aas.modeling.submodelelement.Property;
@@ -88,7 +89,7 @@ public class CMMSTypeService extends ApplicationTypeService {
 				property.setCategory(CMMS_TYPE_CATEGORY);
 				property.setKind(Kind.Type);
 				property.setDescription("de", "Typ-Defintion Input-Parameter 1 für Maintenance History");
-				property.setValueQualifier("STRING");
+				property.setValueQualifier(DataTypeEnum.STRING);
 				return aasSubmodelElementRepo.save(property);
 			}
 			
@@ -147,11 +148,11 @@ public class CMMSTypeService extends ApplicationTypeService {
 				return aasSubmodelRepo.save(model);
 			}
 		});
-		Optional<Event> sensor = eventModel.getSubmodelElement("maintenance", Event.class);
-		Event sensorData = sensor.orElseGet(new Supplier<Event>() {
+		Optional<EventElement> sensor = eventModel.getSubmodelElement("maintenance", EventElement.class);
+		EventElement sensorData = sensor.orElseGet(new Supplier<EventElement>() {
 			@Override
-			public Event get() {
-				Event event = new Event("maintenance", eventModel);
+			public EventElement get() {
+				EventElement event = new EventElement("maintenance", eventModel);
 				event.setCategory(CMMS_TYPE_CATEGORY);
 				event.setDescription("de", "CMMS Maintenance Meldung");
 				event.setKind(Kind.Type);
@@ -162,7 +163,7 @@ public class CMMSTypeService extends ApplicationTypeService {
 		});
 		
 		// test searching for Event classes
-		Collection<Event> event = getEvents("http://iasset.salzburgresearch.at/registry/cmms/events");
+		Collection<EventElement> event = getEvents("http://iasset.salzburgresearch.at/registry/cmms/events");
 		System.out.println(event.size());
 	}
 	/**
@@ -170,13 +171,13 @@ public class CMMSTypeService extends ApplicationTypeService {
 	 * @param uri
 	 * @return
 	 */
-	public Collection<Event> getEvents(String uri) {
+	public Collection<EventElement> getEvents(String uri) {
 		Optional<Submodel> submodel = aasSubmodelRepo.findByIdentification(new Identifier(uri));
 		if ( submodel.isPresent() ) {
 			Submodel sub = submodel.get();
-			return sub.getSubmodelElements(Event.class);
+			return sub.getSubmodelElements(EventElement.class);
 		}
-		return new ArrayList<Event>();
+		return new ArrayList<EventElement>();
 	}
 	
 	

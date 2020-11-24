@@ -14,6 +14,7 @@ import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.common.SubmodelElementContainer;
 import at.srfg.iot.aas.common.referencing.IdType;
 import at.srfg.iot.aas.common.referencing.Kind;
+import at.srfg.iot.aas.common.types.DataTypeEnum;
 import at.srfg.iot.aas.dependency.SemanticLookup;
 import at.srfg.iot.aas.dictionary.ConceptDescription;
 import at.srfg.iot.aas.modeling.submodelelement.File;
@@ -104,7 +105,7 @@ public class BoschRexRoth {
 		}
 		Property property = new Property("manufacturer", container);
 		property.setDescription("de", "Hersteller");
-		property.setValueQualifier("STRING");
+		property.setValueQualifier(DataTypeEnum.STRING);
 		return submodelElementRepository.save(property);
 		
 		
@@ -194,7 +195,7 @@ public class BoschRexRoth {
 				property.setDescription("de", "Drehgeschwindingkeit");
 				property.setDescription("en", "Rotation Speed");
 				property.setValue("2000");
-				property.setValueQualifier("double");
+				property.setValueQualifier(DataTypeEnum.DECIMAL);
 				property.setSemanticElement(cd);
 				return submodelElementRepository.save(property);
 			}
@@ -236,7 +237,7 @@ public class BoschRexRoth {
 				collProp.setDescription("de", "Maximale Drehgeschwindingkeit");
 				collProp.setDescription("en", "Maximum Rotation Speed");
 				collProp.setValue("2000");
-				collProp.setValueQualifier("double");
+				collProp.setValueQualifier(DataTypeEnum.DECIMAL);
 				collProp.setSemanticElement(cd);
 				return submodelElementRepository.save(collProp);
 			}

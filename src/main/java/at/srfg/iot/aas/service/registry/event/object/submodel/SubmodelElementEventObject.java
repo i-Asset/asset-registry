@@ -1,6 +1,7 @@
 package at.srfg.iot.aas.service.registry.event.object.submodel;
 
 import at.srfg.iot.aas.basic.GlobalReference;
+import at.srfg.iot.aas.common.HasKind;
 import at.srfg.iot.aas.common.SubmodelElementContainer;
 import at.srfg.iot.aas.common.referencing.KeyElementsEnum;
 import at.srfg.iot.aas.common.referencing.Kind;
@@ -8,7 +9,7 @@ import at.srfg.iot.aas.common.referencing.ReferableElement;
 import at.srfg.iot.aas.dictionary.ConceptDescription;
 import at.srfg.iot.aas.modeling.SubmodelElement;
 import at.srfg.iot.aas.modeling.submodelelement.Blob;
-import at.srfg.iot.aas.modeling.submodelelement.Event;
+import at.srfg.iot.aas.modeling.submodelelement.EventElement;
 import at.srfg.iot.aas.modeling.submodelelement.File;
 import at.srfg.iot.aas.modeling.submodelelement.Operation;
 import at.srfg.iot.aas.modeling.submodelelement.OperationVariable;
@@ -64,8 +65,8 @@ public abstract class SubmodelElementEventObject<E extends SubmodelElement, D ex
 			return new RelationshipElementEventObject(source, container, (RelationshipElement)entity, (RelationshipElement)dto);
 		case SubmodelElementCollection:
 			return new SubmodelElementCollectionEventObject(source, container, (SubmodelElementCollection)entity,(SubmodelElementCollection)dto);
-		case Event:
-			return new EventElementEventObject(source, container, (Event)entity,(Event)dto);
+		case EventElement:
+			return new EventElementEventObject(source, container, (EventElement)entity,(EventElement)dto);
 		default:
 			throw new IllegalArgumentException("Provided submodel element is not supported!");
 		}
@@ -79,7 +80,6 @@ public abstract class SubmodelElementEventObject<E extends SubmodelElement, D ex
 		// (1) to another type model or
 		// (2) to an external class definition (GlobalReference) from semantic lookup which specifies the properties to include with the submodel
 		// (3) to an internal ConceptDescription which in turn points to a  
-
 		// when current submodel is of kind "Instance", the reference must point to a submodel of kind "Type" 
 		if (semantic != null && semantic instanceof SubmodelElementCollection) {
 			// a submodel element collection may point to a "Type" collection (although not stated in the spec!)
@@ -106,7 +106,17 @@ public abstract class SubmodelElementEventObject<E extends SubmodelElement, D ex
 			}
 			
 		}
-		
+		if ( semantic != null) {
+			if ( getEntity().isInstance()) {
+				if ( getEntity().getModelType().equals(semantic.getModelType()) ) {
+					// the referable element must be "HasKind"
+					HasKind hasKind = HasKind.class.cast(semantic);
+					if (! hasKind.isInstance()) {
+						return true;
+					}
+				}
+			}
+		}
 		return false;
 	}
 	

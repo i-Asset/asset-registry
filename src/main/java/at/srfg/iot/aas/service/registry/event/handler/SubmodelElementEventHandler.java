@@ -3,6 +3,7 @@ package at.srfg.iot.aas.service.registry.event.handler;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,8 @@ import at.srfg.iot.aas.modeling.submodelelement.Operation;
 import at.srfg.iot.aas.modeling.submodelelement.OperationVariable;
 import at.srfg.iot.aas.modeling.submodelelement.Property;
 import at.srfg.iot.aas.service.registry.RegistryService;
+import at.srfg.iot.aas.service.registry.RegistryWorker;
+import at.srfg.iot.aas.service.registry.event.EventElementEvent;
 import at.srfg.iot.aas.service.registry.event.submodel.BlobEvent;
 import at.srfg.iot.aas.service.registry.event.submodel.FileEvent;
 import at.srfg.iot.aas.service.registry.event.submodel.OperationEvent;
@@ -24,7 +27,11 @@ import at.srfg.iot.aas.service.registry.event.submodel.ReferenceElementEvent;
 @Component
 public class SubmodelElementEventHandler {
 	@Autowired
-	private RegistryService registry;
+	RegistryService registry;
+	@Autowired
+	ApplicationEventPublisher publisher;
+	@Autowired
+	RegistryWorker worker;
 	
 	@EventListener
 	@Order(10)
@@ -71,18 +78,47 @@ public class SubmodelElementEventHandler {
 		Operation operation = event.getEntity();
 		Operation dto = event.getDTO();
 		// 
-		for (OperationVariable in : dto.getIn()) {
-			
-			
+		for (OperationVariable variable : dto.getChildElements(OperationVariable.class)) {
+			// SubmodelElement is Referable only - identification only via idShort! 
+			Optional<OperationVariable> existing = operation.getChildElement(variable.getIdShort(), OperationVariable.class);
+			if ( existing.isPresent() ) {
+				OperationVariable submodelElement = existing.get();
+				if ( submodelElement.getSubmodel() != null && submodelElement.getParentElement()!= null) {
+					worker.setSubmodelElement(existing.get(), variable);
+				}
+								
+			}
+			else {
+				// when not derived, create the element
+				if (! Boolean.TRUE.equals(variable.getDerived())) {
+					// no corresponding entity present 
+					OperationVariable vEntity = new OperationVariable(variable.getIdShort(), operation, variable.getDirection());
+					worker.setSubmodelElement(vEntity, variable);
+				}
+			}
 		}
 		
 	}
+	@EventListener
 	@Order(10)
 	public void onOperationVariableEvent(OperationVariableEvent event) {
 		OperationVariable entity = event.getEntity();
 		OperationVariable dto = event.getDTO();
+		// 
 		SubmodelElement sub =  dto.getValue();
+		// value is "aggregated"
+		Optional<SubmodelElement> submodelElement = registry.resolveReference(sub.asReference(), SubmodelElement.class);
+		
+		if ( submodelElement.isPresent()) {
+			SubmodelElement elem = submodelElement.get();
+			if (! elem.isInstance()) {
+				entity.setValue(elem);
+			}
+		}
+		else {
+			// TODO: submodel element of Kind "Type" not present - will have to create it by sending "asynchronous" event
+		}
 		
 	}
-	
+
 }

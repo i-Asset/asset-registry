@@ -14,6 +14,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import at.srfg.iot.aas.common.referencing.KeyElementsEnum;
+import at.srfg.iot.aas.common.types.DataTypeEnum;
 import at.srfg.iot.aas.modeling.SubmodelElement;
 import at.srfg.iot.aas.modeling.submodelelement.Blob;
 import at.srfg.iot.aas.modeling.submodelelement.File;
@@ -118,7 +119,7 @@ public class SubmodelHandler {
 					def = PropertyValueTypeDefHelper.fromName(defName);
 				}
 			}
-			property.setValueQualifier(def.name().toUpperCase());
+			property.setValueQualifier(DataTypeEnum.STRING);
 			return property;
 		case Blob:
 			return new Blob(idShort, model);
@@ -127,7 +128,7 @@ public class SubmodelHandler {
 		case ReferenceElement:
 			return new ReferenceElement(idShort, model);
 		// Other Elements
-		case Event:
+		case EventElement:
 			return null;
 		case Operation:
 			return new Operation(idShort, model);

@@ -74,22 +74,22 @@ public class AssetAdministrationShellDescriptorEventHandler {
 				processSubmodel(entity,  existing.orElse(null),  sub);
 			}
 		}
-		if ( type.isPresent()) {
-			AssetAdministrationShell parentType = type.get();
-			// 
-			for ( Submodel sub : parentType.getChildElements(Submodel.class)) {
-				Optional<ISubmodel> existing = entity.getSubmodel(sub.getIdShort());
-				if ( ! existing.isPresent()) {
-					SubmodelDescriptor subDesc = new SubmodelDescriptor(sub);
-					subDesc.setIdShort(sub.getIdShort());
-					subDesc.setId(UUID.randomUUID().toString());
-					subDesc.setSemanticId(sub.asReference());
-					processSubmodel(entity, null, subDesc);
-				}
-				
-			};
-			
-		}
+//		if ( type.isPresent()) {
+//			AssetAdministrationShell parentType = type.get();
+//			// 
+//			for ( Submodel sub : parentType.getChildElements(Submodel.class)) {
+//				Optional<ISubmodel> existing = entity.getSubmodel(sub.getIdShort());
+//				if ( ! existing.isPresent()) {
+//					SubmodelDescriptor subDesc = new SubmodelDescriptor(sub);
+//					subDesc.setIdShort(sub.getIdShort());
+//					subDesc.setId(UUID.randomUUID().toString());
+//					subDesc.setSemanticId(sub.asReference());
+//					processSubmodel(entity, null, subDesc);
+//				}
+//				
+//			};
+//			
+//		}
 		
 
 	}

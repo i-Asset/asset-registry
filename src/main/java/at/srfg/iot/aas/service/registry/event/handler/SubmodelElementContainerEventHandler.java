@@ -3,7 +3,6 @@ package at.srfg.iot.aas.service.registry.event.handler;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -14,8 +13,6 @@ import at.srfg.iot.aas.service.registry.event.SubmodelElementContainerEvent;
 
 @Component
 public class SubmodelElementContainerEventHandler {
-	@Autowired
-	ApplicationEventPublisher publisher;
 	@Autowired
 	RegistryWorker worker;
 	

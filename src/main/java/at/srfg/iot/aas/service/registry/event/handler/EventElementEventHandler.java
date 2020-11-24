@@ -17,7 +17,7 @@ public class EventElementEventHandler {
 	RegistryService registry;
 
 	@EventListener
-	@Order(1)
+	@Order(10)
 	public void onEventElementEvent(EventElementEvent event) {
 		event.getEntity().setActive(event.getDTO().isActive());
 		event.getEntity().setDirection(event.getDTO().getDirection());
@@ -30,6 +30,15 @@ public class EventElementEventHandler {
 				// when reference points to a valid element 
 				if (event.isValidObservedElement(ref.get())) {
 					event.getEntity().setObservableElement(ref.get());
+				}
+			}
+		}
+		if ( ! event.isMessageBrokerResolved()) {
+			Optional<ReferableElement> ref = registry.resolveReference(event.getDTO().getMessageBroker(), ReferableElement.class);
+			if ( ref.isPresent()) {
+				// when reference points to a valid element 
+				if (event.isValidMessageBroker(ref.get())) {
+					event.getEntity().setMessageBrokerElement(ref.get());
 				}
 			}
 		}

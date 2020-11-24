@@ -2,8 +2,9 @@ package at.srfg.iot.aas.service.registry.event.object.submodel;
 
 import at.srfg.iot.aas.common.SubmodelElementContainer;
 import at.srfg.iot.aas.modeling.submodelelement.Operation;
+import at.srfg.iot.aas.service.registry.event.submodel.OperationEvent;
 
-public class OperationEventObject extends SubmodelElementEventObject<Operation, Operation> {
+public class OperationEventObject extends SubmodelElementEventObject<Operation, Operation> implements OperationEvent {
 
 	public OperationEventObject(Object source, SubmodelElementContainer container, Operation entity, Operation api) {
 		super(source, container, entity, api);

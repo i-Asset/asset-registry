@@ -14,11 +14,11 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import at.srfg.iot.aas.common.referencing.KeyElementsEnum;
+import at.srfg.iot.aas.common.types.DataTypeEnum;
 import at.srfg.iot.aas.modeling.SubmodelElement;
 import at.srfg.iot.aas.modeling.submodelelement.Blob;
 import at.srfg.iot.aas.modeling.submodelelement.File;
 import at.srfg.iot.aas.modeling.submodelelement.Operation;
-import at.srfg.iot.aas.modeling.submodelelement.OperationVariable;
 import at.srfg.iot.aas.modeling.submodelelement.Property;
 import at.srfg.iot.aas.modeling.submodelelement.ReferenceElement;
 import at.srfg.iot.aas.modeling.submodelelement.RelationshipElement;
@@ -104,7 +104,7 @@ public class SubmodelElementHandler {
 				}
 			}
 			Property property = new Property(idShort, collection);
-			property.setValueQualifier(def.name().toUpperCase());
+			property.setValueQualifier(DataTypeEnum.STRING);
 			return property;
 		case Blob:
 			return new Blob(idShort, collection);
@@ -113,7 +113,7 @@ public class SubmodelElementHandler {
 		case ReferenceElement:
 			return new ReferenceElement(idShort, collection);
 		// Other Elements
-		case Event:
+		case EventElement:
 			return null;
 		case Operation:
 			return new Operation(idShort, collection);
@@ -145,17 +145,17 @@ public class SubmodelElementHandler {
 		switch (def) {
 		case String:
 			value.setValue(MappingHelper.getElementValue(map, String.class, "value"));
-			value.setValueQualifier("STRING");
+			value.setValueQualifier(DataTypeEnum.STRING);
 			break;
 		case Double:
 			Double doubleValue = MappingHelper.getElementValue(map, Double.class, "value");
 			value.setValue(String.valueOf(doubleValue));
-			value.setValueQualifier("DOUBLE");
+			value.setValueQualifier(DataTypeEnum.DECIMAL);
 			break;
 		case Integer:
 			Integer intValue = MappingHelper.getElementValue(map, Integer.class, "value");
 			value.setValue(String.valueOf(intValue));
-			value.setValueQualifier("INTEGER");
+			value.setValueQualifier(DataTypeEnum.INTEGER);
 			break;
 		default:
 		}
@@ -183,15 +183,15 @@ public class SubmodelElementHandler {
 		if ( map instanceof org.eclipse.basyx.submodel.metamodel.map.submodelelement.dataelement.property.Property) {
 			org.eclipse.basyx.submodel.metamodel.map.submodelelement.dataelement.property.Property property = (org.eclipse.basyx.submodel.metamodel.map.submodelelement.dataelement.property.Property) map;
 			String value = element.getValue();
-			String vQualifier = element.getValueQualifier();
+			DataTypeEnum vQualifier = element.getValueQualifier();
 			switch(vQualifier) {
-			case "STRING":
+			case STRING:
 				property.set(value);
 				break;
-			case "INTEGER":
+			case INTEGER:
 				property.set(Integer.valueOf(value));
 				break;
-			case "DOUBLE":
+			case DECIMAL:
 				property.set(Double.valueOf(value));
 				break;
 			}

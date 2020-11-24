@@ -15,8 +15,10 @@ import at.srfg.iot.aas.basic.GlobalReference;
 import at.srfg.iot.aas.basic.Identifier;
 import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.common.referencing.Kind;
+import at.srfg.iot.aas.common.types.DataTypeEnum;
 import at.srfg.iot.aas.common.types.DirectionEnum;
 import at.srfg.iot.aas.dictionary.ConceptDescription;
+import at.srfg.iot.aas.modeling.submodelelement.EventElement;
 import at.srfg.iot.aas.modeling.submodelelement.Operation;
 import at.srfg.iot.aas.modeling.submodelelement.OperationVariable;
 import at.srfg.iot.aas.modeling.submodelelement.Property;
@@ -34,6 +36,8 @@ public class DefaultAssetType {
 	public static final Identifier ASSET_TYPE_INFO_MODEL = new Identifier( "http://iasset.salzburgresearch.at/labor/belt#info");
 	public static final Identifier ASSET_TYPE_PROPERTY_MODEL = new Identifier( "http://iasset.salzburgresearch.at/labor/belt#properties");
 	public static final Identifier ASSET_TYPE_OPERATION_MODEL = new Identifier( "http://iasset.salzburgresearch.at/labor/belt#operations");
+	public static final Identifier ASSET_TYPE_EVENT_MODEL = new Identifier( "http://iasset.salzburgresearch.at/labor/belt#events");
+	
 	public static final String ASSET_TYPE_CATEGORY = "iAssetLabor";
 	@Autowired
 	protected AssetAdministrationShellRepository aasRepo;
@@ -125,7 +129,7 @@ public class DefaultAssetType {
 				property.setDescription("de", "Hersteller");
 				property.setSemanticElement(manufacturerName);
 				// TODO: use enumeration for ValueQualifier
-				property.setValueQualifier("STRING");
+				property.setValueQualifier(DataTypeEnum.STRING);
 				property.setValue("Hersteller Förderband");
 				return aasSubmodelElementRepo.save(property);
 			}
@@ -169,7 +173,7 @@ public class DefaultAssetType {
 				property.setDescription("de", "Status On/Off");
 				property.setSemanticElement(manufacturer);
 				// TODO: use enumeration for ValueQualifier
-				property.setValueQualifier("BOOLEAN");
+				property.setValueQualifier(DataTypeEnum.BOOLEAN);
 				return aasSubmodelElementRepo.save(property);
 			}
 			
@@ -186,7 +190,7 @@ public class DefaultAssetType {
 				property.setDescription("de", "Bewegungsrichtung");
 				property.setSemanticElement(manufacturer);
 				// TODO: use enumeration for ValueQualifier
-				property.setValueQualifier("STRING");
+				property.setValueQualifier(DataTypeEnum.STRING);
 				return aasSubmodelElementRepo.save(property);
 			}
 			
@@ -203,7 +207,7 @@ public class DefaultAssetType {
 				property.setDescription("de", "Zurückgelegte Distanz");
 				property.setSemanticElement(manufacturer);
 				// TODO: use enumeration for ValueQualifier
-				property.setValueQualifier("NUMBER");
+				property.setValueQualifier(DataTypeEnum.DECIMAL);
 				return aasSubmodelElementRepo.save(property);
 			}
 			
@@ -222,7 +226,7 @@ public class DefaultAssetType {
 				return aasSubmodelRepo.save(model);
 			}
 		});
-		Optional<Property> optBeltSpeed = operationModel.getSubmodelElement("speed", Property.class);
+		Optional<Property> optBeltSpeed = beltDataContainer.getSubmodelElement("speed", Property.class);
 		Property beltSpeed = optBeltSpeed.orElseGet(new Supplier<Property>() {
 
 			@Override
@@ -232,7 +236,7 @@ public class DefaultAssetType {
 				property.setCategory(ASSET_TYPE_CATEGORY);
 				property.setKind(Kind.Type);
 				property.setDescription("de", "Geschwindigkeit für Förderband");
-				property.setValueQualifier("STRING");
+				property.setValueQualifier(DataTypeEnum.DECIMAL);
 				return aasSubmodelElementRepo.save(property);
 			}
 			
@@ -269,6 +273,36 @@ public class DefaultAssetType {
 			}
 		});
 
+		Optional<Submodel> assetTypeEventoModel = aasSubmodelRepo.findByIdentification(ASSET_TYPE_EVENT_MODEL);
+		Submodel eventModel = assetTypeInfoModel.orElseGet(new Supplier<Submodel>() {
+			@Override
+			public Submodel get() {
+				Submodel model = new Submodel(ASSET_TYPE_EVENT_MODEL, theShell);
+				model.setIdShort("events");
+				model.setKind(Kind.Type);
+				model.setCategory(ASSET_TYPE_CATEGORY);
+				model.setDescription("de", "i-Asset Labor - Förderband-Ereignisse");
+				model.setVersion("V0.01");
+				model.setRevision("001");
+				return aasSubmodelRepo.save(model);
+			}
+		});
+		Optional<EventElement> optStateEvent = eventModel.getSubmodelElement("stateEvent", EventElement.class);
+		EventElement stateEvent = optStateEvent.orElseGet(new Supplier<EventElement>() {
+
+			@Override
+			public EventElement get() {
+				EventElement m = new EventElement("stateEvent", eventModel);
+				m.setCategory(ASSET_TYPE_CATEGORY);
+				m.setDescription("de", "Status-Änderungen für Förderband");
+				m.setKind(Kind.Type);
+				m.setObservableElement(beltState);
+				m.setMessageTopic("topic");
+				m.setDirection(DirectionEnum.Output);
+				// the output variable is specified with the CMMS instance!
+				return aasSubmodelElementRepo.save(m);
+			}
+		});
 
 	}
 
