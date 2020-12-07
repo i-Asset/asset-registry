@@ -284,6 +284,15 @@ public class RegistryService {
 		}
 		return Optional.empty();
 	}
+	public <T> Optional<T> resolveReference(Reference reference, Class<T> clazz, boolean create) {
+		Optional<Referable> ref = resolveReference(reference, create);
+		if ( ref.isPresent()) {
+			if ( clazz.isInstance(ref.get())) {
+				return Optional.of(clazz.cast(ref.get()));
+			}
+		}
+		return Optional.empty();
+	}
 	/**
 	 * Resolve the {@link ReferableElement} and indicated in the provided <code>identifier</code>
 	 * and <code>path</code>
@@ -333,7 +342,6 @@ public class RegistryService {
 
 		}
 		return referable;
-
 	}
 	/**
 	 * Resolve the {@link ReferableElement} as indicated in the provided {@link Reference}
@@ -342,8 +350,11 @@ public class RegistryService {
 	 * @return The Referable
 	 */
 	public Optional<Referable> resolveReference(Reference reference) {
-		
+		return resolveReference(reference, false);
+	}
+	public Optional<Referable> resolveReference(Reference reference, boolean createMissing) {	
 		Optional<Referable> referable = Optional.empty();
+		Referable parent = null;
 		for (Key key : reference.getKeys()) {
 			// 
 			if (! referable.isPresent() ) {
@@ -354,40 +365,60 @@ public class RegistryService {
 				case ConceptDescription:
 					Optional<IdentifiableElement> shell = identifiableRepo.findByIdentification(key.asIdentifier());
 					if ( shell.isPresent() ) {
-						referable = Optional.of(shell.get());
+						parent = shell.get();
+						referable = Optional.of(parent);
 						continue;
 					}
 				default: 
-					throw new IllegalArgumentException("Key element cannot be resolved: "+ key.getValue());
+					throw new IllegalArgumentException("Key element cannot be resolved: "+ reference);
 				}
 			}
 			else {
 				switch(key.getIdType()) {
 				case IdShort:
 					// 
-					Referable element = referable.get();
-					referable = element.getChildElement(key.getValue());
+					
+					parent = referable.get();
+					referable = parent.getChildElement(key.getValue());
+					// if it is not 
+					if ( createMissing  && ! referable.isPresent()) {
+						referable = fromKey(key, parent);
+					}
+
 					continue;
-//					if ( element instanceof IAssetAdministrationShell) {
-//						Optional<ISubmodel> submodel  = ((IAssetAdministrationShell) element).getSubmodel(key.getValue());
-//						if ( submodel.isPresent()) {
-//							referable = Optional.of(submodel.get());
-//							continue;
-//						}
-//					}
-//					else if ( element instanceof SubmodelElementContainer ) {
-//						Optional<ISubmodelElement> submodelElement = ((SubmodelElementContainer)element).getSubmodelElement(key.getValue());
-//						if ( submodelElement.isPresent()) {
-//							referable = Optional.of(submodelElement.get());
-//							continue;
-//						}
-//					}
+
 				default: 
 					throw new IllegalArgumentException("Key element cannot be resolved: "+ key.getValue());
 				}
 			}
 		}
 		return referable;
+	}
+	private Optional<Referable> fromKey(Key theKey, Referable parent) {
+		try {
+			Referable referable = theKey.getType().getElementClass().newInstance();
+			switch(theKey.getIdType()) {
+			case IdShort:
+				referable.setIdShort(theKey.getValue());
+				break;
+			default:
+				if ( referable instanceof IdentifiableElement) {
+					IdentifiableElement identifiable = (IdentifiableElement)referable;
+					identifiable.setIdentification(theKey.asIdentifier());
+				}
+				else {
+					throw new IllegalArgumentException("Key element cannot be created - must be of type idShort: " + theKey.getValue()) ;
+				}
+			}
+			if ( parent != null) {
+				parent.addChildElement(referable);
+			}
+			ReferableElement element = (ReferableElement) referable;
+			return Optional.of(referableRepo.save(element));
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		throw new IllegalArgumentException("Key element cannot be created: " + theKey) ;
 	}
 	public Optional<ConceptDescription> getConceptDescription(String uri) {
 		Optional<ConceptDescription> cd = conceptDescriptionRepo.findByIdentification(new Identifier(uri));

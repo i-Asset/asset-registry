@@ -24,8 +24,8 @@ public class EventElementEventHandler {
 		event.getEntity().setMessageTopic(event.getDTO().getMessageTopic());
 		// 
 		if (! event.isObservedReferenceResolved()) {
-			// 
-			Optional<ReferableElement> ref = registry.resolveReference(event.getDTO().getObservableReference(), ReferableElement.class);
+			// try to resolve the element
+			Optional<ReferableElement> ref = registry.resolveReference(event.getDTO().getObservableReference(), ReferableElement.class, true);
 			if ( ref.isPresent()) {
 				// when reference points to a valid element 
 				if (event.isValidObservedElement(ref.get())) {
@@ -34,7 +34,7 @@ public class EventElementEventHandler {
 			}
 		}
 		if ( ! event.isMessageBrokerResolved()) {
-			Optional<ReferableElement> ref = registry.resolveReference(event.getDTO().getMessageBroker(), ReferableElement.class);
+			Optional<ReferableElement> ref = registry.resolveReference(event.getDTO().getMessageBroker(), ReferableElement.class, true);
 			if ( ref.isPresent()) {
 				// when reference points to a valid element 
 				if (event.isValidMessageBroker(ref.get())) {
