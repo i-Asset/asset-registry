@@ -37,8 +37,8 @@ public class AssetInstance implements Serializable {
     @ApiModelProperty(value = "listMaintenance")
     private Maintenance[] listMaintenance;
 
-    @ApiModelProperty(value = "listAvailableProperties")
-    private String listAvailableProperties;
+    @ApiModelProperty(value = "dataEndpoint")
+    private String dataEndpoint;
 
     @ApiModelProperty(value = "ownerProperty")
     private String ownerProperty;
@@ -96,11 +96,11 @@ public class AssetInstance implements Serializable {
         this.listMaintenance = list;
     }
 
-    public String getListAvailableProperties() {
-        return listAvailableProperties;
+    public String getDataEndpoint() {
+        return dataEndpoint;
     }
-    public void setListAvailableProperties(String list) {
-        this.listAvailableProperties = list;
+    public void setDataEndpoint(String endpoint) {
+        this.dataEndpoint = endpoint;
     }
 
     public String getOwnerProperty() {
