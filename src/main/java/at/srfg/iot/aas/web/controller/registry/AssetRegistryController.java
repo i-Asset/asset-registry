@@ -77,7 +77,7 @@ public class AssetRegistryController implements AssetRepositoryAPI {
 
 	@Override
 	public Optional<SubmodelElement> getSubmodelElement(String uri, String path) throws Exception {
-		return registry.resolveReference(uri, path, SubmodelElement.class);
+		return registry.resolvePath(uri, path, SubmodelElement.class);
 	}
 
 	@Override

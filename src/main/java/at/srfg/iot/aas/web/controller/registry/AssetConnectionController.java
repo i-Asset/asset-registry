@@ -192,7 +192,7 @@ public class AssetConnectionController implements IAssetConnection{
 			if ( ep.isPresent()) {
 				return getProxy(ep.get()).getValue(identifier, path);
 			}
-			Optional<Property> elem = registry.resolveReference(identifier, path, Property.class);
+			Optional<Property> elem = registry.resolvePath(identifier, path, Property.class);
 			if ( elem.isPresent()) {
 				return elem.get().getValue();
 			}
@@ -211,7 +211,7 @@ public class AssetConnectionController implements IAssetConnection{
 			if ( ep.isPresent()) {
 				getProxy(ep.get()).setValue(identifier, path, value);
 			}
-			Optional<Property> elem = registry.resolveReference(identifier, path, Property.class);
+			Optional<Property> elem = registry.resolvePath(identifier, path, Property.class);
 			if ( elem.isPresent()) {
 				elem.get().setValue(value.toString());
 			}

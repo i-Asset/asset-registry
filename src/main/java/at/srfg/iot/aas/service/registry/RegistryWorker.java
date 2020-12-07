@@ -291,7 +291,7 @@ public class RegistryWorker {
 		}
 		// use the path
 		else {
-			parent = registry.resolveReference(uri, path, SubmodelElementContainer.class);
+			parent = registry.resolvePath(uri, path, SubmodelElementContainer.class);
 		}
 		if (parent.isPresent()) {
 			// the parent element must have a contained element with the provided idShort
@@ -333,7 +333,7 @@ public class RegistryWorker {
 		}
 		// use the path
 		else {
-			parent = registry.resolveReference(uri, path, SubmodelElementContainer.class);
+			parent = registry.resolvePath(uri, path, SubmodelElementContainer.class);
 		}
 		if (parent.isPresent()) {
 			// the parent element must have a contained element with the provided idShort

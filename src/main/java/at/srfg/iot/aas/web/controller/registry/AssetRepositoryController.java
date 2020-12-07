@@ -127,10 +127,6 @@ public class AssetRepositoryController implements IAssetConnection{
 		}
 		return Optional.empty();
 	}
-	private Referable createInstance(ReferableElement referable) {
-		
-		return referable;
-	}
 	@Override
 	public void setModelElement(String identifier, Referable element) {
 		Optional<Identifiable> i = getRoot(identifier);
@@ -181,48 +177,32 @@ public class AssetRepositoryController implements IAssetConnection{
 
 	@Override
 	public Optional<Referable> getElement(String identifier, String path) {
-		Optional<Identifiable> i = getRoot(identifier);
-		if (i.isPresent()) {
-			return registry.resolveReference(i.get(), path);
-		}
-		return Optional.empty();
+		return registry.resolvePath(identifier, path);
 	}
 
 	@Override
 	public List<Referable> getChildren(String identifier, String path) {
-		Optional<Identifiable> i = getRoot(identifier);
-		if (i.isPresent()) {
-			Optional<Referable> elem = registry.resolveReference(i.get(), path);
-			if ( elem.isPresent()) {
-				return elem.get().getChildren();
-			}
-			
+		Optional<Referable> element = getElement(identifier,path);
+		if ( element.isPresent()) {
+			return element.get().getChildren();
 		}
 		return new ArrayList<Referable>();
 	} 
 
 	@Override
 	public String getValue(String identifier, String path) {
-		Optional<Identifiable> i = getRoot(identifier);
-		if (i.isPresent()) {
-			Optional<Property> elem = registry.resolveReference(i.get(), path, Property.class);
-			if ( elem.isPresent()) {
-				return elem.get().getValue();
-			}
-			
+		Optional<Property> property = registry.resolvePath(identifier, path, Property.class);
+		if ( property.isPresent()) {
+			return  property.get().getValue();
 		}
 		return null;
 	}
 
 	@Override
 	public void setValue(String identifier, String path, String value) {
-		Optional<Identifiable> i = getRoot(identifier);
-		if (i.isPresent()) {
-			Optional<Property> elem = registry.resolveReference(i.get(), path, Property.class);
-			if ( elem.isPresent()) {
-				elem.get().setValue(value.toString());
-			}
-			
+		Optional<Property> property = registry.resolvePath(identifier, path, Property.class);
+		if ( property.isPresent()) {
+			property.get().setValue(value);
 		}
 	}
 

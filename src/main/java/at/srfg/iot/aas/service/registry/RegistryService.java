@@ -30,11 +30,9 @@ import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.repository.registry.ReferableRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelElementRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelRepository;
-import at.srfg.iot.api.IAssetAdministrationShell;
 import at.srfg.iot.api.ISubmodel;
 import at.srfg.iot.api.ISubmodelElement;
 import at.srfg.iot.classification.model.ConceptBase;
-import at.srfg.iot.provider.IAssetProvider;
 
 @Service
 public class RegistryService {
@@ -248,8 +246,8 @@ public class RegistryService {
 	 * @param clazz The desired class of the resulting {@link ReferableElement} 
 	 * @return The {@link ReferableElement} or empty
 	 */
-	public <T> Optional<T> resolveReference(String uri, String path, Class<T> clazz) {
-		Optional<Referable> ref = resolveReference(uri,path);
+	public <T> Optional<T> resolvePath(String uri, String path, Class<T> clazz) {
+		Optional<Referable> ref = resolveReference(uri,checkPath(path));
 		if ( ref.isPresent()) {
 			if ( clazz.isInstance(ref.get())) {
 				return Optional.of(clazz.cast(ref.get()));
@@ -259,7 +257,7 @@ public class RegistryService {
 		
 	}
 	public <T> Optional<T> resolveReference(Referable root, String path, Class<T> clazz) {
-		Optional<Referable> ref = resolveReference(root,path);
+		Optional<Referable> ref = resolveReference(root,checkPath(path));
 		if ( ref.isPresent()) {
 			if ( clazz.isInstance(ref.get())) {
 				return Optional.of(clazz.cast(ref.get()));
@@ -300,7 +298,7 @@ public class RegistryService {
 	 * @param path The concatenated <code>idShort</code> values with slash "/" as delimiter 
 	 * @return The {@link ReferableElement} or empty
 	 */
-	public Optional<Referable> resolveReference(String identifier, String path) {
+	public Optional<Referable> resolvePath(String identifier, String path) {
 		
 		return resolveReference(identifier,checkPath(path));
 	}
@@ -453,7 +451,7 @@ public class RegistryService {
 		return false;
 	}
 	public boolean deleteSubmodelElement(String uri, String path) {
-		Optional<SubmodelElement> element = resolveReference(uri, path, SubmodelElement.class);
+		Optional<SubmodelElement> element = resolvePath(uri, path, SubmodelElement.class);
 		if ( element.isPresent() ) {
 			submodelElementRepo.delete(element.get());
 			return true;
