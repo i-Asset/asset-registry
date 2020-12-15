@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 
 @Entity
-@Table(name = "AssetType")
+@Table(name = "TMP_AssetType")
 @ApiModel(value = "AssetType")
 public class AssetType implements Serializable {
 

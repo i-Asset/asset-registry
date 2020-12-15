@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "BinaryObject")
+@Table(name = "TMP_BinaryObject")
 @ApiModel(value = "BinaryObject")
 public class BinaryObject implements Serializable {
 

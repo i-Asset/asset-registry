@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Maintenance")
+@Table(name = "TMP_Maintenance")
 @ApiModel(value = "Maintenance")
 public class Maintenance implements Serializable {
 
