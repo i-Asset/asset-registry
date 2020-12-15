@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 
 @Entity
+@Table(name = "Property")
 @ApiModel(value = "Property")
 public class Property implements Serializable {
 

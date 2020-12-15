@@ -3,14 +3,12 @@ package at.srfg.iot.aas.entity.broker;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "Maintenance")
 @ApiModel(value = "Maintenance")
 public class Maintenance implements Serializable {
 

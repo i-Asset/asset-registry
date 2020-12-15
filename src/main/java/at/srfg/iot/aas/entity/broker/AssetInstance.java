@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 
 @Entity
+@Table(name = "AssetInstance")
 @ApiModel(value = "AssetInstance")
 public class AssetInstance implements Serializable {
 
