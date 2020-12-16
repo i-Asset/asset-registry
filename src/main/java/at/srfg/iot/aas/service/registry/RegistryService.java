@@ -3,9 +3,11 @@ package at.srfg.iot.aas.service.registry;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -459,5 +461,20 @@ public class RegistryService {
 		return false;
 	}
 	
+	public Optional<AssetAdministrationShell> findInstance(AssetAdministrationShell type) {
+		// 
+		List<AssetAdministrationShell> derived = aasRepo.findByDerivedFromElement(type);
+		if (! derived.isEmpty()) {
+			return derived.stream()
+				.filter(new Predicate<AssetAdministrationShell>() {
 
+					@Override
+					public boolean test(AssetAdministrationShell t) {
+						return t.getAsset().isInstance();
+					}
+				})
+				.findAny();
+		}
+		return Optional.empty();
+	}
 }
