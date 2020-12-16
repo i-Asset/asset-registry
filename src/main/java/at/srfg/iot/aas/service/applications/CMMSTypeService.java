@@ -63,6 +63,36 @@ public class CMMSTypeService extends ApplicationTypeService {
 				return aasSubmodelRepo.save(model);
 			}
 		});
+		Optional<Property> vendorProperty = infoModel.getSubmodelElement("vendor", Property.class);
+		Property vendor = vendorProperty.orElseGet(new Supplier<Property>() {
+
+			@Override
+			public Property get() {
+				// 
+				Property property = new Property("vendor", infoModel);
+				property.setCategory(CMMS_TYPE_CATEGORY);
+				property.setKind(Kind.Type);
+				property.setDescription("de", "Hersteller");
+				property.setValueQualifier(DataTypeEnum.STRING);
+				return aasSubmodelElementRepo.save(property);
+			}
+			
+		});
+		Optional<Property> nameProperty = infoModel.getSubmodelElement("name", Property.class);
+		Property name = vendorProperty.orElseGet(new Supplier<Property>() {
+
+			@Override
+			public Property get() {
+				// 
+				Property property = new Property("name", infoModel);
+				property.setCategory(CMMS_TYPE_CATEGORY);
+				property.setKind(Kind.Type);
+				property.setDescription("de", "Name");
+				property.setValueQualifier(DataTypeEnum.STRING);
+				return aasSubmodelElementRepo.save(property);
+			}
+			
+		});
 		Optional<Submodel> applicationTypeOperationModel = aasSubmodelRepo.findByIdentification(CMMS_TYPE_OPERATION_MODEL);
 		Submodel operationModel = applicationTypeOperationModel.orElseGet(new Supplier<Submodel>() {
 			@Override
