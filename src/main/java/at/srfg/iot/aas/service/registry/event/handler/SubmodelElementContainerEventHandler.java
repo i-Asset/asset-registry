@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import at.srfg.iot.aas.common.SubmodelElementContainer;
-import at.srfg.iot.aas.modeling.SubmodelElement;
 import at.srfg.iot.aas.service.registry.RegistryWorker;
 import at.srfg.iot.aas.service.registry.event.SubmodelElementContainerEvent;
+import at.srfg.iot.common.datamodel.asset.aas.common.SubmodelElementContainer;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.SubmodelElement;
 
 @Component
 public class SubmodelElementContainerEventHandler {

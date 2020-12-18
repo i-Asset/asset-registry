@@ -4,8 +4,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import at.srfg.iot.aas.common.HasKind;
 import at.srfg.iot.aas.service.registry.event.HasKindEvent;
+import at.srfg.iot.common.datamodel.asset.aas.common.HasKind;
 
 @Component
 public class HasKindEventHandler {

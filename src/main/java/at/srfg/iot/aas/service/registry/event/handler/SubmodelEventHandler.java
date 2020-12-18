@@ -3,8 +3,8 @@ package at.srfg.iot.aas.service.registry.event.handler;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import at.srfg.iot.aas.basic.Submodel;
 import at.srfg.iot.aas.service.registry.event.SubmodelEvent;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
 
 @Component
 public class SubmodelEventHandler {

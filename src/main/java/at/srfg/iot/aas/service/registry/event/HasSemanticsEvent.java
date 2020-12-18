@@ -2,9 +2,9 @@ package at.srfg.iot.aas.service.registry.event;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import at.srfg.iot.aas.common.HasSemantics;
-import at.srfg.iot.aas.common.referencing.ReferableElement;
-import at.srfg.iot.aas.common.referencing.Reference;
+import at.srfg.iot.common.datamodel.asset.aas.common.HasSemantics;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.ReferableElement;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Reference;
 
 public interface HasSemanticsEvent extends ApiEvent {
 	HasSemantics getEntity();

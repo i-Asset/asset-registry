@@ -1,8 +1,8 @@
 package at.srfg.iot.aas.service.registry.event.object.submodel;
 
-import at.srfg.iot.aas.common.SubmodelElementContainer;
-import at.srfg.iot.aas.modeling.submodelelement.Blob;
 import at.srfg.iot.aas.service.registry.event.submodel.BlobEvent;
+import at.srfg.iot.common.datamodel.asset.aas.common.SubmodelElementContainer;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Blob;
 
 public class BlobEventObject extends SubmodelElementEventObject<Blob, Blob> implements BlobEvent {
 

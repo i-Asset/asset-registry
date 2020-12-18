@@ -1,8 +1,8 @@
 package at.srfg.iot.aas.service.registry.event.object.submodel;
 
-import at.srfg.iot.aas.common.SubmodelElementContainer;
-import at.srfg.iot.aas.modeling.submodelelement.File;
 import at.srfg.iot.aas.service.registry.event.submodel.FileEvent;
+import at.srfg.iot.common.datamodel.asset.aas.common.SubmodelElementContainer;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.File;
 
 public class FileEventObject extends SubmodelElementEventObject<File, File> implements FileEvent {
 

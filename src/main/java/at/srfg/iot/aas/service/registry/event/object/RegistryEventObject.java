@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationEventPublisher;
 
-import at.srfg.iot.aas.common.referencing.ReferableElement;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.ReferableElement;
 /**
  * Basic Event object used for creating/updating elements in the i-Asset Registry 
  * @author dglachs

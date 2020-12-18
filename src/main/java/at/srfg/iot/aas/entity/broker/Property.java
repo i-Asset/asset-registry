@@ -8,7 +8,8 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 
-@Entity
+@Entity(name = "MatProperty")
+@Table(name = "MAT_Property")
 @ApiModel(value = "Property")
 public class Property implements Serializable {
 

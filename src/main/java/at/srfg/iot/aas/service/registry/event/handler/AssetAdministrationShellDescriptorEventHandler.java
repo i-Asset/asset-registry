@@ -1,26 +1,23 @@
 package at.srfg.iot.aas.service.registry.event.handler;
 
 import java.util.Optional;
-import java.util.UUID;
-
-import javax.annotation.Priority;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.basic.Endpoint;
-import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.basic.directory.AssetAdministrationShellDescriptor;
-import at.srfg.iot.aas.basic.directory.SubmodelDescriptor;
-import at.srfg.iot.aas.common.referencing.IdType;
 import at.srfg.iot.aas.service.registry.RegistryService;
 import at.srfg.iot.aas.service.registry.RegistryWorker;
 import at.srfg.iot.aas.service.registry.event.AssetAdministrationShellDescriptorEvent;
 import at.srfg.iot.aas.service.registry.event.SubmodelDescriptorEvent;
-import at.srfg.iot.api.ISubmodel;
+import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Endpoint;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
+import at.srfg.iot.common.datamodel.asset.aas.basic.directory.AssetAdministrationShellDescriptor;
+import at.srfg.iot.common.datamodel.asset.aas.basic.directory.SubmodelDescriptor;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.IdType;
+import at.srfg.iot.common.datamodel.asset.api.ISubmodel;
 
 @Component
 public class AssetAdministrationShellDescriptorEventHandler {

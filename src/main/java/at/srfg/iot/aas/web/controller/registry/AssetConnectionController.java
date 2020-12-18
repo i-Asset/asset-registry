@@ -9,20 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
 
-import at.srfg.iot.aas.basic.Endpoint;
-import at.srfg.iot.aas.basic.Identifier;
-import at.srfg.iot.aas.common.DirectoryEntry;
-import at.srfg.iot.aas.common.Identifiable;
-import at.srfg.iot.aas.common.Referable;
-import at.srfg.iot.aas.common.referencing.IdentifiableElement;
-import at.srfg.iot.aas.common.referencing.Reference;
-import at.srfg.iot.aas.modeling.submodelelement.Property;
 import at.srfg.iot.aas.service.registry.RegistryService;
-import at.srfg.iot.api.IAssetConnection;
-import at.srfg.iot.connectivity.rest.ConsumerFactory;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Endpoint;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Identifier;
+import at.srfg.iot.common.datamodel.asset.aas.common.DirectoryEntry;
+import at.srfg.iot.common.datamodel.asset.aas.common.Identifiable;
+import at.srfg.iot.common.datamodel.asset.aas.common.Referable;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.IdentifiableElement;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Reference;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Property;
+import at.srfg.iot.common.datamodel.asset.api.IAssetConnection;
+import at.srfg.iot.common.datamodel.asset.connectivity.rest.ConsumerFactory;
 
 @RestController
-public class AssetConnectionController implements IAssetConnection{
+public class AssetConnectionController implements IAssetConnection {
 	@Value("${iAsset.platformHost:}")
 	private String platformHost;
 	@Value("${server.port:}")
@@ -34,7 +34,7 @@ public class AssetConnectionController implements IAssetConnection{
 
 	private IAssetConnection getProxy(Endpoint ep) {
 		return ConsumerFactory.createConsumer(ep.getAddress(),
-				at.srfg.iot.connectivity.IAssetConnection.class);
+				at.srfg.iot.common.datamodel.asset.connectivity.IAssetConnection.class);
 	}
 	private Optional<Endpoint> getEndpoint(Identifiable i) {
 		if (i instanceof DirectoryEntry) {

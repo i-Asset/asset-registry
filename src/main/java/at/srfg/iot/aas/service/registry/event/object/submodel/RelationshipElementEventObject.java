@@ -1,8 +1,8 @@
 package at.srfg.iot.aas.service.registry.event.object.submodel;
 
-import at.srfg.iot.aas.common.SubmodelElementContainer;
-import at.srfg.iot.aas.modeling.submodelelement.RelationshipElement;
 import at.srfg.iot.aas.service.registry.event.submodel.RelationshipElementEvent;
+import at.srfg.iot.common.datamodel.asset.aas.common.SubmodelElementContainer;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.RelationshipElement;
 
 public class RelationshipElementEventObject extends SubmodelElementEventObject<RelationshipElement, RelationshipElement> implements RelationshipElementEvent {
 

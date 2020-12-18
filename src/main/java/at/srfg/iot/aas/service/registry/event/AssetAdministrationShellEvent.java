@@ -2,8 +2,8 @@ package at.srfg.iot.aas.service.registry.event;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.common.referencing.Reference;
+import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Reference;
 
 public interface AssetAdministrationShellEvent extends ApiEvent {
 	AssetAdministrationShell getEntity();

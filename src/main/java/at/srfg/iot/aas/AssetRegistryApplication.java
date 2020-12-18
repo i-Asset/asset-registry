@@ -10,6 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.RestController;
 
+import at.srfg.iot.aas.dependency.AssetIndexer;
 import at.srfg.iot.aas.dependency.SemanticLookup;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -30,7 +31,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableAsync
 @RestController
 @EnableSwagger2
-@EnableFeignClients(clients = SemanticLookup.class)
+@EnableFeignClients(clients = {
+		// used for taxonomy integration
+		SemanticLookup.class, 
+		// indexing assets
+		AssetIndexer.class})
 public class AssetRegistryApplication {
 
 	public static void main(String[] args) {

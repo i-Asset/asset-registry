@@ -7,18 +7,21 @@ import java.util.function.Supplier;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.basic.Identifier;
-import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.common.referencing.Kind;
-import at.srfg.iot.aas.common.types.DataTypeEnum;
-import at.srfg.iot.aas.common.types.DirectionEnum;
-import at.srfg.iot.aas.modeling.submodelelement.EventElement;
-import at.srfg.iot.aas.modeling.submodelelement.Operation;
-import at.srfg.iot.aas.modeling.submodelelement.OperationVariable;
-import at.srfg.iot.aas.modeling.submodelelement.Property;
+import at.srfg.iot.aas.service.indexing.AssetTypeIndexingEventObject;
+import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Identifier;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Kind;
+import at.srfg.iot.common.datamodel.asset.aas.common.types.DataTypeEnum;
+import at.srfg.iot.common.datamodel.asset.aas.common.types.DirectionEnum;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.EventElement;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Operation;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.OperationVariable;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Property;
 
 @Service
 public class CMMSTypeService extends ApplicationTypeService {
@@ -27,6 +30,8 @@ public class CMMSTypeService extends ApplicationTypeService {
 	public static final Identifier CMMS_TYPE_EVENT_MODEL= new Identifier("http://iasset.salzburgresearch.at/registry/cmms/events");
 	public static final Identifier CMMS_TYPE_OPERATION_MODEL= new Identifier("http://iasset.salzburgresearch.at/registry/cmms/operations");
 	public static final String CMMS_TYPE_CATEGORY = "cmmsType";
+	@Autowired
+	private ApplicationEventPublisher publisher;
 	
 	@PostConstruct
 	protected void init() {
@@ -195,6 +200,8 @@ public class CMMSTypeService extends ApplicationTypeService {
 		// test searching for Event classes
 		Collection<EventElement> event = getEvents("http://iasset.salzburgresearch.at/registry/cmms/events");
 		System.out.println(event.size());
+		
+		publisher.publishEvent(new AssetTypeIndexingEventObject(this, theShell));
 	}
 	/**
 	 * Collect all events of a submodel

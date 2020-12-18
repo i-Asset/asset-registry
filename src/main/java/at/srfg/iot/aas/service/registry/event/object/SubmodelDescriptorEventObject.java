@@ -1,19 +1,19 @@
 package at.srfg.iot.aas.service.registry.event.object;
 
 
-import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.basic.GlobalReference;
-import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.basic.directory.SubmodelDescriptor;
-import at.srfg.iot.aas.common.referencing.Kind;
-import at.srfg.iot.aas.common.referencing.ReferableElement;
-import at.srfg.iot.aas.dictionary.ConceptDescription;
 import at.srfg.iot.aas.service.registry.event.HasKindEvent;
 import at.srfg.iot.aas.service.registry.event.HasSemanticsEvent;
 import at.srfg.iot.aas.service.registry.event.IdentifiableEvent;
 import at.srfg.iot.aas.service.registry.event.ReferableEvent;
 import at.srfg.iot.aas.service.registry.event.SubmodelDescriptorEvent;
-import at.srfg.iot.classification.model.ConceptBase.ConceptType;
+import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.common.datamodel.asset.aas.basic.GlobalReference;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
+import at.srfg.iot.common.datamodel.asset.aas.basic.directory.SubmodelDescriptor;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Kind;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.ReferableElement;
+import at.srfg.iot.common.datamodel.asset.aas.dictionary.ConceptDescription;
+import at.srfg.iot.common.datamodel.semanticlookup.model.ConceptBase.ConceptType;
 
 public class SubmodelDescriptorEventObject extends RegistryEventObject<Submodel, SubmodelDescriptor> 
 	// all the handlers for the implemented interfaces are visited on every event 

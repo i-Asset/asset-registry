@@ -9,25 +9,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import at.srfg.iot.aas.basic.Asset;
-import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.basic.GlobalReference;
-import at.srfg.iot.aas.basic.Identifier;
-import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.common.referencing.Kind;
-import at.srfg.iot.aas.common.types.DataTypeEnum;
-import at.srfg.iot.aas.common.types.DirectionEnum;
-import at.srfg.iot.aas.dictionary.ConceptDescription;
-import at.srfg.iot.aas.modeling.submodelelement.EventElement;
-import at.srfg.iot.aas.modeling.submodelelement.Operation;
-import at.srfg.iot.aas.modeling.submodelelement.OperationVariable;
-import at.srfg.iot.aas.modeling.submodelelement.Property;
-import at.srfg.iot.aas.modeling.submodelelement.SubmodelElementCollection;
 import at.srfg.iot.aas.repository.registry.AssetAdministrationShellRepository;
 import at.srfg.iot.aas.repository.registry.ConceptDescriptionRepository;
 import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelElementRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelRepository;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Asset;
+import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.common.datamodel.asset.aas.basic.GlobalReference;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Identifier;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Kind;
+import at.srfg.iot.common.datamodel.asset.aas.common.types.DataTypeEnum;
+import at.srfg.iot.common.datamodel.asset.aas.common.types.DirectionEnum;
+import at.srfg.iot.common.datamodel.asset.aas.dictionary.ConceptDescription;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.EventElement;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Operation;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.OperationVariable;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Property;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.SubmodelElementCollection;
 
 @Service
 public class DefaultAssetType {

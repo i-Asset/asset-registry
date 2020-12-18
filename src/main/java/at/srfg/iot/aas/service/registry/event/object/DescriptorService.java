@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.basic.directory.AssetAdministrationShellDescriptor;
-import at.srfg.iot.aas.basic.directory.SubmodelDescriptor;
-import at.srfg.iot.aas.common.referencing.IdType;
 import at.srfg.iot.aas.service.registry.RegistryService;
-import at.srfg.iot.api.ISubmodel;
+import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
+import at.srfg.iot.common.datamodel.asset.aas.basic.directory.AssetAdministrationShellDescriptor;
+import at.srfg.iot.common.datamodel.asset.aas.basic.directory.SubmodelDescriptor;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.IdType;
+import at.srfg.iot.common.datamodel.asset.api.ISubmodel;
 
 @Service
 public class DescriptorService {

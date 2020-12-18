@@ -1,6 +1,6 @@
 package at.srfg.iot.aas.service.registry.event;
 
-import at.srfg.iot.aas.common.Referable;
+import at.srfg.iot.common.datamodel.asset.aas.common.Referable;
 
 /**
  * Event for handling {@link Referable}s 

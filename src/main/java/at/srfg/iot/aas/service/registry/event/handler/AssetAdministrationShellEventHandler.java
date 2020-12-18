@@ -7,12 +7,12 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.common.referencing.IdType;
 import at.srfg.iot.aas.service.registry.RegistryService;
 import at.srfg.iot.aas.service.registry.RegistryWorker;
 import at.srfg.iot.aas.service.registry.event.AssetAdministrationShellEvent;
+import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.IdType;
 
 @Component
 public class AssetAdministrationShellEventHandler {

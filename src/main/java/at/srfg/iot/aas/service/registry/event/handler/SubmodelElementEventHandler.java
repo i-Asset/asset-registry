@@ -8,21 +8,20 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import at.srfg.iot.aas.common.referencing.ReferableElement;
-import at.srfg.iot.aas.common.referencing.Reference;
-import at.srfg.iot.aas.modeling.SubmodelElement;
-import at.srfg.iot.aas.modeling.submodelelement.Operation;
-import at.srfg.iot.aas.modeling.submodelelement.OperationVariable;
-import at.srfg.iot.aas.modeling.submodelelement.Property;
 import at.srfg.iot.aas.service.registry.RegistryService;
 import at.srfg.iot.aas.service.registry.RegistryWorker;
-import at.srfg.iot.aas.service.registry.event.EventElementEvent;
 import at.srfg.iot.aas.service.registry.event.submodel.BlobEvent;
 import at.srfg.iot.aas.service.registry.event.submodel.FileEvent;
 import at.srfg.iot.aas.service.registry.event.submodel.OperationEvent;
 import at.srfg.iot.aas.service.registry.event.submodel.OperationVariableEvent;
 import at.srfg.iot.aas.service.registry.event.submodel.PropertyEvent;
 import at.srfg.iot.aas.service.registry.event.submodel.ReferenceElementEvent;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.ReferableElement;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Reference;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.SubmodelElement;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Operation;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.OperationVariable;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Property;
 
 @Component
 public class SubmodelElementEventHandler {

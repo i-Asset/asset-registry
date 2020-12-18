@@ -1,7 +1,5 @@
 package at.srfg.iot.aas.web.controller.directory;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,16 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
 
-import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.basic.Endpoint;
-import at.srfg.iot.aas.basic.Identifier;
-import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.basic.directory.AssetAdministrationShellDescriptor;
-import at.srfg.iot.aas.basic.directory.SubmodelDescriptor;
-import at.srfg.iot.aas.common.referencing.IdType;
 import at.srfg.iot.aas.service.registry.RegistryService;
 import at.srfg.iot.aas.service.registry.RegistryWorker;
-import at.srfg.iot.api.AssetDirectoryAPI;
+import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Identifier;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
+import at.srfg.iot.common.datamodel.asset.aas.basic.directory.AssetAdministrationShellDescriptor;
+import at.srfg.iot.common.datamodel.asset.aas.basic.directory.SubmodelDescriptor;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.IdType;
+import at.srfg.iot.common.datamodel.asset.api.AssetDirectoryAPI;
 
 @RestController
 public class AssetDirectoryController implements AssetDirectoryAPI {

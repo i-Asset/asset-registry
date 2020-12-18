@@ -10,20 +10,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import at.srfg.iot.aas.basic.Asset;
-import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.basic.Endpoint;
-import at.srfg.iot.aas.basic.Identifier;
-import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.basic.directory.AssetAdministrationShellDescriptor;
-import at.srfg.iot.aas.basic.directory.SubmodelDescriptor;
-import at.srfg.iot.aas.common.Identifiable;
-import at.srfg.iot.aas.common.Referable;
-import at.srfg.iot.aas.common.SubmodelElementContainer;
-import at.srfg.iot.aas.common.referencing.IdentifiableElement;
-import at.srfg.iot.aas.common.referencing.Reference;
-import at.srfg.iot.aas.dictionary.ConceptDescription;
-import at.srfg.iot.aas.modeling.SubmodelElement;
+import at.srfg.iot.aas.service.indexing.AssetTypeIndexingEventObject;
 import at.srfg.iot.aas.service.registry.event.object.AssetAdministrationShellDescriptorEventObject;
 import at.srfg.iot.aas.service.registry.event.object.AssetAdministrationShellEventObject;
 import at.srfg.iot.aas.service.registry.event.object.AssetEventObject;
@@ -31,7 +18,21 @@ import at.srfg.iot.aas.service.registry.event.object.ConceptDescriptionEventObje
 import at.srfg.iot.aas.service.registry.event.object.SubmodelDescriptorEventObject;
 import at.srfg.iot.aas.service.registry.event.object.SubmodelEventObject;
 import at.srfg.iot.aas.service.registry.event.object.submodel.SubmodelElementEventObject;
-import at.srfg.iot.api.ISubmodelElement;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Asset;
+import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Endpoint;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Identifier;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
+import at.srfg.iot.common.datamodel.asset.aas.basic.directory.AssetAdministrationShellDescriptor;
+import at.srfg.iot.common.datamodel.asset.aas.basic.directory.SubmodelDescriptor;
+import at.srfg.iot.common.datamodel.asset.aas.common.Identifiable;
+import at.srfg.iot.common.datamodel.asset.aas.common.Referable;
+import at.srfg.iot.common.datamodel.asset.aas.common.SubmodelElementContainer;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.IdentifiableElement;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Reference;
+import at.srfg.iot.common.datamodel.asset.aas.dictionary.ConceptDescription;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.SubmodelElement;
+import at.srfg.iot.common.datamodel.asset.api.ISubmodelElement;
 
 @Component
 public class RegistryWorker {
@@ -50,6 +51,9 @@ public class RegistryWorker {
 			// 
 			setElement(root.get(), element);
 		}
+	}
+	public void indexAssetAdministrationShell(AssetAdministrationShell theShell) {
+		publisher.publishEvent(new AssetTypeIndexingEventObject(this, theShell));
 	}
 	public void setElement(Identifiable shellId, Referable element) {
 		// perform the checks

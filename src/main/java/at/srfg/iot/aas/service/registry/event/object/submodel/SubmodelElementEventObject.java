@@ -1,29 +1,29 @@
 package at.srfg.iot.aas.service.registry.event.object.submodel;
 
-import at.srfg.iot.aas.basic.GlobalReference;
-import at.srfg.iot.aas.common.HasKind;
-import at.srfg.iot.aas.common.SubmodelElementContainer;
-import at.srfg.iot.aas.common.referencing.KeyElementsEnum;
-import at.srfg.iot.aas.common.referencing.Kind;
-import at.srfg.iot.aas.common.referencing.ReferableElement;
-import at.srfg.iot.aas.dictionary.ConceptDescription;
-import at.srfg.iot.aas.modeling.SubmodelElement;
-import at.srfg.iot.aas.modeling.submodelelement.Blob;
-import at.srfg.iot.aas.modeling.submodelelement.EventElement;
-import at.srfg.iot.aas.modeling.submodelelement.File;
-import at.srfg.iot.aas.modeling.submodelelement.Operation;
-import at.srfg.iot.aas.modeling.submodelelement.OperationVariable;
-import at.srfg.iot.aas.modeling.submodelelement.Property;
-import at.srfg.iot.aas.modeling.submodelelement.ReferenceElement;
-import at.srfg.iot.aas.modeling.submodelelement.RelationshipElement;
-import at.srfg.iot.aas.modeling.submodelelement.SubmodelElementCollection;
 import at.srfg.iot.aas.service.registry.event.HasDataSpecificationEvent;
 import at.srfg.iot.aas.service.registry.event.HasKindEvent;
 import at.srfg.iot.aas.service.registry.event.HasSemanticsEvent;
 import at.srfg.iot.aas.service.registry.event.QualifiableEvent;
 import at.srfg.iot.aas.service.registry.event.ReferableEvent;
 import at.srfg.iot.aas.service.registry.event.object.RegistryEventObject;
-import at.srfg.iot.classification.model.ConceptBase.ConceptType;
+import at.srfg.iot.common.datamodel.asset.aas.basic.GlobalReference;
+import at.srfg.iot.common.datamodel.asset.aas.common.HasKind;
+import at.srfg.iot.common.datamodel.asset.aas.common.SubmodelElementContainer;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.KeyElementsEnum;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Kind;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.ReferableElement;
+import at.srfg.iot.common.datamodel.asset.aas.dictionary.ConceptDescription;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.SubmodelElement;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Blob;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.EventElement;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.File;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Operation;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.OperationVariable;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Property;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.ReferenceElement;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.RelationshipElement;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.SubmodelElementCollection;
+import at.srfg.iot.common.datamodel.semanticlookup.model.ConceptBase.ConceptType;
 
 public abstract class SubmodelElementEventObject<E extends SubmodelElement, D extends SubmodelElement> extends RegistryEventObject<E, D> 
 	implements ReferableEvent, HasSemanticsEvent, HasKindEvent, HasDataSpecificationEvent, QualifiableEvent {

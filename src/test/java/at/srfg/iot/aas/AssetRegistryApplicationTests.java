@@ -7,27 +7,23 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.basyx.aas.metamodel.map.descriptor.ModelUrn;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.basic.directory.AssetAdministrationShellDescriptor;
-import at.srfg.iot.aas.common.referencing.IdPart;
-import at.srfg.iot.aas.common.referencing.IdType;
 import at.srfg.iot.aas.dependency.SemanticLookup;
-import at.srfg.iot.aas.modeling.submodelelement.Property;
-import at.srfg.iot.aas.repository.registry.AssetAdministrationShellRepository;
-import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.service.registry.RegistryService;
 import at.srfg.iot.aas.service.registry.RegistryWorker;
 import at.srfg.iot.classification.model.ConceptBase;
 import at.srfg.iot.classification.model.ConceptClass;
 import at.srfg.iot.classification.model.ConceptProperty;
+import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
+import at.srfg.iot.common.datamodel.asset.aas.basic.directory.AssetAdministrationShellDescriptor;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.IdPart;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.IdType;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -80,12 +76,10 @@ public class AssetRegistryApplicationTests {
 		IdType iecIrdi = IdType.getType("0112/2///61360_4#AAA001#004");
 		IdType idShort = IdType.getType("123456");
 		IdType custom = IdType.getType("$%&1234");
-		IdType urn = IdType.getType(new ModelUrn("srfg", "iot", "iasset", "1.0", "01", "asset", "instance01").getURN());
 		IdType uuid = IdType.getType(UUID.randomUUID().toString());
 		assertTrue(IdType.IRI.equals(uri));
 		assertTrue(IdType.IRDI.equals(eclassIrdi));
 		assertTrue(IdType.IRDI.equals(iecIrdi));
-		assertTrue(IdType.IRDI.equals(urn));
 		assertTrue(IdType.IdShort.equals(idShort));
 		assertTrue(IdType.UUID.equals(uuid));
 		assertTrue(IdType.Custom.equals(custom));
@@ -99,8 +93,7 @@ public class AssetRegistryApplicationTests {
 		assertTrue("http://www.salzburgresearch.at/asset#".equals(nameSpace));
 		String protocol = IdPart.Protocol.getFrom("http://www.salzburgresearch.at/asset#registry");
 		assertTrue("http".equals(protocol));
-		String legalEntity = IdPart.LegalEntity.getFrom(new ModelUrn("srfg", "iot", "iasset", "1.0", "01", "asset", "instance01").getURN());
-		assertTrue("srfg".equals(legalEntity));
+
 		
 	}
 	@Test

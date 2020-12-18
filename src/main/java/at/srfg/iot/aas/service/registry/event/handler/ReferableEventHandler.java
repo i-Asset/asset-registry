@@ -5,9 +5,9 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import at.srfg.iot.aas.common.Referable;
-import at.srfg.iot.aas.common.referencing.ReferableDescription;
 import at.srfg.iot.aas.service.registry.event.ReferableEvent;
+import at.srfg.iot.common.datamodel.asset.aas.common.Referable;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.ReferableDescription;
 
 @Component
 public class ReferableEventHandler {

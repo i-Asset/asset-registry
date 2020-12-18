@@ -12,19 +12,7 @@ import java.util.function.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import at.srfg.iot.aas.basic.Asset;
-import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.basic.Identifier;
-import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.common.Referable;
-import at.srfg.iot.aas.common.SubmodelElementContainer;
-import at.srfg.iot.aas.common.referencing.IdentifiableElement;
-import at.srfg.iot.aas.common.referencing.Key;
-import at.srfg.iot.aas.common.referencing.ReferableElement;
-import at.srfg.iot.aas.common.referencing.Reference;
 import at.srfg.iot.aas.dependency.SemanticLookup;
-import at.srfg.iot.aas.dictionary.ConceptDescription;
-import at.srfg.iot.aas.modeling.SubmodelElement;
 import at.srfg.iot.aas.repository.registry.AssetAdministrationShellRepository;
 import at.srfg.iot.aas.repository.registry.AssetRepository;
 import at.srfg.iot.aas.repository.registry.ConceptDescriptionRepository;
@@ -32,9 +20,21 @@ import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.repository.registry.ReferableRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelElementRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelRepository;
-import at.srfg.iot.api.ISubmodel;
-import at.srfg.iot.api.ISubmodelElement;
 import at.srfg.iot.classification.model.ConceptBase;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Asset;
+import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Identifier;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
+import at.srfg.iot.common.datamodel.asset.aas.common.Referable;
+import at.srfg.iot.common.datamodel.asset.aas.common.SubmodelElementContainer;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.IdentifiableElement;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Key;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.ReferableElement;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Reference;
+import at.srfg.iot.common.datamodel.asset.aas.dictionary.ConceptDescription;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.SubmodelElement;
+import at.srfg.iot.common.datamodel.asset.api.ISubmodel;
+import at.srfg.iot.common.datamodel.asset.api.ISubmodelElement;
 
 @Service
 public class RegistryService {

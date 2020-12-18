@@ -1,6 +1,6 @@
 package at.srfg.iot.aas.service.registry.event.object;
 
-import at.srfg.iot.aas.basic.Asset;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Asset;
 
 public class AssetEventObject extends RegistryEventObject<Asset, Asset> {
 	/**

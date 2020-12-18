@@ -10,22 +10,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import at.srfg.iot.aas.basic.Asset;
-import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.basic.Endpoint;
-import at.srfg.iot.aas.basic.Identifier;
-import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.common.DirectoryEntry;
-import at.srfg.iot.aas.common.Identifiable;
-import at.srfg.iot.aas.common.Referable;
-import at.srfg.iot.aas.common.referencing.IdentifiableElement;
-import at.srfg.iot.aas.common.referencing.Kind;
-import at.srfg.iot.aas.common.referencing.ReferableElement;
-import at.srfg.iot.aas.common.referencing.Reference;
-import at.srfg.iot.aas.modeling.submodelelement.Property;
 import at.srfg.iot.aas.service.registry.RegistryService;
 import at.srfg.iot.aas.service.registry.RegistryWorker;
-import at.srfg.iot.api.IAssetConnection;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Asset;
+import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Endpoint;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Identifier;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
+import at.srfg.iot.common.datamodel.asset.aas.common.DirectoryEntry;
+import at.srfg.iot.common.datamodel.asset.aas.common.Identifiable;
+import at.srfg.iot.common.datamodel.asset.aas.common.Referable;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.IdentifiableElement;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Kind;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Reference;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Property;
+import at.srfg.iot.common.datamodel.asset.api.IAssetConnection;
 
 @RestController
 @RequestMapping(path = "repository")
@@ -46,7 +45,7 @@ public class AssetRepositoryController implements IAssetConnection{
 //				at.srfg.iot.connectivity.IAssetConnection.class);
 //	}
 	private Optional<IAssetConnection> getInstance(Identifiable identifiable) {
-		
+		registry.findInstance(null);
 //		if (HasKind )
 		return Optional.of(this);
 	}
@@ -208,6 +207,11 @@ public class AssetRepositoryController implements IAssetConnection{
 
 	@Override
 	public Object invokeOperation(String identifier, String path, Map<String, Object> parameterMap) {
+		Optional<Identifiable>  root = getRoot(identifier);
+		if ( root.isPresent() ) {
+			Optional<AssetAdministrationShell> exists = registry.findInstance(null);
+			
+		}
 		throw new IllegalStateException("Operation cannot be executed online");
 	}
 

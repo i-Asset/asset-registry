@@ -2,13 +2,12 @@ package at.srfg.iot.aas.service.registry.event;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.common.SubmodelElementContainer;
-import at.srfg.iot.aas.common.referencing.ReferableElement;
-import at.srfg.iot.aas.common.referencing.Reference;
-import at.srfg.iot.aas.modeling.SubmodelElement;
-import at.srfg.iot.aas.modeling.submodelelement.EventElement;
+import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.common.datamodel.asset.aas.common.SubmodelElementContainer;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.ReferableElement;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Reference;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.SubmodelElement;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.EventElement;
 
 public interface EventElementEvent extends ApiEvent {
 	EventElement getEntity();

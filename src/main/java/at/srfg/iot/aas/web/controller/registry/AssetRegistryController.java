@@ -5,36 +5,36 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import at.srfg.iot.aas.basic.Asset;
-import at.srfg.iot.aas.basic.AssetAdministrationShell;
-import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.common.referencing.Reference;
-import at.srfg.iot.aas.dictionary.ConceptDescription;
-import at.srfg.iot.aas.modeling.SubmodelElement;
-import at.srfg.iot.aas.service.basys.BoschRexRoth;
 import at.srfg.iot.aas.service.registry.RegistryService;
 import at.srfg.iot.aas.service.registry.RegistryWorker;
-import at.srfg.iot.api.AssetRepositoryAPI;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Asset;
+import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Reference;
+import at.srfg.iot.common.datamodel.asset.aas.dictionary.ConceptDescription;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.SubmodelElement;
+import at.srfg.iot.common.datamodel.asset.api.AssetRepositoryAPI;
 
 @RestController
 public class AssetRegistryController implements AssetRepositoryAPI {
 //	@Autowired
 //	private AssetRegistryService registry;
+	
 	@Autowired
 	private RegistryWorker worker;
 	
 	@Autowired
 	private RegistryService registry;
-	@Autowired
-	private BoschRexRoth sample;
+
 
 	@Override
 	public Optional<AssetAdministrationShell> getAssetAdministrationShell(String uri, boolean complete) throws Exception {
 		Optional<AssetAdministrationShell> opt = registry.getAssetAdministrationShell(uri, complete);
 		// FIXME: remove this, for development only
 		if (! opt.isPresent()) {
-			return sample.createAsset(uri);
+			return Optional.empty();
 		}
+		worker.indexAssetAdministrationShell(opt.get());
 		return opt;
 	}
 	@Override

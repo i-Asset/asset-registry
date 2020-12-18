@@ -1,9 +1,8 @@
 package at.srfg.iot.aas.service.registry.event;
 
-import org.eclipse.basyx.submodel.metamodel.map.submodelelement.SubmodelElement;
-
-import at.srfg.iot.aas.basic.Submodel;
-import at.srfg.iot.aas.common.SubmodelElementContainer;
+import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
+import at.srfg.iot.common.datamodel.asset.aas.common.SubmodelElementContainer;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.SubmodelElement;
 
 public interface ApiEvent {
 	/**

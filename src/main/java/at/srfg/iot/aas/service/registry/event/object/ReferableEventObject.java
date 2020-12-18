@@ -1,6 +1,6 @@
 package at.srfg.iot.aas.service.registry.event.object;
 
-import at.srfg.iot.aas.common.Referable;
+import at.srfg.iot.common.datamodel.asset.aas.common.Referable;
 
 public class ReferableEventObject<T extends Referable, DTO> {
 	private final T entity;
