@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,13 +21,15 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 		})
 // 
 @EntityScan({
+	// TODO: to be removed
+	"at.srfg.iot.aas.entity.broker",
 	// model for the assset registry
-	"at.srfg.iot.aas", 
+	"at.srfg.iot.common.datamodel.asset", 
 	// model for the classification system (this creates the respective tables in the assetdb!)
-	"at.srfg.iot.classification"})
-//@ComponentScan({
-//	// asset-registry components
-//	"at.srfg.iot.aas"})
+	"at.srfg.iot.common.datamodel.semanticlookup"})
+@ComponentScan({
+	// asset-registry components
+	"at.srfg.iot.aas"})
 @EnableDiscoveryClient
 @EnableAsync
 @RestController

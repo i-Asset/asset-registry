@@ -25,6 +25,7 @@ import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Kind;
 import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Reference;
 import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Property;
 import at.srfg.iot.common.datamodel.asset.api.IAssetConnection;
+import at.srfg.iot.common.datamodel.asset.connectivity.rest.ConsumerFactory;
 
 @RestController
 @RequestMapping(path = "repository")
@@ -40,14 +41,10 @@ public class AssetRepositoryController implements IAssetConnection{
 	@Autowired
 	private RegistryWorker worker;
 	
-//	private IAssetConnection getProxy(Endpoint ep) {
-//		return ConsumerFactory.createConsumer(ep.getAddress(),
-//				at.srfg.iot.connectivity.IAssetConnection.class);
-//	}
-	private Optional<IAssetConnection> getInstance(Identifiable identifiable) {
-		registry.findInstance(null);
-//		if (HasKind )
-		return Optional.of(this);
+
+	private IAssetConnection getProxy(Endpoint ep) {
+		return ConsumerFactory.createConsumer(ep.getAddress(),
+				at.srfg.iot.common.datamodel.asset.connectivity.IAssetConnection.class);
 	}
 	/**
 	 * Verify whether a given root element is of {@link Kind#Instance}.
@@ -209,7 +206,11 @@ public class AssetRepositoryController implements IAssetConnection{
 	public Object invokeOperation(String identifier, String path, Map<String, Object> parameterMap) {
 		Optional<Identifiable>  root = getRoot(identifier);
 		if ( root.isPresent() ) {
-			Optional<AssetAdministrationShell> exists = registry.findInstance(null);
+			Optional<Endpoint> ep = getEndpoint(root.get());
+			if ( ep.isPresent()) {
+				//
+				return getProxy(ep.get()).invokeOperation(identifier, path, parameterMap);
+			}
 			
 		}
 		throw new IllegalStateException("Operation cannot be executed online");
