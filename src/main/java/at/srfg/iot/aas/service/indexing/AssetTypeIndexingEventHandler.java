@@ -7,13 +7,13 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import at.srfg.indexing.model.asset.AssetType;
-import at.srfg.indexing.model.asset.SubmodelType;
 import at.srfg.iot.aas.dependency.AssetIndexer;
 import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
 import at.srfg.iot.common.datamodel.asset.aas.common.Referable;
 import at.srfg.iot.common.datamodel.asset.aas.common.referencing.ReferableDescription;
+import at.srfg.iot.common.solr.model.model.asset.AssetType;
+import at.srfg.iot.common.solr.model.model.asset.SubmodelType;
 
 @Component
 public class AssetTypeIndexingEventHandler {

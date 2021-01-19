@@ -20,7 +20,6 @@ import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.repository.registry.ReferableRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelElementRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelRepository;
-import at.srfg.iot.classification.model.ConceptBase;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Asset;
 import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Identifier;
@@ -35,6 +34,7 @@ import at.srfg.iot.common.datamodel.asset.aas.dictionary.ConceptDescription;
 import at.srfg.iot.common.datamodel.asset.aas.modeling.SubmodelElement;
 import at.srfg.iot.common.datamodel.asset.api.ISubmodel;
 import at.srfg.iot.common.datamodel.asset.api.ISubmodelElement;
+import at.srfg.iot.common.datamodel.semanticlookup.model.ConceptBase;
 
 @Service
 public class RegistryService {

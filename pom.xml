@@ -186,7 +186,7 @@
 		</dependency>
 		<!-- data model (i-asset semantic-lookup) -->
 		<dependency>
-			<groupId>at.srfg.iot.iasset</groupId>
+			<groupId>at.srfg.iot.common</groupId>
 			<artifactId>semantic-lookup-data-model</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
@@ -196,7 +196,7 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-		  	<groupId>at.srfg.iot.iasset</groupId>
+		  	<groupId>at.srfg.iot.common</groupId>
 			<artifactId>indexing-data-model</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>

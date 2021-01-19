@@ -17,14 +17,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import at.srfg.iot.aas.dependency.SemanticLookup;
 import at.srfg.iot.aas.service.registry.RegistryService;
 import at.srfg.iot.aas.service.registry.RegistryWorker;
-import at.srfg.iot.classification.model.ConceptBase;
-import at.srfg.iot.classification.model.ConceptClass;
-import at.srfg.iot.classification.model.ConceptProperty;
 import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
 import at.srfg.iot.common.datamodel.asset.aas.basic.directory.AssetAdministrationShellDescriptor;
 import at.srfg.iot.common.datamodel.asset.aas.common.referencing.IdPart;
 import at.srfg.iot.common.datamodel.asset.aas.common.referencing.IdType;
+import at.srfg.iot.common.datamodel.semanticlookup.model.ConceptBase;
+import at.srfg.iot.common.datamodel.semanticlookup.model.ConceptClass;
+import at.srfg.iot.common.datamodel.semanticlookup.model.ConceptProperty;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
