@@ -38,6 +38,8 @@ public class DefaultAssetType {
 	public static final Identifier ASSET_TYPE_OPERATION_MODEL = new Identifier( "http://iasset.salzburgresearch.at/labor/belt#operations");
 	public static final Identifier ASSET_TYPE_EVENT_MODEL = new Identifier( "http://iasset.salzburgresearch.at/labor/belt#events");
 	
+	public static final Identifier APPLICATION_TYPE_EVENT_MODEL			= new Identifier("http://iasset.salzburgresearch.at/registry/application#events");
+
 	public static final String ASSET_TYPE_CATEGORY = "iAssetLabor";
 	@Autowired
 	protected AssetAdministrationShellRepository aasRepo;
@@ -273,8 +275,8 @@ public class DefaultAssetType {
 			}
 		});
 
-		Optional<Submodel> assetTypeEventoModel = aasSubmodelRepo.findByIdentification(ASSET_TYPE_EVENT_MODEL);
-		Submodel eventModel = assetTypeInfoModel.orElseGet(new Supplier<Submodel>() {
+		Optional<Submodel> assetTypeEventModel = aasSubmodelRepo.findByIdentification(ASSET_TYPE_EVENT_MODEL);
+		Submodel eventModel = assetTypeEventModel.orElseGet(new Supplier<Submodel>() {
 			@Override
 			public Submodel get() {
 				Submodel model = new Submodel(ASSET_TYPE_EVENT_MODEL, theShell);
@@ -287,6 +289,7 @@ public class DefaultAssetType {
 				return aasSubmodelRepo.save(model);
 			}
 		});
+		
 		Optional<EventElement> optStateEvent = eventModel.getSubmodelElement("stateEvent", EventElement.class);
 		EventElement stateEvent = optStateEvent.orElseGet(new Supplier<EventElement>() {
 
@@ -303,7 +306,15 @@ public class DefaultAssetType {
 				return aasSubmodelElementRepo.save(m);
 			}
 		});
-
+		Optional<Submodel> appEventSubmodel = aasSubmodelRepo.findByIdentification(APPLICATION_TYPE_EVENT_MODEL);
+		if ( appEventSubmodel.isPresent()) {
+			Submodel eventSubmodel = appEventSubmodel.get();
+			Optional<SubmodelElementCollection> mBroker = eventSubmodel.getSubmodelElement("messageBroker", SubmodelElementCollection.class);
+			if ( mBroker.isPresent()) {
+				stateEvent.setMessageBrokerElement(mBroker.get());
+				aasSubmodelElementRepo.save(stateEvent);
+			}
+		}
 	}
 
 }
