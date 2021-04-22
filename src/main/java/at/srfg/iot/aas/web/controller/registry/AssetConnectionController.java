@@ -232,5 +232,10 @@ public class AssetConnectionController implements IAssetConnection {
 		}
 		throw new IllegalStateException("Operation cannot be executed online");
 	}
+	@Override
+	public Optional<Referable> getModelInstance(String identifier, Reference element) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

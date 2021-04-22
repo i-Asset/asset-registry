@@ -15,6 +15,7 @@ import at.srfg.iot.aas.service.registry.event.object.AssetAdministrationShellDes
 import at.srfg.iot.aas.service.registry.event.object.AssetAdministrationShellEventObject;
 import at.srfg.iot.aas.service.registry.event.object.AssetEventObject;
 import at.srfg.iot.aas.service.registry.event.object.ConceptDescriptionEventObject;
+import at.srfg.iot.aas.service.registry.event.object.ReferableEventObject;
 import at.srfg.iot.aas.service.registry.event.object.SubmodelDescriptorEventObject;
 import at.srfg.iot.aas.service.registry.event.object.SubmodelEventObject;
 import at.srfg.iot.aas.service.registry.event.object.submodel.SubmodelElementEventObject;
@@ -25,6 +26,7 @@ import at.srfg.iot.common.datamodel.asset.aas.basic.Identifier;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
 import at.srfg.iot.common.datamodel.asset.aas.basic.directory.AssetAdministrationShellDescriptor;
 import at.srfg.iot.common.datamodel.asset.aas.basic.directory.SubmodelDescriptor;
+import at.srfg.iot.common.datamodel.asset.aas.common.HasKind;
 import at.srfg.iot.common.datamodel.asset.aas.common.Identifiable;
 import at.srfg.iot.common.datamodel.asset.aas.common.Referable;
 import at.srfg.iot.common.datamodel.asset.aas.common.SubmodelElementContainer;
@@ -249,7 +251,12 @@ public class RegistryWorker {
 		return Optional.of(registry.saveSubmodel(e.getEntity()));
 
 	}
-	
+	/**
+	 * Store the provided submodel in the registry. All contained elements are processed!
+	 * @param existing
+	 * @param dto
+	 * @return
+	 */
 	public Optional<Submodel> setSubmodel(Submodel existing, Submodel dto) {
 		// the existing must have the containing shell assigned
 		SubmodelEventObject e = new SubmodelEventObject(this, existing, dto);
@@ -353,6 +360,5 @@ public class RegistryWorker {
 		}
 		return Optional.empty();
 	}
-
 
 }

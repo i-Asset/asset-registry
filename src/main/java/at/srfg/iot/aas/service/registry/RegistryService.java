@@ -24,10 +24,14 @@ import at.srfg.iot.common.datamodel.asset.aas.basic.Asset;
 import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Identifier;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
+import at.srfg.iot.common.datamodel.asset.aas.common.HasKind;
+import at.srfg.iot.common.datamodel.asset.aas.common.HasSemantics;
 import at.srfg.iot.common.datamodel.asset.aas.common.Referable;
 import at.srfg.iot.common.datamodel.asset.aas.common.SubmodelElementContainer;
 import at.srfg.iot.common.datamodel.asset.aas.common.referencing.IdentifiableElement;
 import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Key;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Kind;
+import at.srfg.iot.common.datamodel.asset.aas.common.referencing.ReferableDescription;
 import at.srfg.iot.common.datamodel.asset.aas.common.referencing.ReferableElement;
 import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Reference;
 import at.srfg.iot.common.datamodel.asset.aas.dictionary.ConceptDescription;
@@ -87,7 +91,7 @@ public class RegistryService {
 			// is complete true
 			if (complete) {
 				for(Submodel sub : theShell.get().getChildElements(Submodel.class)) {
-					enhanceSubmodel(sub);
+					mergeSemantics(sub);
 				}
 			}
 			else {
@@ -123,26 +127,15 @@ public class RegistryService {
 	}
 	public Optional<Submodel> getSubmodel(Identifier identification, boolean includeDerived) {
 		Optional<Submodel> model = submodelRepo.findByIdentification(identification);
-		if (model.isPresent()) {
-			Submodel sub = model.get();
-			if( includeDerived ) {
-				enhanceSubmodel(sub);
-			}
-		}
+//		if (model.isPresent()) {
+//			Submodel sub = model.get();
+//			if( includeDerived ) {
+//				return mergeSemantics(sub);
+//			}
+//		}
 		return model;
 	}
-	/**
-	 * Helper method which checks for derived elements
-	 * @param sub
-	 */
-	private void enhanceSubmodel(Submodel sub) {
-		if (sub.getSemanticElement() != null && sub.getSemanticElement() instanceof Submodel) {
-			Submodel parent = (Submodel)sub.getSemanticElement();
-			// merge elements ... 
-			
-			mergeSubmodelElements(sub, parent);
-		}
-	}
+
 	private String[] checkPath(String path) {
 		// remove leading and trailing slashes
 		try {
@@ -163,36 +156,7 @@ public class RegistryService {
 		}
 	}
 
-	/**
-	 * 
-	 * @param child
-	 * @param parent
-	 * @return
-	 */
-	private void mergeSubmodelElements(SubmodelElementContainer child, SubmodelElementContainer parent) {
-		for (ISubmodelElement parentElement : parent.getSubmodelElements() ) {
-			Optional<ISubmodelElement> childElement = child.getSubmodelElement(parentElement.getIdShort());
-			if (childElement.isPresent()) {
-				ISubmodelElement c = childElement.get();
-				
-				
-				if ( parentElement instanceof SubmodelElementContainer && 
-					 c instanceof SubmodelElementContainer	) {
-					mergeSubmodelElements((SubmodelElementContainer)c, (SubmodelElementContainer)parent);
-				}
-				else {
-					// TODO: "decide whether to merge" or not 
-				}
-			}
-			else {
-				// merge only in memory - do not persist (e.g. save) afterwards
-				// mark the element as derived
-				parentElement.setDerived(true);
-				child.addSubmodelElement(parentElement);
-			}
-		}
-	}
-	
+
 	public boolean deleteSubmodel(Identifier identifier) {
 		Optional<Submodel> aas = submodelRepo.findByIdentification(identifier);
 		if ( aas.isPresent() ) {
@@ -352,6 +316,67 @@ public class RegistryService {
 	public Optional<Referable> resolveReference(Reference reference) {
 		return resolveReference(reference, false);
 	}
+	/**
+	 * Helper method to create an instance of a template
+	 * @param resolved
+	 * @return
+	 */
+	public Optional<Referable> ensureInstance(Optional<Referable> resolved) {
+		if ( resolved.isPresent() && HasKind.class.isInstance(resolved.get())) {
+			HasKind hasKind = HasKind.class.cast(resolved.get());
+			if ( hasKind.isTemplate()) {
+				// make an instance out of the element, e.g. 
+				// - copy the values from the type (idShort, category, Description(s)
+				// - assign the semantic element (if any) 
+				Optional<Referable> instance =hasKind.asInstance();
+				if ( instance.isPresent()) {
+					return mergeSemantics(instance.get());
+				}
+			}
+		}
+		return mergeSemantics(resolved.get());
+	}
+	private Optional<Referable> mergeSemantics(Referable instance) {
+		if ( HasSemantics.class.isInstance(instance)) {
+			HasSemantics s = HasSemantics.class.cast(instance);
+			Referable semRef = s.getSemanticElement();
+			if ( instance.getClass().equals(semRef.getClass())) {
+				mergeSemantics(instance, semRef); 
+			}
+		}
+		return Optional.of(instance);
+	}
+	private void mergeSemantics(Referable instance, Referable template) {
+		// 
+		for (ISubmodelElement parentElement : template.getChildElements(ISubmodelElement.class) ) {
+			Optional<ISubmodelElement> childElement = instance.getChildElement(parentElement.getIdShort(), ISubmodelElement.class);
+			if (childElement.isPresent()) {
+				ISubmodelElement c = childElement.get();
+				
+				
+				if ( parentElement instanceof SubmodelElementContainer && 
+					 c instanceof SubmodelElementContainer	) {
+					mergeSemantics((SubmodelElementContainer)c, SubmodelElementContainer.class.cast(parentElement));
+				}
+				else {
+					// DataElement is already present no need to change sth.
+				}
+			}
+			else {
+				if ( parentElement.isTemplate()) {
+					Optional<Referable> instatiated = parentElement.asInstance();
+					if (instatiated.isPresent()) {
+						Referable i = instatiated.get();
+						// assign to the parent
+						instance.addChildElement(i);
+						// now the instantiated element is in the tree - check if there are children
+						mergeSemantics(i, parentElement);
+					}
+				}
+			}
+		}
+	}
+
 	public Optional<Referable> resolveReference(Reference reference, boolean createMissing) {	
 		Optional<Referable> referable = Optional.empty();
 		Referable parent = null;
@@ -394,6 +419,7 @@ public class RegistryService {
 		}
 		return referable;
 	}
+
 	private Optional<Referable> fromKey(Key theKey, Referable parent) {
 		try {
 			Referable referable = theKey.getType().getElementClass().newInstance();
