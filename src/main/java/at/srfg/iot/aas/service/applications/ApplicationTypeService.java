@@ -125,7 +125,7 @@ public class ApplicationTypeService {
 			}
 		});
 		Optional<GlobalReference> optRefToMessageBrokerType = globalReferenceRepo.findByIdentification(APPLICATION_TYPE_MESSAGE_BROKER_TYPE);
-		GlobalReference refToMessageBrokerType = optRefToMessageBroker.orElseGet(new Supplier<GlobalReference>() {
+		GlobalReference refToMessageBrokerType = optRefToMessageBrokerType.orElseGet(new Supplier<GlobalReference>() {
 
 			@Override
 			public GlobalReference get() {
@@ -150,6 +150,7 @@ public class ApplicationTypeService {
 				// --> hosts: 
 				// --> brokerType: either KAFKA or MQTT
 				coll.setSemanticElement(refToMessageBroker);
+				
 				return aasSubmodelElementRepo.save(coll);
 			}
 		});
