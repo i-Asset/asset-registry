@@ -21,9 +21,13 @@ public class HasSemanticsEventHandler {
 	@EventListener
 	@Order(1)
 	public void onHasSemanticsEvent(HasSemanticsEvent event) {
+		
+		// persisted entity
 		HasSemantics entity = event.getEntity();
+		// data transfer object
 		HasSemantics dto = event.getDTO();
 		
+		// resove reference when dto's semanticID is a Reference 
 		if (! event.isSemanticIdResolved()) {
 			// 
 			Optional<ReferableElement> ref = registry.resolveReference(dto.getSemanticId(), ReferableElement.class);

@@ -23,16 +23,18 @@ public interface HasSemanticsEvent extends ApiEvent {
 	*/
 	@JsonIgnore
 	default boolean isSemanticIdResolved() {
-		// 
+		// DTO provides semantic reference and the 
 		
 		if ( getDTO().getSemanticId() != null) {
-			if ( getDTO().getSemanticElement() != null  ) {
-				return getDTO().getSemanticElement().asReference().equals(getDTO().getSemanticId());		
+			if ( getDTO().getSemanticElement().isPresent()) {
+				// true when semanticElement  
+				return getDTO().getSemanticElement().get().asReference().equals(getDTO().getSemanticId());
 			}
 			return false;
 		}
-		return (getEntity().getSemanticElement() == null || 
-				!(getEntity().getSemanticElement() instanceof Reference));
+		// true when entity is empty OR  entity semantic elemnt is present and not a reference!
+		return (!	getEntity().getSemanticElement().isPresent() 
+				|| 	!(Reference.class.isInstance(getEntity().getSemanticElement().get())));
 	}
 
 }

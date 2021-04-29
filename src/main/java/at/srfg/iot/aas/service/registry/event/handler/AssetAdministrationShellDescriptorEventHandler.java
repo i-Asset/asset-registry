@@ -71,22 +71,6 @@ public class AssetAdministrationShellDescriptorEventHandler {
 				processSubmodel(entity,  existing.orElse(null),  sub);
 			}
 		}
-//		if ( type.isPresent()) {
-//			AssetAdministrationShell parentType = type.get();
-//			// 
-//			for ( Submodel sub : parentType.getChildElements(Submodel.class)) {
-//				Optional<ISubmodel> existing = entity.getSubmodel(sub.getIdShort());
-//				if ( ! existing.isPresent()) {
-//					SubmodelDescriptor subDesc = new SubmodelDescriptor(sub);
-//					subDesc.setIdShort(sub.getIdShort());
-//					subDesc.setId(UUID.randomUUID().toString());
-//					subDesc.setSemanticId(sub.asReference());
-//					processSubmodel(entity, null, subDesc);
-//				}
-//				
-//			};
-//			
-//		}
 		
 
 	}
@@ -96,12 +80,6 @@ public class AssetAdministrationShellDescriptorEventHandler {
 					existing.getIdentification().toString(),
 					shell.getIdentification().toString()
 					));
-			// update only when shell's are equal
-//			if ( e.getAssetAdministrationShell().equals(shell)) {
-//			}
-//			else {
-//				worker.registerSubmodel(existing.get(), dto);
-//			}
 		}
 		else {
 			Submodel newSubmodel = new Submodel(dto.getIdentification(), shell);
