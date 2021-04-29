@@ -122,13 +122,13 @@ public class AssetRepositoryController implements IAssetConnection{
 	}
 	@Override
 	public Optional<Referable> getModelInstance(String identifier, Reference element) {
-		Optional<Identifiable> i = getRoot(identifier);
-		if (i.isPresent()) {
-			if ( element.hasRoot(i.get())) {
-				Optional<Referable> resolved = registry.resolveReference(element);
-				return registry.ensureInstance(resolved);
-			}
-		}
+//		Optional<Identifiable> i = getRoot(identifier);
+//		if (i.isPresent()) {
+//			if ( element.hasRoot(i.get())) {
+//				Optional<Referable> resolved = registry.resolveReference(element);
+//				return registry.ensureInstance(resolved);
+//			}
+//		}
 		return Optional.empty();
 	}
 

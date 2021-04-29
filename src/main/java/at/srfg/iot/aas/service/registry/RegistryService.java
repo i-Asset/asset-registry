@@ -316,26 +316,26 @@ public class RegistryService {
 	public Optional<Referable> resolveReference(Reference reference) {
 		return resolveReference(reference, false);
 	}
-	/**
-	 * Helper method to create an instance of a template
-	 * @param resolved
-	 * @return
-	 */
-	public Optional<Referable> ensureInstance(Optional<Referable> resolved) {
-		if ( resolved.isPresent() && HasKind.class.isInstance(resolved.get())) {
-			HasKind hasKind = HasKind.class.cast(resolved.get());
-			if ( hasKind.isTemplate()) {
-				// make an instance out of the element, e.g. 
-				// - copy the values from the type (idShort, category, Description(s)
-				// - assign the semantic element (if any) 
-				Optional<Referable> instance =hasKind.asInstance();
-				if ( instance.isPresent()) {
-					return mergeSemantics(instance.get());
-				}
-			}
-		}
-		return mergeSemantics(resolved.get());
-	}
+//	/**
+//	 * Helper method to create an instance of a template
+//	 * @param resolved
+//	 * @return
+//	 */
+//	public Optional<Referable> ensureInstance(Optional<Referable> resolved) {
+//		if ( resolved.isPresent() && HasKind.class.isInstance(resolved.get())) {
+//			HasKind hasKind = HasKind.class.cast(resolved.get());
+//			if ( hasKind.isTemplate()) {
+//				// make an instance out of the element, e.g. 
+//				// - copy the values from the type (idShort, category, Description(s)
+//				// - assign the semantic element (if any) 
+//				Optional<Referable> instance =hasKind.asInstance();
+//				if ( instance.isPresent()) {
+//					return mergeSemantics(instance.get());
+//				}
+//			}
+//		}
+//		return mergeSemantics(resolved.get());
+//	}
 	private Optional<Referable> mergeSemantics(Referable instance) {
 		if ( HasSemantics.class.isInstance(instance)) {
 			HasSemantics s = HasSemantics.class.cast(instance);
@@ -367,13 +367,10 @@ public class RegistryService {
 			}
 			else {
 				if ( parentElement.isTemplate()) {
-					Optional<Referable> instatiated = parentElement.asInstance();
+					Optional<Referable> instatiated = parentElement.asInstance(instance);
 					if (instatiated.isPresent()) {
-						Referable i = instatiated.get();
-						// assign to the parent
-						instance.addChildElement(i);
 						// now the instantiated element is in the tree - check if there are children
-						mergeSemantics(i, parentElement);
+						mergeSemantics(instatiated.get(), parentElement);
 					}
 				}
 			}
