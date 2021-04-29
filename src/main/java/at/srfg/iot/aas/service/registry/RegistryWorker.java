@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.srfg.iot.aas.service.indexing.AssetTypeIndexingEventObject;
+import at.srfg.iot.aas.service.indexing.SubmodelTypeIndexingObject;
 import at.srfg.iot.aas.service.registry.event.object.AssetAdministrationShellDescriptorEventObject;
 import at.srfg.iot.aas.service.registry.event.object.AssetAdministrationShellEventObject;
 import at.srfg.iot.aas.service.registry.event.object.AssetEventObject;
 import at.srfg.iot.aas.service.registry.event.object.ConceptDescriptionEventObject;
-import at.srfg.iot.aas.service.registry.event.object.ReferableEventObject;
 import at.srfg.iot.aas.service.registry.event.object.SubmodelDescriptorEventObject;
 import at.srfg.iot.aas.service.registry.event.object.SubmodelEventObject;
 import at.srfg.iot.aas.service.registry.event.object.submodel.SubmodelElementEventObject;
@@ -26,7 +26,6 @@ import at.srfg.iot.common.datamodel.asset.aas.basic.Identifier;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
 import at.srfg.iot.common.datamodel.asset.aas.basic.directory.AssetAdministrationShellDescriptor;
 import at.srfg.iot.common.datamodel.asset.aas.basic.directory.SubmodelDescriptor;
-import at.srfg.iot.common.datamodel.asset.aas.common.HasKind;
 import at.srfg.iot.common.datamodel.asset.aas.common.Identifiable;
 import at.srfg.iot.common.datamodel.asset.aas.common.Referable;
 import at.srfg.iot.common.datamodel.asset.aas.common.SubmodelElementContainer;
@@ -56,6 +55,9 @@ public class RegistryWorker {
 	}
 	public void indexAssetAdministrationShell(AssetAdministrationShell theShell) {
 		publisher.publishEvent(new AssetTypeIndexingEventObject(this, theShell));
+	}
+	public void indexSubmodel(Submodel themodel) {
+		publisher.publishEvent(new SubmodelTypeIndexingObject(this, themodel));
 	}
 	public void setElement(Identifiable shellId, Referable element) {
 		// perform the checks
@@ -178,7 +180,7 @@ public class RegistryWorker {
 
 				@Override
 				public Submodel get() {
-					return new Submodel(shell);
+					return new Submodel(dto.getIdentification(), shell);
 				}
 			});
 			SubmodelEventObject e = new SubmodelEventObject(this, sub, dto);

@@ -339,9 +339,12 @@ public class RegistryService {
 	private Optional<Referable> mergeSemantics(Referable instance) {
 		if ( HasSemantics.class.isInstance(instance)) {
 			HasSemantics s = HasSemantics.class.cast(instance);
-			Referable semRef = s.getSemanticElement();
-			if ( instance.getClass().equals(semRef.getClass())) {
-				mergeSemantics(instance, semRef); 
+			Optional<Referable> semRef = s.getSemanticElement();
+			if ( semRef.isPresent()) {
+				// merge semantics when both - element and semantic elemetn are of same type
+				if ( instance.getClass().equals(semRef.get().getClass())) {
+					mergeSemantics(instance, semRef.get()); 
+				}
 			}
 		}
 		return Optional.of(instance);
