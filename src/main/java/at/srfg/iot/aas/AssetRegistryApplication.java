@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import at.srfg.iot.aas.dependency.AssetIndexer;
 import at.srfg.iot.aas.dependency.SemanticLookup;
+import at.srfg.iot.aas.dependency.SubmodelIndexer;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication(exclude = { 
@@ -36,7 +37,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @EnableFeignClients(clients = {
 		// used for taxonomy integration
-		SemanticLookup.class, 
+		SemanticLookup.class,
+		// indexing submodels
+		SubmodelIndexer.class,
 		// indexing assets
 		AssetIndexer.class})
 public class AssetRegistryApplication {
