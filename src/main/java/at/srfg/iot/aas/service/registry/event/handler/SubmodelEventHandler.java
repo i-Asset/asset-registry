@@ -1,13 +1,19 @@
 package at.srfg.iot.aas.service.registry.event.handler;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import at.srfg.iot.aas.service.indexing.SubmodelTypeIndexingObject;
 import at.srfg.iot.aas.service.registry.event.SubmodelEvent;
+import at.srfg.iot.aas.service.registry.event.object.SubmodelEventObject;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
 
 @Component
 public class SubmodelEventHandler {
+	@Autowired
+	private ApplicationEventPublisher publisher;
 	@EventListener
 	public void onSubmodelEvent(SubmodelEvent event) {
 		
@@ -51,6 +57,6 @@ public class SubmodelEventHandler {
 //		}
 	
 		// other attributes are managed with the respective event handlers
-		
+		publisher.publishEvent(new SubmodelTypeIndexingObject(this, entity));
 	}
 }

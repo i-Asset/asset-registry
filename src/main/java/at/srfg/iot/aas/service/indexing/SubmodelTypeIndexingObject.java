@@ -2,7 +2,7 @@ package at.srfg.iot.aas.service.indexing;
 
 import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
 
-public class SubmodelTypeIndexingObject extends IndexingEvent<Submodel> {
+public class SubmodelTypeIndexingObject extends IndexingEvent<Submodel> implements SubmodelIndexingEvent {
 
 	/**
 	 * 
