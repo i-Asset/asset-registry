@@ -122,16 +122,17 @@ public class RegistryWorker {
 	@Transactional
 	public Optional<AssetAdministrationShell> registerAdministrationShell(AssetAdministrationShellDescriptor dto) {
 		Optional<AssetAdministrationShell> shell = registry.getAssetAdministrationShell(dto.getIdentification());
-		if (! shell.isPresent()) {
-			AssetAdministrationShell newShell = new AssetAdministrationShell(dto.getIdentification());
-			AssetAdministrationShellDescriptorEventObject e = new AssetAdministrationShellDescriptorEventObject(this, newShell, dto);
-			// event processes all contained elements of the descriptor (endpoints, submodel descriptors, referable, identifiable)
-			publisher.publishEvent(e);
-			
-			// save & return
-			return Optional.of(registry.saveAssetAdministrationShell(e.getEntity()));
-		}
-		return shell;
+		AssetAdministrationShell newShell = shell.orElse(new AssetAdministrationShell(dto.getIdentification()));
+		AssetAdministrationShellDescriptorEventObject e = new AssetAdministrationShellDescriptorEventObject(this, newShell, dto);
+		// event processes all contained elements of the descriptor (endpoints, submodel descriptors, referable, identifiable)
+		publisher.publishEvent(e);
+		
+		// save & return
+		return Optional.of(registry.saveAssetAdministrationShell(e.getEntity()));
+//		if (! shell.isPresent()) {
+//			AssetAdministrationShell newShell = new AssetAdministrationShell(dto.getIdentification());
+//		}
+//		return shell;
 	}
 	/**
 	 * Update a complete {@link AssetAdministrationShell}
