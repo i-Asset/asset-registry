@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import at.srfg.iot.aas.service.indexing.SubmodelTypeIndexingObject;
 import at.srfg.iot.aas.service.registry.event.SubmodelEvent;
-import at.srfg.iot.aas.service.registry.event.object.SubmodelEventObject;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
 
 @Component
