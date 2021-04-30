@@ -28,9 +28,11 @@ import at.srfg.iot.common.datamodel.asset.aas.common.DirectoryEntry;
 import at.srfg.iot.common.datamodel.asset.aas.common.HasKind;
 import at.srfg.iot.common.datamodel.asset.aas.common.Identifiable;
 import at.srfg.iot.common.datamodel.asset.aas.common.Referable;
+import at.srfg.iot.common.datamodel.asset.aas.common.SubmodelElementContainer;
 import at.srfg.iot.common.datamodel.asset.aas.common.referencing.IdentifiableElement;
 import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Kind;
 import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Reference;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.DataElement;
 import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Property;
 import at.srfg.iot.common.datamodel.asset.api.IAssetConnection;
 import at.srfg.iot.common.datamodel.asset.connectivity.rest.ConsumerFactory;
@@ -222,7 +224,19 @@ public class AssetRepositoryController implements IAssetConnection{
 	} 
 
 	@Override
-	public String getValue(String identifier, String path) {
+	public Object getValue(String identifier, String path) {
+		Optional<Referable> referable = registry.resolvePath(identifier, path);
+		if ( referable.isPresent()) {
+			if ( referable.isPresent()) {
+				Referable ref = referable.get();
+				if ( SubmodelElementContainer.class.isInstance(ref)) {
+					return SubmodelElementContainer.class.cast(ref).getValue();
+				}
+				if ( DataElement.class.isInstance(ref)) {
+					return DataElement.class.cast(ref).getValue();
+				}
+			}
+		}
 		Optional<Property> property = registry.resolvePath(identifier, path, Property.class);
 		if ( property.isPresent()) {
 			return  property.get().getValue();
@@ -231,10 +245,10 @@ public class AssetRepositoryController implements IAssetConnection{
 	}
 
 	@Override
-	public void setValue(String identifier, String path, String value) {
+	public void setValue(String identifier, String path, Object value) {
 		Optional<Property> property = registry.resolvePath(identifier, path, Property.class);
 		if ( property.isPresent()) {
-			property.get().setValue(value);
+			property.get().setValue(value.toString());
 		}
 	}
 

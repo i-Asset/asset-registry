@@ -182,7 +182,7 @@ public class AssetConnectionController implements IAssetConnection {
 	} 
 
 	@Override
-	public String getValue(String identifier, String path) {
+	public Object getValue(String identifier, String path) {
 		// check root elemment
 		Optional<Identifiable> i = getRoot(identifier);
 		if (i.isPresent()) {
@@ -201,7 +201,7 @@ public class AssetConnectionController implements IAssetConnection {
 	}
 
 	@Override
-	public void setValue(String identifier, String path, String value) {
+	public void setValue(String identifier, String path, Object value) {
 		// check root elemment
 		Optional<Identifiable> i = getRoot(identifier);
 		if (i.isPresent()) {
@@ -211,6 +211,7 @@ public class AssetConnectionController implements IAssetConnection {
 			if ( ep.isPresent()) {
 				getProxy(ep.get()).setValue(identifier, path, value);
 			}
+			// TODO: allow object processing as map
 			Optional<Property> elem = registry.resolvePath(identifier, path, Property.class);
 			if ( elem.isPresent()) {
 				elem.get().setValue(value.toString());
