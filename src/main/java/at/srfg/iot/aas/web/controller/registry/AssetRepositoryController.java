@@ -253,7 +253,7 @@ public class AssetRepositoryController implements IAssetConnection{
 	}
 
 	@Override
-	public Object invokeOperation(String identifier, String path, Map<String, Object> parameterMap) {
+	public Map<String,Object> invokeOperation(String identifier, String path, Map<String, Object> parameterMap) {
 		Optional<Identifiable>  root = getRoot(identifier);
 		if ( root.isPresent() ) {
 			Optional<Endpoint> ep = getEndpoint(root.get());

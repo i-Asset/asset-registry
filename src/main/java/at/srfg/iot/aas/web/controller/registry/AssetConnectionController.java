@@ -220,7 +220,7 @@ public class AssetConnectionController implements IAssetConnection {
 	}
 
 	@Override
-	public Object invokeOperation(String identifier, String path, Map<String, Object> parameterMap) {
+	public Map<String,Object> invokeOperation(String identifier, String path, Map<String, Object> parameterMap) {
 		// check root elemment
 		Optional<Identifiable> i = getRoot(identifier);
 		if (i.isPresent()) {
