@@ -76,10 +76,10 @@ public class AssetAdministrationShellDescriptorEventHandler {
 	}
 	private void processSubmodel(AssetAdministrationShell shell, ISubmodel existing, SubmodelDescriptor dto) {
 		if (existing != null) {
-			throw new IllegalArgumentException(String.format("Submodel [%s] already exists and is not part of the the AssetAdministrationShell [%s]!",
-					existing.getIdentification().toString(),
-					shell.getIdentification().toString()
-					));
+//			throw new IllegalArgumentException(String.format("Submodel [%s] already exists and is not part of the the AssetAdministrationShell [%s]!",
+//					existing.getIdentification().toString(),
+//					shell.getIdentification().toString()
+//					));
 		}
 		else {
 			Submodel newSubmodel = new Submodel(dto.getIdentification(), shell);
