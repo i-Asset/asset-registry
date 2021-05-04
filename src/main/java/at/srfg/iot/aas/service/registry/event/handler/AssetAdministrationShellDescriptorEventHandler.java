@@ -50,10 +50,11 @@ public class AssetAdministrationShellDescriptorEventHandler {
 			AssetAdministrationShell parentType = type.get();
 			entity.setDerivedFromElement(parentType);
 		}
-		
-		for (Integer index : dto.getEndpoints().keySet() ) {
-			Endpoint ep = dto.getEndpoint(index);
-			entity.setEndpoint(index, ep.getAddress(), ep.getType());
+		if ( dto.getEndpoints()!= null) {
+			for (Integer index : dto.getEndpoints().keySet() ) {
+				Endpoint ep = dto.getEndpoint(index);
+				entity.setEndpoint(index, ep.getAddress(), ep.getType());
+			}
 		}
 		// save the entity before processing dendencies
 		registry.saveAssetAdministrationShell(entity);
