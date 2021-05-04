@@ -33,6 +33,7 @@ public class ApplicationTypeService {
 	public static final Identifier APPLICATION_TYPE_EVENT_MODEL			= new Identifier("http://iasset.salzburgresearch.at/registry/application#events");
 	public static final Identifier APPLICATION_TYPE_OPERATION_MODEL		= new Identifier("http://iasset.salzburgresearch.at/registry/application#operations");
 	public static final Identifier APPLICATION_TYPE_MESSAGE_BROKER 		= new Identifier("http://iasset.salzburgresearch.at/data/messageBroker");
+	public static final Identifier APPLICATION_TYPE_MESSAGE_BROKER_HOSTS = new Identifier("http://iasset.salzburgresearch.at/data/messageBroker/hosts");
 	public static final Identifier APPLICATION_TYPE_MESSAGE_BROKER_TYPE = new Identifier("http://iasset.salzburgresearch.at/data/messageBroker/brokerType");
 	
 	public static final String APPLICATION_TYPE_CATEGORY = "applicationType"; 
@@ -124,6 +125,18 @@ public class ApplicationTypeService {
 				return globalReferenceRepo.save(ref);
 			}
 		});
+		Optional<GlobalReference> optRefToMessageBrokerHosts = globalReferenceRepo.findByIdentification(APPLICATION_TYPE_MESSAGE_BROKER_HOSTS);
+		GlobalReference refToMessageBrokerHosts = optRefToMessageBrokerHosts.orElseGet(new Supplier<GlobalReference>() {
+
+			@Override
+			public GlobalReference get() {
+				GlobalReference ref = new GlobalReference(APPLICATION_TYPE_MESSAGE_BROKER_HOSTS);
+				ref.setCategory("messageBroker");
+				ref.setIdShort("hosts");
+				ref.setDescription("de", "Message Broker Host Address");
+				return globalReferenceRepo.save(ref);
+			}
+		});
 		Optional<GlobalReference> optRefToMessageBrokerType = globalReferenceRepo.findByIdentification(APPLICATION_TYPE_MESSAGE_BROKER_TYPE);
 		GlobalReference refToMessageBrokerType = optRefToMessageBrokerType.orElseGet(new Supplier<GlobalReference>() {
 
@@ -161,8 +174,9 @@ public class ApplicationTypeService {
 			public Property get() {
 				Property prop = new Property("hosts", messageBroker);
 				prop.setDescription("de", "Host-Names für Message Broker");
-				prop.setValue("<host-address-for-kafka or mqtt>");
+				prop.setValue("iasset.salzburgresearch.at:9092");
 				prop.setValueQualifier(DataTypeEnum.STRING);
+				prop.setSemanticElement(refToMessageBrokerHosts);
 				return aasSubmodelElementRepo.save(prop);
 			}
 		});
