@@ -16,6 +16,7 @@ import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Identifier;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
 import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Kind;
+import at.srfg.iot.common.datamodel.asset.aas.common.types.CategoryEnum;
 import at.srfg.iot.common.datamodel.asset.aas.common.types.DataTypeEnum;
 import at.srfg.iot.common.datamodel.asset.aas.common.types.DirectionEnum;
 import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.EventElement;
@@ -44,7 +45,7 @@ public class CMMSTypeService extends ApplicationTypeService {
 				Optional<AssetAdministrationShell> app = aasRepo.findByIdentification(APPLICATION_TYPE_IDENTIFIER);
 				AssetAdministrationShell shell = new AssetAdministrationShell(CMMS_TYPE_IDENTIFIER);
 				shell.setIdShort("appType");
-				shell.setCategory(CMMS_TYPE_CATEGORY);
+				shell.setCategory(CategoryEnum.APPLICATION_CLASS);
 				shell.setDescription("de", "CMMS Applikation");
 				shell.setVersion("V0.01");
 				shell.setRevision("001");
@@ -60,7 +61,7 @@ public class CMMSTypeService extends ApplicationTypeService {
 				Optional<Submodel> sub = aasSubmodelRepo.findByIdentification(APPLICATION_TYPE_INFO_MODEL);
 				Submodel model = new Submodel(CMMS_TYPE_INFO_MODEL, theShell);
 				model.setIdShort("information");
-				model.setCategory(CMMS_TYPE_CATEGORY);
+				model.setCategory(CategoryEnum.APPLICATION_CLASS);
 				model.setDescription("de", "CMMS Application Information");
 				model.setVersion("V0.01");
 				model.setRevision("001");
@@ -75,7 +76,7 @@ public class CMMSTypeService extends ApplicationTypeService {
 			public Property get() {
 				// 
 				Property property = new Property("vendor", infoModel);
-				property.setCategory(CMMS_TYPE_CATEGORY);
+				property.setCategory(CategoryEnum.CONSTANT);
 				property.setKind(Kind.Type);
 				property.setDescription("de", "Hersteller");
 				property.setValueQualifier(DataTypeEnum.STRING);
@@ -90,7 +91,7 @@ public class CMMSTypeService extends ApplicationTypeService {
 			public Property get() {
 				// 
 				Property property = new Property("name", infoModel);
-				property.setCategory(CMMS_TYPE_CATEGORY);
+				property.setCategory(CategoryEnum.CONSTANT);
 				property.setKind(Kind.Type);
 				property.setDescription("de", "Name");
 				property.setValueQualifier(DataTypeEnum.STRING);
@@ -105,7 +106,7 @@ public class CMMSTypeService extends ApplicationTypeService {
 				Optional<Submodel> sub = aasSubmodelRepo.findByIdentification(APPLICATION_TYPE_OPERATION_MODEL);
 				Submodel model = new Submodel(CMMS_TYPE_OPERATION_MODEL, theShell);
 				model.setIdShort("operations");
-				model.setCategory(CMMS_TYPE_CATEGORY);
+				model.setCategory(CategoryEnum.APPLICATION_CLASS);
 				model.setDescription("de", "CMMS Application Operations");
 				model.setVersion("V0.01");
 				model.setRevision("001");
@@ -121,7 +122,7 @@ public class CMMSTypeService extends ApplicationTypeService {
 			public Property get() {
 				// 
 				Property property = new Property("maintenanceHistoryInputV1Value", operationModel);
-				property.setCategory(CMMS_TYPE_CATEGORY);
+				property.setCategory(CategoryEnum.PARAMETER);
 				property.setKind(Kind.Type);
 				property.setDescription("de", "Typ-Defintion Input-Parameter 1 für Maintenance History");
 				property.setValueQualifier(DataTypeEnum.STRING);
@@ -135,7 +136,7 @@ public class CMMSTypeService extends ApplicationTypeService {
 			@Override
 			public Operation get() {
 				Operation m = new Operation("maintenanceHistory", operationModel);
-				m.setCategory(CMMS_TYPE_CATEGORY);
+				m.setCategory(CategoryEnum.FUNCTION);
 				m.setDescription("de", "Abfrage der Maintenance Historie");
 				
 //				OperationVariable inParam = new OperationVariable("identifier", operationModel);
@@ -174,7 +175,7 @@ public class CMMSTypeService extends ApplicationTypeService {
 				Optional<Submodel> sub = aasSubmodelRepo.findByIdentification(APPLICATION_TYPE_EVENT_MODEL);
 				Submodel model = new Submodel(CMMS_TYPE_EVENT_MODEL, theShell);
 				model.setIdShort("events");
-				model.setCategory(CMMS_TYPE_CATEGORY);
+				model.setCategory(CategoryEnum.APPLICATION_CLASS);
 				model.setDescription("de", "CMMS Application Event Settings");
 				model.setVersion("V0.01");
 				model.setRevision("001");
@@ -188,7 +189,7 @@ public class CMMSTypeService extends ApplicationTypeService {
 			@Override
 			public EventElement get() {
 				EventElement event = new EventElement("maintenance", eventModel);
-				event.setCategory(CMMS_TYPE_CATEGORY);
+				event.setCategory(CategoryEnum.APPLICATION_CLASS);
 				event.setDescription("de", "CMMS Maintenance Meldung");
 				event.setKind(Kind.Type);
 				event.setDirection(DirectionEnum.Input);

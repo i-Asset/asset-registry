@@ -20,6 +20,7 @@ import at.srfg.iot.common.datamodel.asset.aas.basic.GlobalReference;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Identifier;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
 import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Kind;
+import at.srfg.iot.common.datamodel.asset.aas.common.types.CategoryEnum;
 import at.srfg.iot.common.datamodel.asset.aas.common.types.DataTypeEnum;
 import at.srfg.iot.common.datamodel.asset.aas.common.types.DirectionEnum;
 import at.srfg.iot.common.datamodel.asset.aas.dictionary.ConceptDescription;
@@ -66,7 +67,7 @@ public class DefaultAssetType {
 				shell.setIdentification(ASSET_TYPE_AAS);
 				shell.setAsset(asset);
 				shell.setIdShort("beltType");
-				shell.setCategory(ASSET_TYPE_CATEGORY);
+				shell.setCategory(CategoryEnum.APPLICATION_CLASS);
 				shell.setDescription("de", "i-Asset Labor - Förderband");
 				shell.setVersion("V0.01");
 				shell.setRevision("001");
@@ -80,7 +81,7 @@ public class DefaultAssetType {
 				Submodel model = new Submodel(ASSET_TYPE_INFO_MODEL, theShell);
 				model.setIdShort("information");
 				model.setKind(Kind.Instance);
-				model.setCategory(ASSET_TYPE_CATEGORY);
+				model.setCategory(CategoryEnum.APPLICATION_CLASS);
 				model.setDescription("de", "i-Asset Labor - Förderband-Infomodel");
 				model.setVersion("V0.01");
 				model.setRevision("001");
@@ -93,7 +94,7 @@ public class DefaultAssetType {
 			@Override
 			public GlobalReference get() {
 				GlobalReference ref = new GlobalReference(new Identifier("0173-1#02-AAO677#002"));
-				ref.setCategory("semanticLookup");
+				ref.setCategory(CategoryEnum.PROPERTY);
 				ref.setIdShort("0173-1#02-AAO677#002");
 				ref.setDescription("de", "Herstellername");
 				return globalReferenceRepo.save(ref);
@@ -107,12 +108,12 @@ public class DefaultAssetType {
 			@Override
 			public ConceptDescription get() {
 				ConceptDescription manufacturer = new ConceptDescription(new Identifier("http://iasset.salzburgresearch.at/dictionary/manufacturer"));
-				manufacturer.setCategory(ASSET_TYPE_CATEGORY);
+				manufacturer.setCategory(CategoryEnum.PROPERTY);
 				manufacturer.setDescription("en", "Manufacturer name");
 				manufacturer.setDescription("de", "Hersteller Name");
-				manufacturer.setCategory("A21");
-				manufacturer.setVersion("001");
-				manufacturer.setRevision("01");
+//				manufacturer.setCategory("A21");
+//				manufacturer.setVersion("001");
+//				manufacturer.setRevision("01");
 //				manufacturer.addCaseOf(manufacturerName);
 				
 				return cdRepo.save(manufacturer);
@@ -126,7 +127,7 @@ public class DefaultAssetType {
 			public Property get() {
 				// 
 				Property property = new Property("manufacturer", infoModel);
-				property.setCategory(ASSET_TYPE_CATEGORY);
+				property.setCategory(CategoryEnum.CONSTANT);
 				property.setKind(Kind.Instance);
 				property.setDescription("de", "Hersteller");
 				property.setSemanticElement(manufacturerName);
@@ -144,7 +145,7 @@ public class DefaultAssetType {
 				Submodel model = new Submodel(ASSET_TYPE_PROPERTY_MODEL, theShell);
 				model.setIdShort("properties");
 				model.setKind(Kind.Type);
-				model.setCategory(ASSET_TYPE_CATEGORY);
+				model.setCategory(CategoryEnum.APPLICATION_CLASS);
 				model.setDescription("de", "i-Asset Labor - Förderband-Properties");
 				model.setVersion("V0.01");
 				model.setRevision("001");
@@ -170,7 +171,7 @@ public class DefaultAssetType {
 			public Property get() {
 				// 
 				Property property = new Property("state", beltDataContainer);
-				property.setCategory(ASSET_TYPE_CATEGORY);
+				property.setCategory(CategoryEnum.VARIABLE);
 				property.setKind(Kind.Type);
 				property.setDescription("de", "Status On/Off");
 				property.setSemanticElement(manufacturer);
@@ -180,6 +181,23 @@ public class DefaultAssetType {
 			}
 			
 		});
+		Optional<Property> optServerTime = beltDataContainer.getSubmodelElement("serverTime", Property.class);
+		Property serverTime = optServerTime.orElseGet(new Supplier<Property>() {
+
+			@Override
+			public Property get() {
+				// 
+				Property property = new Property("serverTime", beltDataContainer);
+				property.setCategory(CategoryEnum.VARIABLE);
+				property.setKind(Kind.Type);
+				property.setDescription("de", "Bewegungsrichtung");
+				//property.setSemanticElement(manufacturer);
+				property.setValueQualifier(DataTypeEnum.STRING);
+				return aasSubmodelElementRepo.save(property);
+			}
+			
+		});
+		
 		Optional<Property> optBeltDirection = beltDataContainer.getSubmodelElement("direction", Property.class);
 		Property beltDirection = optBeltDirection.orElseGet(new Supplier<Property>() {
 
@@ -187,28 +205,25 @@ public class DefaultAssetType {
 			public Property get() {
 				// 
 				Property property = new Property("direction", beltDataContainer);
-				property.setCategory(ASSET_TYPE_CATEGORY);
+				property.setCategory(CategoryEnum.VARIABLE);
 				property.setKind(Kind.Type);
 				property.setDescription("de", "Bewegungsrichtung");
-				property.setSemanticElement(manufacturer);
-				// TODO: use enumeration for ValueQualifier
+				//property.setSemanticElement(manufacturer);
 				property.setValueQualifier(DataTypeEnum.STRING);
 				return aasSubmodelElementRepo.save(property);
 			}
 			
 		});
 		Optional<Property> optBeltDistance = beltDataContainer.getSubmodelElement("distance", Property.class);
-		Property distance = optBeltDistance.orElseGet(new Supplier<Property>() {
+		Property beltDistance = optBeltDistance.orElseGet(new Supplier<Property>() {
 
 			@Override
 			public Property get() {
 				// 
 				Property property = new Property("distance", beltDataContainer);
-				property.setCategory(ASSET_TYPE_CATEGORY);
+				property.setCategory(CategoryEnum.VARIABLE);
 				property.setKind(Kind.Type);
-				property.setDescription("de", "Zurückgelegte Distanz");
-				property.setSemanticElement(manufacturer);
-				// TODO: use enumeration for ValueQualifier
+				property.setDescription("de", "Distanz");
 				property.setValueQualifier(DataTypeEnum.DECIMAL);
 				return aasSubmodelElementRepo.save(property);
 			}
@@ -221,13 +236,14 @@ public class DefaultAssetType {
 				Submodel model = new Submodel(ASSET_TYPE_OPERATION_MODEL, theShell);
 				model.setIdShort("operations");
 				model.setKind(Kind.Type);
-				model.setCategory(ASSET_TYPE_CATEGORY);
+				model.setCategory(CategoryEnum.APPLICATION_CLASS);
 				model.setDescription("de", "i-Asset Labor - Förderband-Funktionen");
 				model.setVersion("V0.01");
 				model.setRevision("001");
 				return aasSubmodelRepo.save(model);
 			}
 		});
+		
 		Optional<Property> optBeltSpeed = beltDataContainer.getSubmodelElement("speed", Property.class);
 		Property beltSpeed = optBeltSpeed.orElseGet(new Supplier<Property>() {
 
@@ -235,7 +251,7 @@ public class DefaultAssetType {
 			public Property get() {
 				// 
 				Property property = new Property("speed", beltDataContainer);
-				property.setCategory(ASSET_TYPE_CATEGORY);
+				property.setCategory(CategoryEnum.VARIABLE);
 				property.setKind(Kind.Type);
 				property.setDescription("de", "Geschwindigkeit für Förderband");
 				property.setValueQualifier(DataTypeEnum.DECIMAL);
@@ -243,13 +259,12 @@ public class DefaultAssetType {
 			}
 			
 		});
-		Optional<Operation> optSpeedOperation = operationModel.getSubmodelElement("setSpeed", Operation.class);
-		Operation speedOperation = optSpeedOperation.orElseGet(new Supplier<Operation>() {
-
+		Optional<Operation> optSwitchLight = operationModel.getSubmodelElement("switchBusyLight", Operation.class);
+		Operation switchLight = optSwitchLight.orElseGet(new Supplier<Operation>() {
 			@Override
 			public Operation get() {
-				Operation m = new Operation("setSpeed", operationModel);
-				m.setCategory(ASSET_TYPE_CATEGORY);
+				Operation m = new Operation("switchBusyLight", operationModel);
+				m.setCategory(CategoryEnum.FUNCTION);
 				m.setDescription("de", "Geschwindigkeit für Förderband einstellen");
 				m.setKind(Kind.Type);
 				
@@ -257,18 +272,59 @@ public class DefaultAssetType {
 				return aasSubmodelElementRepo.save(m);
 			}
 		});
-
-		
-		Optional<OperationVariable> operationVariable = speedOperation.getOperationVariable("speed");
-		OperationVariable speedVariable = operationVariable.orElseGet(new Supplier<OperationVariable>() {
-
+		Optional<OperationVariable> optStateVariable = switchLight.getOperationVariable("state");
+		OperationVariable stateVariable = optStateVariable.orElseGet(new Supplier<OperationVariable>() {
 			@Override
 			public OperationVariable get() {
-				OperationVariable v = new OperationVariable("speed", speedOperation, DirectionEnum.Input);
+				OperationVariable v = new OperationVariable("state", switchLight, DirectionEnum.Input);
 				v.setKind(Kind.Type);
-				v.setDescription("de", "Input-Variable für Maintenance History" );
+				v.setDescription("de", "Ein/Aus Status für Kontroll-Lampe" );
+				
 				// use the property as the value
 				v.setValue(beltSpeed);
+				// 
+				
+				return aasSubmodelElementRepo.save(v);
+			}
+		});
+		Optional<Operation> optMoveBelt = operationModel.getSubmodelElement("moveBelt", Operation.class);
+		Operation moveBelt = optSwitchLight.orElseGet(new Supplier<Operation>() {
+			@Override
+			public Operation get() {
+				Operation m = new Operation("moveBelt", operationModel);
+				m.setCategory(CategoryEnum.FUNCTION);
+				m.setDescription("de", "Band vor/zurück bewegen");
+				m.setKind(Kind.Type);
+				
+				// the output variable is specified with the CMMS instance!
+				return aasSubmodelElementRepo.save(m);
+			}
+		});
+		Optional<OperationVariable> optDirectionVariable = moveBelt.getOperationVariable("direction");
+		OperationVariable directionVariable = optStateVariable.orElseGet(new Supplier<OperationVariable>() {
+			@Override
+			public OperationVariable get() {
+				OperationVariable v = new OperationVariable("direction", moveBelt, DirectionEnum.Input);
+				v.setKind(Kind.Type);
+				v.setDescription("de", "Bewegungsrichtung" );
+				
+				// use the property as the value
+				v.setValue(beltDirection);
+				// 
+				
+				return aasSubmodelElementRepo.save(v);
+			}
+		});
+		Optional<OperationVariable> optDistanceVariable = moveBelt.getOperationVariable("distance");
+		OperationVariable distanceVariable = optStateVariable.orElseGet(new Supplier<OperationVariable>() {
+			@Override
+			public OperationVariable get() {
+				OperationVariable v = new OperationVariable("distance", moveBelt, DirectionEnum.Input);
+				v.setKind(Kind.Type);
+				v.setDescription("de", "Zurückzulegende Entfernung" );
+				
+				// use the property as the value
+				v.setValue(beltDistance);
 				// 
 				
 				return aasSubmodelElementRepo.save(v);
@@ -282,7 +338,7 @@ public class DefaultAssetType {
 				Submodel model = new Submodel(ASSET_TYPE_EVENT_MODEL, theShell);
 				model.setIdShort("events");
 				model.setKind(Kind.Type);
-				model.setCategory(ASSET_TYPE_CATEGORY);
+				model.setCategory(CategoryEnum.APPLICATION_CLASS);
 				model.setDescription("de", "i-Asset Labor - Förderband-Ereignisse");
 				model.setVersion("V0.01");
 				model.setRevision("001");
@@ -296,7 +352,7 @@ public class DefaultAssetType {
 			@Override
 			public EventElement get() {
 				EventElement m = new EventElement("stateEvent", eventModel);
-				m.setCategory(ASSET_TYPE_CATEGORY);
+				m.setCategory(CategoryEnum.EVENT);
 				m.setDescription("de", "Status-Änderungen für Förderband");
 				m.setKind(Kind.Type);
 				m.setObservableElement(beltState);

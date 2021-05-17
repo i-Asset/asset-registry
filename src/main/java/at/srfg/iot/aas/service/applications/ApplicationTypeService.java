@@ -17,6 +17,7 @@ import at.srfg.iot.common.datamodel.asset.aas.basic.GlobalReference;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Identifier;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
 import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Kind;
+import at.srfg.iot.common.datamodel.asset.aas.common.types.CategoryEnum;
 import at.srfg.iot.common.datamodel.asset.aas.common.types.DataTypeEnum;
 import at.srfg.iot.common.datamodel.asset.aas.common.types.DirectionEnum;
 import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.EventElement;
@@ -59,7 +60,7 @@ public class ApplicationTypeService {
 			public AssetAdministrationShell get() {
 				AssetAdministrationShell shell = new AssetAdministrationShell(APPLICATION_TYPE_IDENTIFIER);
 				shell.setIdShort("appType");
-				shell.setCategory(APPLICATION_TYPE_CATEGORY);
+				shell.setCategory(CategoryEnum.APPLICATION_CLASS);
 				shell.setDescription("de", "i-Asset Applikation");
 				shell.setVersion("V0.01");
 				shell.setRevision("001");
@@ -76,7 +77,7 @@ public class ApplicationTypeService {
 			public Submodel get() {
 				Submodel model = new Submodel(APPLICATION_TYPE_INFO_MODEL, theShell);
 				model.setIdShort("information");
-				model.setCategory(APPLICATION_TYPE_CATEGORY);
+				model.setCategory(CategoryEnum.APPLICATION_CLASS);
 				model.setDescription("de", "i-Asset Application Information");
 				model.setVersion("V0.01");
 				model.setRevision("001");
@@ -89,7 +90,7 @@ public class ApplicationTypeService {
 			public Submodel get() {
 				Submodel model = new Submodel(APPLICATION_TYPE_OPERATION_MODEL, theShell);
 				model.setIdShort("operations");
-				model.setCategory(APPLICATION_TYPE_CATEGORY);
+				model.setCategory(CategoryEnum.APPLICATION_CLASS);
 				model.setDescription("de", "i-Asset Application Event Settings");
 				model.setVersion("V0.01");
 				model.setRevision("001");
@@ -105,7 +106,7 @@ public class ApplicationTypeService {
 			public Submodel get() {
 				Submodel model = new Submodel(APPLICATION_TYPE_EVENT_MODEL, theShell);
 				model.setIdShort("events");
-				model.setCategory(APPLICATION_TYPE_CATEGORY);
+				model.setCategory(CategoryEnum.APPLICATION_CLASS);
 				model.setDescription("de", "i-Asset Application Event Settings");
 				model.setVersion("V0.01");
 				model.setRevision("001");
@@ -119,7 +120,7 @@ public class ApplicationTypeService {
 			@Override
 			public GlobalReference get() {
 				GlobalReference ref = new GlobalReference(APPLICATION_TYPE_MESSAGE_BROKER);
-				ref.setCategory("messageBroker");
+				ref.setCategory(CategoryEnum.PROPERTY);
 				ref.setIdShort("messageBroker");
 				ref.setDescription("de", "Definition für Message Broker");
 				return globalReferenceRepo.save(ref);
@@ -131,7 +132,7 @@ public class ApplicationTypeService {
 			@Override
 			public GlobalReference get() {
 				GlobalReference ref = new GlobalReference(APPLICATION_TYPE_MESSAGE_BROKER_HOSTS);
-				ref.setCategory("messageBroker");
+				ref.setCategory(CategoryEnum.PROPERTY);
 				ref.setIdShort("hosts");
 				ref.setDescription("de", "Message Broker Host Address");
 				return globalReferenceRepo.save(ref);
@@ -143,7 +144,7 @@ public class ApplicationTypeService {
 			@Override
 			public GlobalReference get() {
 				GlobalReference ref = new GlobalReference(APPLICATION_TYPE_MESSAGE_BROKER_TYPE);
-				ref.setCategory("messageBroker");
+				ref.setCategory(CategoryEnum.PROPERTY);
 				ref.setIdShort("brokerType");
 				ref.setDescription("de", "Message Broker Implementierung");
 				return globalReferenceRepo.save(ref);
@@ -156,6 +157,7 @@ public class ApplicationTypeService {
 			@Override
 			public SubmodelElementCollection get() {
 				SubmodelElementCollection coll = new SubmodelElementCollection("messageBroker", eventModel);
+				coll.setCategory(CategoryEnum.COLLECTION);
 				coll.setKind(Kind.Instance);
 				coll.setDescription("de", "Message Broker Element");
 				// the reference points to a "class" element in the semantic lookup which in turn
@@ -173,6 +175,7 @@ public class ApplicationTypeService {
 			@Override
 			public Property get() {
 				Property prop = new Property("hosts", messageBroker);
+				prop.setCategory(CategoryEnum.CONSTANT);
 				prop.setDescription("de", "Host-Names für Message Broker");
 				prop.setValue("iasset.salzburgresearch.at:9092");
 				prop.setValueQualifier(DataTypeEnum.STRING);
@@ -187,6 +190,7 @@ public class ApplicationTypeService {
 			@Override
 			public Property get() {
 				Property prop = new Property("brokerType", messageBroker);
+				prop.setCategory(CategoryEnum.CONSTANT);
 				prop.setDescription("de", "Message Broker-Type");
 				prop.setValue("KAFKA"); 	// the value is predefined in semantic lookup (only KAFKA or MQTT are allowed values) 
 				prop.setValueQualifier(DataTypeEnum.STRING);
@@ -201,7 +205,7 @@ public class ApplicationTypeService {
 			@Override
 			public GlobalReference get() {
 				GlobalReference ref = new GlobalReference(new Identifier("urn:iasset:sensorEventType"));
-				ref.setCategory("eventType");
+				ref.setCategory(CategoryEnum.APPLICATION_CLASS);
 				ref.setIdShort("sensorEventType");
 				ref.setDescription("de", "Event für Sensor-Daten");
 				return globalReferenceRepo.save(ref);
@@ -213,7 +217,7 @@ public class ApplicationTypeService {
 			@Override
 			public EventElement get() {
 				EventElement event = new EventElement("sensorData", eventModel);
-				event.setCategory(APPLICATION_TYPE_CATEGORY);
+				event.setCategory(CategoryEnum.EVENT);
 				event.setDescription("de", "i-Asset Sensor Event-Settings");
 				event.setKind(Kind.Type);
 				event.setDirection(DirectionEnum.Output);
