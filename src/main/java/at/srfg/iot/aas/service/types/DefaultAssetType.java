@@ -152,8 +152,8 @@ public class DefaultAssetType {
 				return aasSubmodelRepo.save(model);
 			}
 		});
-		Optional<SubmodelElementCollection> positionsModel = propertyModel.getSubmodelElement("beltData", SubmodelElementCollection.class);
-		SubmodelElementCollection beltDataContainer = positionsModel.orElseGet(new Supplier<SubmodelElementCollection>() {
+		Optional<SubmodelElementCollection> optBeltDataContainer = propertyModel.getSubmodelElement("beltData", SubmodelElementCollection.class);
+		SubmodelElementCollection beltDataContainer = optBeltDataContainer.orElseGet(new Supplier<SubmodelElementCollection>() {
 
 			@Override
 			public SubmodelElementCollection get() {
@@ -173,8 +173,25 @@ public class DefaultAssetType {
 				Property property = new Property("state", beltDataContainer);
 				property.setCategory(CategoryEnum.VARIABLE);
 				property.setKind(Kind.Type);
-				property.setDescription("de", "Status On/Off");
+				property.setDescription("de", "Status des Förderbands");
 				property.setSemanticElement(manufacturer);
+				// TODO: use enumeration for ValueQualifier
+				property.setValueQualifier(DataTypeEnum.STRING);
+				return aasSubmodelElementRepo.save(property);
+			}
+			
+		});
+		Optional<Property> optBeltMoving = beltDataContainer.getSubmodelElement("moving", Property.class);
+		Property beltMoving = optBeltState.orElseGet(new Supplier<Property>() {
+
+			@Override
+			public Property get() {
+				// 
+				Property property = new Property("moving", beltDataContainer);
+				property.setCategory(CategoryEnum.VARIABLE);
+				property.setKind(Kind.Type);
+				property.setDescription("de", "In Begwegung (J/N)");
+				// property.setSemanticElement(manufacturer);
 				// TODO: use enumeration for ValueQualifier
 				property.setValueQualifier(DataTypeEnum.BOOLEAN);
 				return aasSubmodelElementRepo.save(property);
@@ -190,7 +207,7 @@ public class DefaultAssetType {
 				Property property = new Property("serverTime", beltDataContainer);
 				property.setCategory(CategoryEnum.VARIABLE);
 				property.setKind(Kind.Type);
-				property.setDescription("de", "Bewegungsrichtung");
+				property.setDescription("de", "Server Laufzeit");
 				//property.setSemanticElement(manufacturer);
 				property.setValueQualifier(DataTypeEnum.STRING);
 				return aasSubmodelElementRepo.save(property);
@@ -223,8 +240,9 @@ public class DefaultAssetType {
 				Property property = new Property("distance", beltDataContainer);
 				property.setCategory(CategoryEnum.VARIABLE);
 				property.setKind(Kind.Type);
-				property.setDescription("de", "Distanz");
+				property.setDescription("de", "Zurückgelegte Distanz");
 				property.setValueQualifier(DataTypeEnum.DECIMAL);
+				// TODO: add semantic ID
 				return aasSubmodelElementRepo.save(property);
 			}
 			
@@ -244,21 +262,21 @@ public class DefaultAssetType {
 			}
 		});
 		
-		Optional<Property> optBeltSpeed = beltDataContainer.getSubmodelElement("speed", Property.class);
-		Property beltSpeed = optBeltSpeed.orElseGet(new Supplier<Property>() {
-
-			@Override
-			public Property get() {
-				// 
-				Property property = new Property("speed", beltDataContainer);
-				property.setCategory(CategoryEnum.VARIABLE);
-				property.setKind(Kind.Type);
-				property.setDescription("de", "Geschwindigkeit für Förderband");
-				property.setValueQualifier(DataTypeEnum.DECIMAL);
-				return aasSubmodelElementRepo.save(property);
-			}
-			
-		});
+//		Optional<Property> optBeltSpeed = beltDataContainer.getSubmodelElement("speed", Property.class);
+//		Property beltSpeed = optBeltSpeed.orElseGet(new Supplier<Property>() {
+//
+//			@Override
+//			public Property get() {
+//				// 
+//				Property property = new Property("speed", beltDataContainer);
+//				property.setCategory(CategoryEnum.VARIABLE);
+//				property.setKind(Kind.Type);
+//				property.setDescription("de", "Geschwindigkeit für Förderband");
+//				property.setValueQualifier(DataTypeEnum.DECIMAL);
+//				return aasSubmodelElementRepo.save(property);
+//			}
+//			
+//		});
 		Optional<Operation> optSwitchLight = operationModel.getSubmodelElement("switchBusyLight", Operation.class);
 		Operation switchLight = optSwitchLight.orElseGet(new Supplier<Operation>() {
 			@Override
@@ -281,7 +299,7 @@ public class DefaultAssetType {
 				v.setDescription("de", "Ein/Aus Status für Kontroll-Lampe" );
 				
 				// use the property as the value
-				v.setValue(beltSpeed);
+				v.setValue(beltState);
 				// 
 				
 				return aasSubmodelElementRepo.save(v);
@@ -307,8 +325,7 @@ public class DefaultAssetType {
 				OperationVariable v = new OperationVariable("direction", moveBelt, DirectionEnum.Input);
 				v.setKind(Kind.Type);
 				v.setDescription("de", "Bewegungsrichtung" );
-				
-				// use the property as the value
+				// add semantic element from semantic lookup
 				v.setValue(beltDirection);
 				// 
 				
@@ -351,12 +368,12 @@ public class DefaultAssetType {
 
 			@Override
 			public EventElement get() {
-				EventElement m = new EventElement("stateEvent", eventModel);
+				EventElement m = new EventElement("beltData", eventModel);
 				m.setCategory(CategoryEnum.EVENT);
-				m.setDescription("de", "Status-Änderungen für Förderband");
+				m.setDescription("de", "Status-Informationen für Förderband");
 				m.setKind(Kind.Type);
-				m.setObservableElement(beltState);
-				m.setMessageTopic("topic");
+				m.setObservableElement(beltDataContainer);
+				m.setMessageTopic("belt.data.topic");
 				m.setDirection(DirectionEnum.Output);
 				// the output variable is specified with the CMMS instance!
 				return aasSubmodelElementRepo.save(m);
