@@ -47,14 +47,16 @@ public class PandaAssetType {
             @Override
             public AssetAdministrationShell get() {
                 Asset asset = new Asset(ASSET_TYPE_IDENTIFIER);
-                asset.setDescription("de", "i-Asset Labor - Franka Panda Emika");
+                asset.setDescription("de", "i-Asset Labor - Panda Roboterarm (Franka Emika)");
+                asset.setDescription("en", "i-Asset Lab - Panda Robot Arm (Franka Emika)");
                 asset.setKind(Kind.Type);
                 AssetAdministrationShell shell = new AssetAdministrationShell(asset);
                 shell.setIdentification(ASSET_TYPE_AAS);
                 shell.setAsset(asset);
-                shell.setIdShort("beltType");
+                shell.setIdShort("pandaType");
                 shell.setCategory(CategoryEnum.APPLICATION_CLASS);
-                shell.setDescription("de", "i-Asset Labor - Franka Panda Emika");
+                // reuse asset description
+                shell.setDescription(asset.getDescription());
                 shell.setVersion("V0.01");
                 shell.setRevision("001");
                 // create the asset along with the
@@ -69,7 +71,8 @@ public class PandaAssetType {
                 model.setIdShort("information");
                 model.setKind(Kind.Instance);
                 model.setCategory(CategoryEnum.APPLICATION_CLASS);
-                model.setDescription("de", "i-Asset Labor - Franka Panda - Infomodel");
+                model.setDescription("de", "Franka Panda - Infomodel");
+                model.setDescription("en", "Franka Panda - Infomodel");
                 model.setVersion("V0.01");
                 model.setRevision("001");
                 return aasSubmodelRepo.save(model);
@@ -83,6 +86,7 @@ public class PandaAssetType {
                 GlobalReference ref = new GlobalReference(new Identifier("0173-1#02-AAO677#002"));
                 ref.setCategory(CategoryEnum.PROPERTY);
                 ref.setIdShort("0173-1#02-AAO677#002");
+                // eClass Merkmal "02-AAO677" Herstellername
                 ref.setDescription("de", "Herstellername");
                 return globalReferenceRepo.save(ref);
             }
@@ -119,7 +123,6 @@ public class PandaAssetType {
                 property.setDescription("de", "Hersteller");
                 // the semantic element uses the global reference as semantic id
                 property.setSemanticElement(manufacturerName);
-                // TODO: use enumeration for ValueQualifier
                 property.setValueQualifier(DataTypeEnum.STRING);
                 property.setValue("Franka Panda Emika");
                 return aasSubmodelElementRepo.save(property);
@@ -147,7 +150,8 @@ public class PandaAssetType {
             public SubmodelElementCollection get() {
                 SubmodelElementCollection dataContainer = new SubmodelElementCollection("position", propertyModel);
                 dataContainer.setCategory(CategoryEnum.COLLECTION);
-                dataContainer.setDescription("de", "Aktuelle Position");
+                dataContainer.setDescription("de", "Aktuelle Position des End-Effektors");
+                dataContainer.setDescription("en", "Current Position of the end effector");
                 dataContainer.setKind(Kind.Type);
 
                 return aasSubmodelElementRepo.save(dataContainer);
@@ -162,10 +166,10 @@ public class PandaAssetType {
                 Property property = new Property("posX", pandaPosition);
                 property.setCategory(CategoryEnum.VARIABLE);
                 property.setKind(Kind.Type);
-                property.setDescription("de", "X-Koordinate");
+                property.setDescription("de", "End-Effektor Position: X Koordinate");
+                property.setDescription("en", "End effector position: X coordinate");
                 // TODO: define semantic id for X-POS
                 // property.setSemanticElement(manufacturer);
-                // TODO: use enumeration for ValueQualifier
                 property.setValueQualifier(DataTypeEnum.DECIMAL);
                 return aasSubmodelElementRepo.save(property);
             }
@@ -181,10 +185,10 @@ public class PandaAssetType {
                 Property property = new Property("posY", pandaPosition);
                 property.setCategory(CategoryEnum.VARIABLE);
                 property.setKind(Kind.Type);
-                property.setDescription("de", "Y-Koordinate");
-                // TODO: define semantic id for X-POS
+                property.setDescription("de", "End-Effektor Position: Y Koordinate");
+                property.setDescription("en", "End effector position: Y coordinate");
+                // TODO: define semantic id for Y-POS
                 // property.setSemanticElement(manufacturer);
-                // TODO: use enumeration for ValueQualifier
                 property.setValueQualifier(DataTypeEnum.DECIMAL);
                 return aasSubmodelElementRepo.save(property);
             }
@@ -199,10 +203,10 @@ public class PandaAssetType {
                 Property property = new Property("posZ", pandaPosition);
                 property.setCategory(CategoryEnum.VARIABLE);
                 property.setKind(Kind.Type);
-                property.setDescription("de", "Z-Koordinate");
-                // TODO: define semantic id for X-POS
+                property.setDescription("de", "End-Effektor Position: Z Koordinate");
+                property.setDescription("en", "End effector position: Z coordinate");
+                // TODO: define semantic id for Z-POS
                 // property.setSemanticElement(manufacturer);
-                // TODO: use enumeration for ValueQualifier
                 property.setValueQualifier(DataTypeEnum.DECIMAL);
                 return aasSubmodelElementRepo.save(property);
             }
@@ -216,6 +220,7 @@ public class PandaAssetType {
                 SubmodelElementCollection dataContainer = new SubmodelElementCollection("gripper", propertyModel);
                 dataContainer.setCategory(CategoryEnum.COLLECTION);
                 dataContainer.setDescription("de", "Gripper-Information");
+                dataContainer.setDescription("en", "gripper information");
                 dataContainer.setKind(Kind.Type);
 
                 return aasSubmodelElementRepo.save(dataContainer);
@@ -230,10 +235,10 @@ public class PandaAssetType {
                 Property property = new Property("distance", pandaGripper);
                 property.setCategory(CategoryEnum.VARIABLE);
                 property.setKind(Kind.Type);
-                property.setDescription("de", "Gripper-Distanz");
+                property.setDescription("de", "Distanz zwischen den beiden Gripper-Fingern");
+                property.setDescription("de", "Distance between gripper fingers");
                 // TODO: define semantic id for Distance
                 // property.setSemanticElement(manufacturer);
-                // TODO: use enumeration for ValueQualifier
                 property.setValueQualifier(DataTypeEnum.DECIMAL);
                 return aasSubmodelElementRepo.save(property);
             }
@@ -248,10 +253,10 @@ public class PandaAssetType {
                 Property property = new Property("zForce", pandaGripper);
                 property.setCategory(CategoryEnum.VARIABLE);
                 property.setKind(Kind.Type);
-                property.setDescription("de", "Gripper-Down-Force");
+                property.setDescription("de", "Gripper-Belastung (Gewicht)");
+                property.setDescription("en", "Gripper-Down-Force (Weight)");
                 // TODO: define semantic id for Distance
                 // property.setSemanticElement(manufacturer);
-                // TODO: use enumeration for ValueQualifier
                 property.setValueQualifier(DataTypeEnum.DECIMAL);
                 return aasSubmodelElementRepo.save(property);
             }
@@ -266,10 +271,10 @@ public class PandaAssetType {
                 Property property = new Property("type", pandaGripper);
                 property.setCategory(CategoryEnum.VARIABLE);
                 property.setKind(Kind.Type);
-                property.setDescription("de", "Gripper-Typ");
+                property.setDescription("de", "Gripper-Typ (Parallel, Centric, Angular, etc.)");
+                property.setDescription("en", "type of gripper (parallel, centric, angular, etc.");
                 // TODO: define semantic id for Gripper-Typ
                 // property.setSemanticElement(manufacturer);
-                // TODO: use enumeration for ValueQualifier
                 property.setValueQualifier(DataTypeEnum.STRING);
                 return aasSubmodelElementRepo.save(property);
             }
@@ -285,6 +290,7 @@ public class PandaAssetType {
                 model.setKind(Kind.Type);
                 model.setCategory(CategoryEnum.APPLICATION_CLASS);
                 model.setDescription("de", "i-Asset Labor - Panda-Funktionen");
+                model.setDescription("en", "i-Asset Lab - Panda functions");
                 model.setVersion("V0.01");
                 model.setRevision("001");
                 return aasSubmodelRepo.save(model);
@@ -312,7 +318,8 @@ public class PandaAssetType {
             public Operation get() {
                 Operation m = new Operation("moveToPosition", operationModel);
                 m.setCategory(CategoryEnum.FUNCTION);
-                m.setDescription("de", "Bewege zu Position");
+                m.setDescription("de", "Bewege den End-Effektor zu definierter Position mit automatischer Pfadplanung");
+                m.setDescription("en", "move end effektor to defined position with automatic path planning");
                 m.setKind(Kind.Type);
 
                 // the output variable is specified with the CMMS instance!
@@ -326,7 +333,8 @@ public class PandaAssetType {
                 OperationVariable v = new OperationVariable("posX", moveToPosition, DirectionEnum.Input);
                 v.setCategory(CategoryEnum.PARAMETER);
                 v.setKind(Kind.Type);
-                v.setDescription("de", "X-Koordinate");
+                v.setDescription("de", "X-Koordinate der Zielposition");
+                v.setDescription("en", "X coordinate of target position");
 
                 // use the property as the value
                 v.setValue(posX);
@@ -342,7 +350,8 @@ public class PandaAssetType {
                 OperationVariable v = new OperationVariable("posY", moveToPosition, DirectionEnum.Input);
                 v.setCategory(CategoryEnum.PARAMETER);
                 v.setKind(Kind.Type);
-                v.setDescription("de", "Y-Koordinate");
+                v.setDescription("de", "Y-Koordinate der Zielposition");
+                v.setDescription("en", "Y coordinate of target position");
 
                 // use the property as the value
                 v.setValue(posY);
@@ -358,7 +367,8 @@ public class PandaAssetType {
                 OperationVariable v = new OperationVariable("posZ", moveToPosition, DirectionEnum.Input);
                 v.setCategory(CategoryEnum.PARAMETER);
                 v.setKind(Kind.Type);
-                v.setDescription("de", "Z-Koordinate");
+                v.setDescription("de", "Z-Koordinate der Zielposition");
+                v.setDescription("en", "Z coordinate of target position");
 
                 // use the property as the value
                 v.setValue(posZ);
@@ -377,6 +387,7 @@ public class PandaAssetType {
                 model.setKind(Kind.Type);
                 model.setCategory(CategoryEnum.APPLICATION_CLASS);
                 model.setDescription("de", "i-Asset Labor - Panda-Ereignisse");
+                model.setDescription("en", "i-Asset Lab - Panda events");
                 model.setVersion("V0.01");
                 model.setRevision("001");
                 return aasSubmodelRepo.save(model);
@@ -390,13 +401,14 @@ public class PandaAssetType {
             public EventElement get() {
                 EventElement m = new EventElement("position", eventModel);
                 m.setCategory(CategoryEnum.EVENT);
-                m.setDescription("de", "Status-Informationen für Förderband");
+                m.setDescription("de", "Positionsinformation für End Effektor");
+                m.setDescription("en", "position information of end effector");
                 m.setKind(Kind.Type);
                 // the element is deactivated by default
                 m.setActive(false);
                 // let the element observe the position, e.g. report posX, posY, posZ
                 m.setObservableElement(pandaPosition);
-                m.setMessageTopic("panda.data.topic");
+                m.setMessageTopic("at.srfg.iasset-lab.panda.position.current");
                 m.setDirection(DirectionEnum.Output);
                 // the output variable is specified with the CMMS instance!
                 return aasSubmodelElementRepo.save(m);
