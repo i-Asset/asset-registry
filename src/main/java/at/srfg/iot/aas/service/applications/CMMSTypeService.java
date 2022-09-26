@@ -2,6 +2,7 @@ package at.srfg.iot.aas.service.applications;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -13,16 +14,20 @@ import org.springframework.stereotype.Service;
 
 import at.srfg.iot.aas.service.indexing.AssetTypeIndexingEventObject;
 import at.srfg.iot.common.datamodel.asset.aas.basic.AssetAdministrationShell;
+import at.srfg.iot.common.datamodel.asset.aas.basic.GlobalReference;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Identifier;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
 import at.srfg.iot.common.datamodel.asset.aas.common.referencing.Kind;
 import at.srfg.iot.common.datamodel.asset.aas.common.types.CategoryEnum;
 import at.srfg.iot.common.datamodel.asset.aas.common.types.DataTypeEnum;
 import at.srfg.iot.common.datamodel.asset.aas.common.types.DirectionEnum;
+import at.srfg.iot.common.datamodel.asset.aas.dictionary.ConceptDescription;
 import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.EventElement;
 import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Operation;
 import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.OperationVariable;
 import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Property;
+import at.srfg.iot.common.datamodel.semanticlookup.model.ConceptBase;
+import at.srfg.iot.common.datamodel.semanticlookup.model.ConceptBase.ConceptType;
 
 @Service
 public class CMMSTypeService extends ApplicationTypeService {
@@ -150,8 +155,7 @@ public class CMMSTypeService extends ApplicationTypeService {
 				return aasSubmodelElementRepo.save(m);
 			}
 		});
-
-		
+	
 		Optional<OperationVariable> operationVariable = maintenanceHistory.getOperationVariable("maintenanceHistoryInputV1");
 		OperationVariable  maintenanceHistoryV1 = operationVariable.orElseGet(new Supplier<OperationVariable>() {
 
@@ -197,7 +201,41 @@ public class CMMSTypeService extends ApplicationTypeService {
 				return aasSubmodelElementRepo.save(event);
 			}
 		});
-		
+		Optional<GlobalReference> optRefToCauseOfError = globalReferenceRepo.findByIdentification(new Identifier("http://iasset.salzburgresearch.at/ispro/causeOfErrorEntry"));
+		GlobalReference refToCauseOfError = optRefToCauseOfError.orElseGet(new Supplier<GlobalReference>() {
+
+			@Override
+			public GlobalReference get() {
+				GlobalReference ref = new GlobalReference(new Identifier("http://iasset.salzburgresearch.at/ispro/causeOfErrorEntry"));
+				ref.setCategory(CategoryEnum.APPLICATION_CLASS);
+				ref.setIdShort("causeOfErrorEntry");
+				ref.setDescription("de", "Störursache");
+				ref.setDescription("en", "Cause of Error");
+				return globalReferenceRepo.save(ref);
+			}
+		});
+
+		// use a concept description 
+		Optional<ConceptDescription> causeOfErrorEntryOpt = cdRepo.findByIdentification(new Identifier("http://iasset.salzburgresearch.at/cmms/causeOfErrorEntry"));
+		ConceptDescription causeOfErrorEntry = causeOfErrorEntryOpt.orElseGet(new Supplier<ConceptDescription>() {
+
+			@Override
+			public ConceptDescription get() {
+				ConceptDescription manufacturer = new ConceptDescription(new Identifier("http://iasset.salzburgresearch.at/cmms/causeOfErrorEntry"));
+				manufacturer.setCategory(CategoryEnum.COLLECTION);
+				manufacturer.setDescription("en", "Cause Of Error Entry");
+				manufacturer.setDescription("de", "Eintrag Störursachentabelle");
+//				manufacturer.addCaseOf(refToCauseOfError);
+//				manufacturer.setCategory("A21");
+//				manufacturer.setVersion("001");
+//				manufacturer.setRevision("01");
+//				manufacturer.addCaseOf(manufacturerName);
+				
+				return cdRepo.save(manufacturer);
+			}
+		});
+		causeOfErrorEntry.setCaseOf(Collections.singletonList(refToCauseOfError));
+		cdRepo.save(causeOfErrorEntry);
 		// test searching for Event classes
 		Collection<EventElement> event = getEvents("http://iasset.salzburgresearch.at/registry/cmms/events");
 		System.out.println(event.size());
