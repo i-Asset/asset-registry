@@ -24,6 +24,7 @@ import at.srfg.iot.common.datamodel.asset.aas.common.types.CategoryEnum;
 import at.srfg.iot.common.datamodel.asset.aas.common.types.DataTypeEnum;
 import at.srfg.iot.common.datamodel.asset.aas.common.types.DirectionEnum;
 import at.srfg.iot.common.datamodel.asset.aas.dictionary.ConceptDescription;
+import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Blob;
 import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.EventElement;
 import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Operation;
 import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.OperationVariable;
@@ -137,6 +138,19 @@ public class DefaultAssetType {
 				return aasSubmodelElementRepo.save(property);
 			}
 			
+		});
+		Optional<Blob> optImage = infoModel.getSubmodelElement("logo", Blob.class);
+		Blob image = optImage.orElseGet(new Supplier<Blob>() {
+			@Override
+			public Blob get() {
+				Blob b = new Blob("logo", infoModel);
+				b.setCategory(CategoryEnum.CONSTANT);
+				b.setKind(Kind.Instance);
+				b.setDescription("de", "Logo");
+				b.setMimeType("text/plain");
+				b.setValue("An dieser Stelle kommt ein image".getBytes());
+				return aasSubmodelElementRepo.save(b);
+			}
 		});
 		Optional<Submodel> assetTypePropertyModel = aasSubmodelRepo.findByIdentification(ASSET_TYPE_PROPERTY_MODEL);
 		Submodel propertyModel = assetTypePropertyModel.orElseGet(new Supplier<Submodel>() {
