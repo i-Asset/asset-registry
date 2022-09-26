@@ -24,6 +24,7 @@
 		<docker.image.tag>${project.version}</docker.image.tag>
 		<ch.qos.logback.version>1.2.3</ch.qos.logback.version>
 		<springfox.version>2.9.2</springfox.version>
+		<keycloak.version>10.0.2</keycloak.version>
 		<spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
 	</properties>
 
@@ -77,6 +78,16 @@
 			</exclusions>
 			 -->
 		</dependency>
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-spring-security-adapter</artifactId>
+            <version>${keycloak.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-spring-boot-starter</artifactId>
+            <version>${keycloak.version}</version>
+        </dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -172,17 +183,14 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-common</artifactId>
-			<version>2.29</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.glassfish.jersey.inject</groupId>
 		    <artifactId>jersey-hk2</artifactId>
-		    <version>2.29</version>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-client</artifactId>
-			<version>2.29</version>
 		</dependency>
 		<!-- data model (i-asset semantic-lookup) -->
 		<dependency>
