@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import at.srfg.iot.aas.repository.registry.AssetAdministrationShellRepository;
+import at.srfg.iot.aas.repository.registry.ConceptDescriptionRepository;
 import at.srfg.iot.aas.repository.registry.IdentifiableRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelElementRepository;
 import at.srfg.iot.aas.repository.registry.SubmodelRepository;
@@ -48,6 +49,8 @@ public class ApplicationTypeService {
 	
 	@Autowired
 	protected IdentifiableRepository<GlobalReference> globalReferenceRepo;
+	@Autowired
+	protected ConceptDescriptionRepository cdRepo;
 
 	@PostConstruct
 	protected void init() {

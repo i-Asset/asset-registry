@@ -9,13 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.util.UriTemplate;
 
 import at.srfg.iot.aas.service.registry.RegistryService;
 import at.srfg.iot.aas.service.registry.RegistryWorker;
@@ -25,7 +23,6 @@ import at.srfg.iot.common.datamodel.asset.aas.basic.Endpoint;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Identifier;
 import at.srfg.iot.common.datamodel.asset.aas.basic.Submodel;
 import at.srfg.iot.common.datamodel.asset.aas.common.DirectoryEntry;
-import at.srfg.iot.common.datamodel.asset.aas.common.HasKind;
 import at.srfg.iot.common.datamodel.asset.aas.common.Identifiable;
 import at.srfg.iot.common.datamodel.asset.aas.common.Referable;
 import at.srfg.iot.common.datamodel.asset.aas.common.SubmodelElementContainer;
@@ -36,6 +33,7 @@ import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.DataEleme
 import at.srfg.iot.common.datamodel.asset.aas.modeling.submodelelement.Property;
 import at.srfg.iot.common.datamodel.asset.api.IAssetConnection;
 import at.srfg.iot.common.datamodel.asset.connectivity.rest.ConsumerFactory;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @RestController
@@ -51,6 +49,9 @@ public class AssetRepositoryController implements IAssetConnection{
 
 	@Autowired
 	private RegistryWorker worker;
+	
+	@Autowired
+	private HttpServletRequest request;
 	
 
 	private IAssetConnection getProxy(Endpoint ep) {
@@ -122,17 +123,6 @@ public class AssetRepositoryController implements IAssetConnection{
 		}
 		return Optional.empty();
 	}
-	@Override
-	public Optional<Referable> getModelInstance(String identifier, Reference element) {
-//		Optional<Identifiable> i = getRoot(identifier);
-//		if (i.isPresent()) {
-//			if ( element.hasRoot(i.get())) {
-//				Optional<Referable> resolved = registry.resolveReference(element);
-//				return registry.ensureInstance(resolved);
-//			}
-//		}
-		return Optional.empty();
-	}
 
 	@Override
 	public void setModelElement(String identifier, Referable element) {
@@ -181,37 +171,23 @@ public class AssetRepositoryController implements IAssetConnection{
 		}
 		return false;
 	}
-	@RequestMapping(
-			method = RequestMethod.GET,
-			path = "element/{path}/**"
-			)
-	public Optional<Referable> getElement(
-			@ApiParam("The identifier of the Asset Administration Shell or Submodel!")
-			@RequestHeader(name=ASSET_ID_HEADER)
-			String identifier,
-			@ApiParam("The path to the container")
-			@PathVariable(required = false, name="path")
-			String path,
-			HttpServletRequest request) {
-		String myPath = extractPathFromPattern(request);
-		return getElement(identifier, myPath);
-	}
-	public static String extractPathFromPattern(final HttpServletRequest request){
 
-
-	    String path = (String) request.getAttribute(
-	            HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-	    String bestMatchPattern = (String ) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
-
-	    AntPathMatcher apm = new AntPathMatcher();
-	    String finalPath = apm.extractPathWithinPattern(bestMatchPattern, path);
-
-	    return finalPath;
-
-	}
 	@Override
 	public Optional<Referable> getElement(String identifier, String path) {
 		return registry.resolvePath(identifier, path);
+	}
+	@ApiOperation(value = "Obtain the identifiable element")
+	@RequestMapping(
+			method = RequestMethod.GET,
+			path="/{type}/**"
+			)
+	public Optional<Referable> getElementWildCard(
+			@ApiParam("The identifier of the Asset Administration Shell or Submodel!")
+			@RequestHeader(name=ASSET_ID_HEADER)
+			String identifier) {
+		String s = request.getRequestURI();
+		Map<String,String> param = new UriTemplate("/repository/{type}/{path:.*}").match(s);
+		return getElement(identifier, param.get("path"));
 	}
 
 	@Override
