@@ -21,7 +21,7 @@
 		<docker.plugin.version>1.2.0</docker.plugin.version>
 		<docker.image.prefix>nimbleplatform</docker.image.prefix>
 		<docker.image.tag>${project.version}</docker.image.tag>
-		<ch.qos.logback.version>1.2.3</ch.qos.logback.version>
+		<ch.qos.logback.version>1.2.13</ch.qos.logback.version>
 		<springfox.version>2.9.2</springfox.version>
 	</properties>
 
